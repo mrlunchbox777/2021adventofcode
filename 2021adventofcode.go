@@ -26,16 +26,19 @@ func main() {
 	totalIncreases := 0
 	var depths [2]int
 	currentDepth := 0
+	gotAll3 := false
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		i, _ := strconv.Atoi(scanner.Text())
+		if  depths[0] == 0 || depths[1] == 0 || i == 0 {
+			gotAll3 = true
+			fmt.Println("nothing")
+		}
 		previousDepth := currentDepth
 		fmt.Println("before values: ", "a -", depths[0], "b -", depths[1], "i -", i, "p -", previousDepth, "c -", currentDepth)
 		depths[0], depths[1], currentDepth = getNextDepth(depths[0], depths[1], i)
 		fmt.Println("mid values: ", "a -", depths[0], "b -", depths[1], "i -", i, "p -", previousDepth, "c -", currentDepth)
-		if ( depths[0] == 0 && ( depths[1] == 0 && currentDepth == 0 )) {
-			fmt.Println("nothing")
-		} else {
+		if gotAll3 {
 			if currentDepth > previousDepth {
 				totalIncreases++
 				fmt.Println(currentDepth, "(increased)")
