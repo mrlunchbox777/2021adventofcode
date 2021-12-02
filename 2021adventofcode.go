@@ -6,13 +6,23 @@ import (
 	"fmt"
 	"os"
 	"log"
+	"bufio"
 )
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	content, err := os.ReadFile("./data/data-day1")
+	file, err := os.Open("./data/data-day1")
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(string(content))
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fmt.Println(scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
 }
