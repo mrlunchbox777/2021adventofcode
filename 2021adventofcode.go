@@ -10,9 +10,9 @@ import (
 	"strconv"
 )
 
-func getNextDepth(input int, a int, b int) (int, int, int) {
-	total := input + a + b
-	return input, a, total
+func getNextDepth(a int, b int, input int) (int, int, int) {
+	total := a + b + input
+	return b, input, total
 }
 
 func main() {
@@ -23,15 +23,18 @@ func main() {
 	}
 	defer file.Close()
 
-	totalIncreases := int(0)
+	totalIncreases := 0
 	var depths [2]int
 	currentDepth := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		i, _ := strconv.Atoi(scanner.Text())
 		previousDepth := currentDepth
-		depths[0], depths[1], currentDepth = getNextDepth(i, depths[0], depths[1])
-		increased := currentDepth > previousDepth
+		depths[0], depths[1], currentDepth = getNextDepth(depths[0], depths[1], i)
+		increased := false
+		if depths[0] > 0 {
+			increased = currentDepth > previousDepth
+		}
 		if increased {
 			totalIncreases++
 			fmt.Println(currentDepth, "(increased)")
