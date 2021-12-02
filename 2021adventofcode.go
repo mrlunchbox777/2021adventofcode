@@ -10,6 +10,11 @@ import (
 	"strconv"
 )
 
+func getNextDepth(input int, a int, b int) (int, int, int) {
+	total := input + a + b
+	return input, a, total
+}
+
 func main() {
 	rand.Seed(time.Now().UnixNano())
 	file, err := os.Open("./data/data-day1")
@@ -19,20 +24,16 @@ func main() {
 	defer file.Close()
 
 	totalIncreases := int(0)
+	var depths [2]int
 	currentDepth := 0
-	firstRun := true
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		i, _ := strconv.Atoi(scanner.Text())
-		increased := false
-		if firstRun {
-			firstRun = false
-		} else if i > currentDepth {
-			increased = true
-			totalIncreases++
-		}
-		currentDepth = i
+		previousDepth := currentDepth
+		depths[0], depths[1], currentDepth = getNextDepth(i, depths[0], depths[1])
+		increased := currentDepth > previousDepth
 		if increased {
+			totalIncreases++
 			fmt.Println(currentDepth, "(increased)")
 		} else {
 			fmt.Println(currentDepth, "(decreased)")
