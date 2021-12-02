@@ -29,11 +29,11 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		i, _ := strconv.Atoi(scanner.Text())
-		fmt.Println("before values: ", "a -", depths[0], "b -", depths[1], "i -", i)
 		previousDepth := currentDepth
+		fmt.Println("before values: ", "a -", depths[0], "b -", depths[1], "i -", i, "p -", previousDepth, "c -", currentDepth)
 		depths[0], depths[1], currentDepth = getNextDepth(depths[0], depths[1], i)
-		fmt.Println("mid values: ", "a -", depths[0], "b -", depths[1], "i -", i)
-		if ( depths[0] == 0 && ( depths[1] == 0 && i == 0 )) {
+		fmt.Println("mid values: ", "a -", depths[0], "b -", depths[1], "i -", i, "p -", previousDepth, "c -", currentDepth)
+		if ( depths[0] == 0 && ( depths[1] == 0 && currentDepth == 0 )) {
 			fmt.Println("nothing")
 		} else {
 			if currentDepth > previousDepth {
@@ -43,7 +43,7 @@ func main() {
 				fmt.Println(currentDepth, "(decreased)")
 			}
 		}
-		fmt.Println("after values: ", "a -", depths[0], "b -", depths[1])
+		fmt.Println("after values: ", "a -", depths[0], "b -", depths[1], "i -", i, "p -", previousDepth, "c -", currentDepth)
 	}
 	fmt.Println("Increases", totalIncreases)
 
