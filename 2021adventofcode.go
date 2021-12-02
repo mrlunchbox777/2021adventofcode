@@ -36,13 +36,8 @@ func main() {
 			startCounting = true
 		} else if depths[0] != 0 && depths[1] != 0 && i != 0 && previousDepth != 0 && currentDepth != 0 {
 			gotAll = true
-			fmt.Println("nothing")
-		} else {
-			fmt.Println("else values: ", "a -", depths[0], "b -", depths[1], "i -", i, "p -", previousDepth, "c -", currentDepth)
 		}
-		fmt.Println("before values: ", "a -", depths[0], "b -", depths[1], "i -", i, "p -", previousDepth, "c -", currentDepth)
 		depths[0], depths[1], currentDepth = getNextDepth(depths[0], depths[1], i)
-		fmt.Println("mid values: ", "a -", depths[0], "b -", depths[1], "i -", i, "p -", previousDepth, "c -", currentDepth)
 		if startCounting {
 			if currentDepth > previousDepth {
 				totalIncreases++
@@ -51,7 +46,6 @@ func main() {
 				fmt.Println(currentDepth, "(decreased)")
 			}
 		}
-		fmt.Println("after values: ", "a -", depths[0], "b -", depths[1], "i -", i, "p -", previousDepth, "c -", currentDepth)
 	}
 	fmt.Println("Increases", totalIncreases)
 
