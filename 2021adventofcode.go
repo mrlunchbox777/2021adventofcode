@@ -26,13 +26,16 @@ func main() {
 	totalIncreases := 0
 	var depths [2]int
 	currentDepth := 0
+	had3answers := false
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		i, _ := strconv.Atoi(scanner.Text())
 		previousDepth := currentDepth
 		depths[0], depths[1], currentDepth = getNextDepth(depths[0], depths[1], i)
 		increased := false
-		if depths[0] > 0 {
+		if ( ! had3answers ) && ( depths[0] > 0 && ( depths[1] > 0 && i > 0 )) {
+			had3answers = true
+		} else {
 			increased = currentDepth > previousDepth
 		}
 		if increased {
