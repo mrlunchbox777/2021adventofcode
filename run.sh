@@ -3,11 +3,16 @@
 list_of_days=$(ls ./src)
 day_count=$(echo "$list_of_days" | wc -l)
 day_choice=$day_count
+day_override=$DAY_OVERRIDE
 
-read -p "use latest?" use_latest
-
-if [[ "$use_latest" =~ ^[nN]$ ]]; then
-	read -p "which day, max $day_count?" day_choice
+if [ -z "$day_override" ]; then
+	read -p "use latest?" use_latest
+	if [[ "$use_latest" =~ ^[nN]$ ]]; then
+		read -p "which day, max $day_count?" day_choice
+	fi
+else
+	use_latest="n"
+	day_choice="$day_override"
 fi
 
 if [[ "$day_choice" =~ ^[^0-9]*$ ]] || [ "$day_choice" -gt "$day_count" ] || [ "$day_choice" -le "0" ]; then
