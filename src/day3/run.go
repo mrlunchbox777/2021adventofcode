@@ -11,14 +11,14 @@ import (
 func stringToIntArr(str string) ([]int) {
 	chars := []rune(str)
 	ints := []int{}
-		for i := 0; i < len(chars); i++ {
-			currentChar := string(chars[i])
-			currentInt, err := strconv.Atoi(currentChar)
-			if err != nil {
-				panic(err)
-			}
-			ints = append(ints, currentInt)
+	for i := 0; i < len(chars); i++ {
+		currentChar := string(chars[i])
+		currentInt, err := strconv.Atoi(currentChar)
+		if err != nil {
+			panic(err)
 		}
+		ints = append(ints, currentInt)
+	}
 	return ints
 }
 
@@ -35,8 +35,8 @@ func main() {
 	for scanner.Scan() {
 		i := scanner.Text()
 		ints := stringToIntArr(i)
-			// find number of occurrences of each value in string and put into epsilon map
-			// for each char add to corresponding map in gamma for each value
+		// find number of occurrences of each value in string and put into epsilon map
+		// for each char add to corresponding map in gamma for each value
 		fmt.Println("i -", i, "ints -", ints)
 	}
 }
