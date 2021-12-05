@@ -22,6 +22,23 @@ func stringToIntArr(str string) ([]int) {
 	return ints
 }
 
+func calcGammaEpsilon(lineCount int, diagByColumn map[int]int) (map[int]int, map[int]int) {
+	halfLineCount := lineCount / 2
+	gamma := make(map[int]int)
+	epsilon := make(map[int]int)
+	for j, i := range diagByColumn {
+		fmt.Println("diag by column i -", i)
+		if i < halfLineCount {
+			gamma[j] = 0
+			epsilon[j] = 1
+		} else {
+			gamma[j] = 1
+			epsilon[j] = 0
+		}
+	}
+	return gamma, epsilon
+}
+
 func main() {
 	file, err := os.Open("./data/input")
 	if err != nil {
@@ -30,8 +47,6 @@ func main() {
 	defer file.Close()
 
 	diagByColumn := make(map[int]int)  
-	gamma := make(map[int]int)
-	epsilon := make(map[int]int)
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
 
@@ -45,15 +60,6 @@ func main() {
 		}
 	}
 
-	halfLineCount := lineCount / 2
-	for j, i := range diagByColumn {
-		fmt.Println("diag by column i -", i)
-		if i < halfLineCount {
-			gamma[j] = 0
-			epsilon[j] = 1
-		} else {
-			gamma[j] = 1
-			epsilon[j] = 0
-		}
-	}
+	gamma, epsilon := calcGammaEpsilon(lineCount, diagByColumn)
+	fmt.Println("gamma -", gamma, ", epsilon", epsilon)
 }
