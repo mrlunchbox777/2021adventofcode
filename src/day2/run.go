@@ -18,20 +18,22 @@ func main() {
 
 	x := 0
 	y := 0
+	aim := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		i := scanner.Text()
 		i_array := strings.Split(i, " ")
 		direction := i_array[0]
 		value, _ := strconv.Atoi(i_array[1])
-		fmt.Println("direction", direction, "- value", value)
+		fmt.Println("direction", direction, "- value")
 		switch direction {
 			case "up":
-				y -= value
+				aim -= value
 			case "down":
-				y += value
+				aim += value
 			case "forward":
 				x += value
+				y += (aim * value)
 		}
 		fmt.Println("x", x, "- y", y)
 	}
