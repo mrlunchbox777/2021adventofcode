@@ -14,11 +14,9 @@ func main() {
 	}
 	defer file.Close()
 
-	x := 0
-	y := 0
-	aim := 0
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		i := scanner.Text()
+		fmt.Println("i -", i)
 	}
 }
