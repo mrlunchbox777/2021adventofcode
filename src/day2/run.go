@@ -25,7 +25,7 @@ func main() {
 		i_array := strings.Split(i, " ")
 		direction := i_array[0]
 		value, _ := strconv.Atoi(i_array[1])
-		fmt.Println("direction", direction, "- value")
+		fmt.Println("direction", direction, "- value", value)
 		switch direction {
 			case "up":
 				aim -= value
