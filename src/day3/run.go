@@ -29,14 +29,22 @@ func main() {
 	}
 	defer file.Close()
 
-	// gamma := make([]map[int]int, 0)
+	diagByColumn := make(map[int]int, 0)  
+	// gamma := make(map[int]int, 0)
 	// epsilon := make(map[int]int)
 	scanner := bufio.NewScanner(file)
+	lineCount := 0
 	for scanner.Scan() {
+		lineCount++
 		i := scanner.Text()
 		ints := stringToIntArr(i)
-		// find number of occurrences of each value in string and put into epsilon map
 		// for each char add to corresponding map in gamma for each value
+		for j := 0; j < len(ints); j ++ {
+			currentInt := ints[j]
+			diagByColumn[j] += currentInt  
+		}
 		fmt.Println("i -", i, "ints -", ints)
+		// fmt.Println("gamma -", gamma, "epsilon -", epsilon)
+		fmt.Println("lineCount -", lineCount, "diagByColumn -", diagByColumn)
 	}
 }
