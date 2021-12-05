@@ -34,6 +34,7 @@ func main() {
 	epsilon := make(map[int]int)
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
+
 	for scanner.Scan() {
 		lineCount++
 		i := scanner.Text()
@@ -42,8 +43,8 @@ func main() {
 			currentInt := ints[j]
 			diagByColumn[j] += currentInt  
 		}
-		fmt.Println("i -", i, "ints -", ints)
 	}
+
 	halfLineCount := lineCount / 2
 	for j, i := range diagByColumn {
 		fmt.Println("diag by column i -", i)
@@ -54,6 +55,5 @@ func main() {
 			gamma[j] = 1
 			epsilon[j] = 0
 		}
-		fmt.Println("gamma -", gamma, ", epsilon -", epsilon, ", j -", j)
 	}
 }
