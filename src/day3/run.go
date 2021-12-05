@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"bufio"
-	// "strconv"
+	"strconv"
 	// "strings"
 )
 
@@ -22,8 +22,12 @@ func main() {
 		i := scanner.Text()
 		chars := []rune(i)
 		ints := []int{}
-		for _, currentChar := range chars {
-			currentInt := int(currentChar)
+		for j := 0; j < len(chars); j++ {
+			currentChar := string(chars[j])
+			currentInt, err := strconv.Atoi(currentChar)
+			if err != nil {
+				panic(err)
+			}
 			ints = append(ints, currentInt)
 		}
 			// find number of occurrences of each value in string and put into epsilon map
