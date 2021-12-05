@@ -30,21 +30,30 @@ func main() {
 	defer file.Close()
 
 	diagByColumn := make(map[int]int, 0)  
-	// gamma := make(map[int]int, 0)
-	// epsilon := make(map[int]int)
+	gamma := []int{}
+	epsilon := []int{}
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
 	for scanner.Scan() {
 		lineCount++
 		i := scanner.Text()
 		ints := stringToIntArr(i)
-		// for each char add to corresponding map in gamma for each value
 		for j := 0; j < len(ints); j ++ {
 			currentInt := ints[j]
 			diagByColumn[j] += currentInt  
 		}
 		fmt.Println("i -", i, "ints -", ints)
-		// fmt.Println("gamma -", gamma, "epsilon -", epsilon)
-		fmt.Println("lineCount -", lineCount, "diagByColumn -", diagByColumn)
+	}
+	halfLineCount := lineCount / 2
+	for j, i := range diagByColumn {
+		fmt.Println("diag by column i -", i)
+		if i < halfLineCount {
+			gamma[j] = 0
+			epsilon[j] = 1
+		} else {
+			gamma[j] = 1
+			epsilon[j] = 0
+		}
+		fmt.Println("gamma -", gamma, ", epsilon -", epsilon, ", j -", j)
 	}
 }
