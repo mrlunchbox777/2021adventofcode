@@ -11,6 +11,7 @@ import (
 func stringToIntArr(str string) ([]int) {
 	chars := []rune(str)
 	ints := []int{}
+
 	for i := 0; i < len(chars); i++ {
 		currentChar := string(chars[i])
 		currentInt, err := strconv.Atoi(currentChar)
@@ -19,6 +20,7 @@ func stringToIntArr(str string) ([]int) {
 		}
 		ints = append(ints, currentInt)
 	}
+
 	return ints
 }
 
@@ -26,6 +28,7 @@ func calcGammaEpsilon(lineCount int, diagByColumn map[int]int) (map[int]int, map
 	halfLineCount := lineCount / 2
 	gamma := make(map[int]int)
 	epsilon := make(map[int]int)
+
 	for j, i := range diagByColumn {
 		fmt.Println("diag by column i -", i)
 		if i < halfLineCount {
@@ -36,6 +39,7 @@ func calcGammaEpsilon(lineCount int, diagByColumn map[int]int) (map[int]int, map
 			epsilon[j] = 0
 		}
 	}
+
 	return gamma, epsilon
 }
 
