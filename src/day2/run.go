@@ -35,7 +35,7 @@ func main() {
 				x += value
 				y += (aim * value)
 		}
-		fmt.Println("x", x, "- y", y)
+		fmt.Println("x", x, "- y", y, "- aim", aim)
 	}
 	final_product := x * y
 	fmt.Println("final_product", final_product)
