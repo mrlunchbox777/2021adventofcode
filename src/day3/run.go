@@ -20,4 +20,5 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		i := scanner.Text()
+	}
 }
