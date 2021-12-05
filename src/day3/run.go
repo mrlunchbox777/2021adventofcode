@@ -29,9 +29,9 @@ func main() {
 	}
 	defer file.Close()
 
-	diagByColumn := make(map[int]int, 0)  
-	gamma := []int{}
-	epsilon := []int{}
+	diagByColumn := make(map[int]int)  
+	gamma := make(map[int]int)
+	epsilon := make(map[int]int)
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
 	for scanner.Scan() {
