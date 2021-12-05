@@ -8,6 +8,20 @@ import (
 	// "strings"
 )
 
+func stringToIntArr(str string) ([]int) {
+	chars := []rune(str)
+	ints := []int{}
+		for i := 0; i < len(chars); i++ {
+			currentChar := string(chars[i])
+			currentInt, err := strconv.Atoi(currentChar)
+			if err != nil {
+				panic(err)
+			}
+			ints = append(ints, currentInt)
+		}
+	return ints
+}
+
 func main() {
 	file, err := os.Open("./data/input")
 	if err != nil {
@@ -20,16 +34,7 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		i := scanner.Text()
-		chars := []rune(i)
-		ints := []int{}
-		for j := 0; j < len(chars); j++ {
-			currentChar := string(chars[j])
-			currentInt, err := strconv.Atoi(currentChar)
-			if err != nil {
-				panic(err)
-			}
-			ints = append(ints, currentInt)
-		}
+		ints := stringToIntArr(i)
 			// find number of occurrences of each value in string and put into epsilon map
 			// for each char add to corresponding map in gamma for each value
 		fmt.Println("i -", i, "ints -", ints)
