@@ -23,10 +23,7 @@ func main() {
 		chars := []rune(i)
 		ints := []int{}
 		for _, currentChar := range chars {
-			currentInt, err := int(currentChar)
-			if err != nil {
-				panic(err)
-			}
+			currentInt := int(currentChar)
 			ints = append(ints, currentInt)
 		}
 			// find number of occurrences of each value in string and put into epsilon map
