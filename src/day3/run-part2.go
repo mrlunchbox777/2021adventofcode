@@ -82,7 +82,7 @@ func main() {
 	}
 	defer file.Close()
 
-	diagByColumn := make(map[int]int)  
+	matrix := make(map[int]map[int]int)
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
 
@@ -90,9 +90,10 @@ func main() {
 		lineCount++
 		i := scanner.Text()
 		ints := stringToIntArr(i)
+		matrix[lineCount] = make(map[int]int)
 		for j := 0; j < len(ints); j ++ {
 			currentInt := ints[j]
-			diagByColumn[j] += currentInt  
+			matrix[lineCount][j] = currentInt  
 		}
 	}
 
