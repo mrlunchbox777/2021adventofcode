@@ -43,12 +43,21 @@ func calcGammaEpsilon(lineCount int, diagByColumn map[int]int) (map[int]int, map
 	return gamma, epsilon
 }
 
-func reverse(numbers []int) []int {
+func reverse(numbers map[int]int) map[int]int {
 	for i := 0; i < len(numbers)/2; i++ {
 		j := len(numbers) - i - 1
 		numbers[i], numbers[j] = numbers[j], numbers[i]
 	}
 	return numbers
+}
+
+func getDecimalFromBinary(numbers map[int]int) float64 {
+	retVal := float64(0)
+	reverseNumbers := reverse(numbers)
+	for i, j := range reverseNumbers {
+		retVal += float64(j) * math.Pow(float64(2), float64(i))
+	}
+	return retVal
 }
 
 func main() {
@@ -74,11 +83,8 @@ func main() {
 
 	gammaIntArr, epsilonIntArr := calcGammaEpsilon(lineCount, diagByColumn)
 	fmt.Println("gammaIntArr -", gammaIntArr, ", epsilonIntArr", epsilonIntArr)
-	gamma := 0
-	reverseGammaIntArr := reverse(gammaIntArr)
-	for i, j := range reverseGammaIntArr {
-		gamma += j * math.Pow(2, i)
-		fmt.Println("i -", i, "j -", j)
-	}
-	fmt.Println("gamma -", gamma)
+	gamma := getDecimalFromBinary(gammaIntArr)
+	epsilon := getDecimalFromBinary(epsilonIntArr)
+	product := gamma * epsilon
+	fmt.Println("gamma -", gamma, "epsilon -", epsilon, "product - ", product)
 }
