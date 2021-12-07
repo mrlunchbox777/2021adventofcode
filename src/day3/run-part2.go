@@ -66,10 +66,10 @@ func invertMatrix(matrix map[int]map[int]int) map[int]map[int]int {
 	columnLength := len(matrix)
 	lineLength := len(matrix[0])
 	invertedMatrix := make(map[int]map[int]int)
-	for i := 0; i < columnLength; i++ {
-		invertedMatrix[lineLength] = make(map[int]int)
-		for j := 0; j < lineLength; j ++ {
-			invertedMatrix[j][i] = matrix[i][j]  
+	for i := 0; i < lineLength; i++ {
+		invertedMatrix[i] = make(map[int]int)
+		for j := 0; j < columnLength; j ++ {
+			invertedMatrix[i][j] = matrix[j][i]  
 		}
 	}
 
@@ -105,7 +105,6 @@ func main() {
 	lineCount := 0
 
 	for scanner.Scan() {
-		lineCount++
 		i := scanner.Text()
 		ints := stringToIntArr(i)
 		matrix[lineCount] = make(map[int]int)
@@ -113,6 +112,7 @@ func main() {
 			currentInt := ints[j]
 			matrix[lineCount][j] = currentInt  
 		}
+		lineCount++
 	}
 
 	if len(matrix) == 0 {
@@ -128,8 +128,9 @@ func main() {
 		cO2[i] = findMostCommonNumber(invertedMatrix[i], false)
 	}
 
-	fmt.Println("test")
+	fmt.Println("regular")
 	fmt.Println(matrix)
+	fmt.Println("inverted")
 	fmt.Println(invertedMatrix)
 
 	// gammaIntArr, epsilonIntArr := calcGammaEpsilon(lineCount, diagByColumn)
