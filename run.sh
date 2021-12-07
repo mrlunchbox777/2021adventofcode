@@ -4,9 +4,10 @@ list_of_days=$(ls ./src)
 day_count=$(echo "$list_of_days" | wc -l)
 day_choice=$day_count
 day_override=$DAY_OVERRIDE
+part_override=$PART_OVERRIDE
 
 if [ -z "$day_override" ]; then
-	read -p "use latest?" use_latest
+	read -p "use latest day?" use_latest
 	if [[ "$use_latest" =~ ^[nN]$ ]]; then
 		read -p "which day, max $day_count?" day_choice
 	fi
@@ -20,12 +21,30 @@ if [[ "$day_choice" =~ ^[^0-9]*$ ]] || [ "$day_choice" -gt "$day_count" ] || [ "
 	exit 1
 fi
 
-echo "running day $day_choice"
+list_of_parts=$(ls "./src/day$day_choice" | grep run\-.*\.go)
+part_count=$(echo "$list_of_parts" | wc -l)
+part_choice=$part_count
+if [ -z "$part_override" ]; then
+	read -p "use latest part?" use_latest
+	if [[ "$use_latest" =~ ^[nN]$ ]]; then
+		read -p "which part, max $part_count?" part_choice
+	fi
+else
+	use_latest="n"
+	part_choice="$part_override"
+fi
+
+if [[ "$part_choice" =~ ^[^0-9]*$ ]] || [ "$part_choice" -gt "$part_count" ] || [ "$part_choice" -le "0" ]; then
+	echo "bad part choice.." >&2
+	exit 1
+fi
+
+echo "running day $day_choice, part $part_choice"
 old_dir=$(pwd)
 
 {
 	cd "./src/day$day_choice"
-	go build -o run.o run.go
+	go build -o run.o "run-part$part_choice.go"
 	./run.o
 	rm run.o
 } || {
