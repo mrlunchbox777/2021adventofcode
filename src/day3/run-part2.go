@@ -83,6 +83,7 @@ func main() {
 	defer file.Close()
 
 	matrix := make(map[int]map[int]int)
+	invertedMatrix := make(map[int]map[int]int)
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
 
@@ -94,6 +95,19 @@ func main() {
 		for j := 0; j < len(ints); j ++ {
 			currentInt := ints[j]
 			matrix[lineCount][j] = currentInt  
+		}
+	}
+
+	if len(matrix) == 0 {
+		panic("no values in the matrix")
+	}
+
+	lineLength := len(matrix[0])
+	for i := 0; i < len(matrix); i++ {
+		invertedMatrix[lineLength] = make(map[int]int)
+		for j := 0; j < len(invertedMatrix); j ++ {
+			currentInt := matrix[i][j]
+			invertedMatrix[j][i] = currentInt  
 		}
 	}
 
