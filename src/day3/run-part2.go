@@ -58,6 +58,22 @@ func findMostCommonNumber(numbers map[int]int, keepMostCommon bool) int {
 	return mostCommonNumber
 }
 
+func invertMatrix(matrix map[int]map[int]int) {
+	if len(matrix) == 0 {
+		panic("no values in the matrix")
+	}
+
+	columnLength := len(matrix)
+	lineLength := len(matrix[0])
+	invertedMatrix := make(map[int]map[int]int)
+	for i := 0; i < columnLength; i++ {
+		invertedMatrix[lineLength] = make(map[int]int)
+		for j := 0; j < lineLength; j ++ {
+			invertedMatrix[j][i] = matrix[i][j]  
+		}
+	}
+}
+
 func reverse(numbers map[int]int) map[int]int {
 	for i := 0; i < len(numbers)/2; i++ {
 		j := len(numbers) - i - 1
@@ -83,7 +99,6 @@ func main() {
 	defer file.Close()
 
 	matrix := make(map[int]map[int]int)
-	invertedMatrix := make(map[int]map[int]int)
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
 
@@ -102,13 +117,13 @@ func main() {
 		panic("no values in the matrix")
 	}
 
-	lineLength := len(matrix[0])
-	for i := 0; i < len(matrix); i++ {
-		invertedMatrix[lineLength] = make(map[int]int)
-		for j := 0; j < len(invertedMatrix); j ++ {
-			currentInt := matrix[i][j]
-			invertedMatrix[j][i] = currentInt  
-		}
+	invertedMatrix := invertMatrix(matrix)
+
+	oxygen := make(map[int]int)
+	cO2 := make(map[int]int)
+	for i := 0; i < len(invertedMatrix); i++ {
+		oxygen[i] = findMostCommonNumber(invertedMatrix, true)
+		carbon[i] = findMostCommonNumber(invertedMatrix, false)
 	}
 
 	fmt.Println("test")
