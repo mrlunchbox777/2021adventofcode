@@ -58,7 +58,7 @@ func findMostCommonNumber(numbers map[int]int, keepMostCommon bool) int {
 	return mostCommonNumber
 }
 
-func invertMatrix(matrix map[int]map[int]int) {
+func invertMatrix(matrix map[int]map[int]int) map[int]map[int]int {
 	if len(matrix) == 0 {
 		panic("no values in the matrix")
 	}
@@ -72,6 +72,8 @@ func invertMatrix(matrix map[int]map[int]int) {
 			invertedMatrix[j][i] = matrix[i][j]  
 		}
 	}
+
+	return invertedMatrix
 }
 
 func reverse(numbers map[int]int) map[int]int {
@@ -122,11 +124,13 @@ func main() {
 	oxygen := make(map[int]int)
 	cO2 := make(map[int]int)
 	for i := 0; i < len(invertedMatrix); i++ {
-		oxygen[i] = findMostCommonNumber(invertedMatrix, true)
-		carbon[i] = findMostCommonNumber(invertedMatrix, false)
+		oxygen[i] = findMostCommonNumber(invertedMatrix[i], true)
+		cO2[i] = findMostCommonNumber(invertedMatrix[i], false)
 	}
 
 	fmt.Println("test")
+	fmt.Println(matrix)
+	fmt.Println(invertedMatrix)
 
 	// gammaIntArr, epsilonIntArr := calcGammaEpsilon(lineCount, diagByColumn)
 	// fmt.Println("gammaIntArr -", gammaIntArr, ", epsilonIntArr", epsilonIntArr)
