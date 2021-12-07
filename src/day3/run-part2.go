@@ -8,6 +8,9 @@ import (
 	"math"
 )
 
+const MaxUint = ^uint(0) 
+const MaxInt = int(MaxUint >> 1) 
+
 func stringToIntArr(str string) ([]int) {
 	chars := []rune(str)
 	ints := []int{}
@@ -24,23 +27,35 @@ func stringToIntArr(str string) ([]int) {
 	return ints
 }
 
-func calcGammaEpsilon(lineCount int, diagByColumn map[int]int) (map[int]int, map[int]int) {
-	halfLineCount := lineCount / 2
-	gamma := make(map[int]int)
-	epsilon := make(map[int]int)
+func findMostCommonNumber(numbers map[int]int, keepMostCommon bool) int {
+	numberLen := len(numbers)
+	commonalityCounter := make(map[int]int)
+	largestCount := 0
+	mostCommonNumber := 0
 
-	for j, i := range diagByColumn {
-		fmt.Println("diag by column i -", i)
-		if i < halfLineCount {
-			gamma[j] = 0
-			epsilon[j] = 1
-		} else {
-			gamma[j] = 1
-			epsilon[j] = 0
-		}
+	for i := 0; i < numberLen; i++ {
+		commonalityCounter[numbers[i]]++
 	}
 
-	return gamma, epsilon
+	if keepMostCommon {
+		largestCount = 0
+	} else {
+		largestCount = MaxInt
+	}
+	for i := 1; i < len(commonalityCounter); i++ {
+		current := commonalityCounter[i]
+		if keepMostCommon && current > largestCount {
+			mostCommonNumber = i
+		} else if !keepMostCommon && current < largestCount {
+			mostCommonNumber = i
+		} else if current == largestCount {
+			if keepMostCommon {
+				mostCommonNumber = 1
+			}
+		}
+	}
+	
+	return mostCommonNumber
 }
 
 func reverse(numbers map[int]int) map[int]int {
@@ -81,10 +96,12 @@ func main() {
 		}
 	}
 
-	gammaIntArr, epsilonIntArr := calcGammaEpsilon(lineCount, diagByColumn)
-	fmt.Println("gammaIntArr -", gammaIntArr, ", epsilonIntArr", epsilonIntArr)
-	gamma := getDecimalFromBinary(gammaIntArr)
-	epsilon := getDecimalFromBinary(epsilonIntArr)
-	product := gamma * epsilon
-	fmt.Println("gamma -", gamma, "epsilon -", epsilon, "product - ", product)
+	fmt.Println("test")
+
+	// gammaIntArr, epsilonIntArr := calcGammaEpsilon(lineCount, diagByColumn)
+	// fmt.Println("gammaIntArr -", gammaIntArr, ", epsilonIntArr", epsilonIntArr)
+	// gamma := getDecimalFromBinary(gammaIntArr)
+	// epsilon := getDecimalFromBinary(epsilonIntArr)
+	// product := gamma * epsilon
+	// fmt.Println("gamma -", gamma, "epsilon -", epsilon, "product - ", product)
 }
