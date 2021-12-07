@@ -5,7 +5,7 @@ import (
 	"os"
 	"bufio"
 	"strconv"
-	// "strings"
+	"math"
 )
 
 func stringToIntArr(str string) ([]int) {
@@ -43,6 +43,14 @@ func calcGammaEpsilon(lineCount int, diagByColumn map[int]int) (map[int]int, map
 	return gamma, epsilon
 }
 
+func reverse(numbers []int) []int {
+	for i := 0; i < len(numbers)/2; i++ {
+		j := len(numbers) - i - 1
+		numbers[i], numbers[j] = numbers[j], numbers[i]
+	}
+	return numbers
+}
+
 func main() {
 	file, err := os.Open("./data/input")
 	if err != nil {
@@ -64,6 +72,13 @@ func main() {
 		}
 	}
 
-	gamma, epsilon := calcGammaEpsilon(lineCount, diagByColumn)
-	fmt.Println("gamma -", gamma, ", epsilon", epsilon)
+	gammaIntArr, epsilonIntArr := calcGammaEpsilon(lineCount, diagByColumn)
+	fmt.Println("gammaIntArr -", gammaIntArr, ", epsilonIntArr", epsilonIntArr)
+	gamma := 0
+	reverseGammaIntArr := reverse(gammaIntArr)
+	for i, j := range reverseGammaIntArr {
+		gamma += j * math.Pow(2, i)
+		fmt.Println("i -", i, "j -", j)
+	}
+	fmt.Println("gamma -", gamma)
 }
