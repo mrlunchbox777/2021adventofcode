@@ -112,11 +112,14 @@ func main() {
 		panic("no values in the matrix")
 	}
 
-	o2 := reduceDiagnosticMatrix(matrix, true, 0)
-	cO2 := reduceDiagnosticMatrix(matrix, false, 0)
+	o2Reduction := reduceDiagnosticMatrix(matrix, true, 0)
+	cO2Reduction := reduceDiagnosticMatrix(matrix, false, 0)
 
-	fmt.Println("o2")
-	fmt.Println(o2)
-	fmt.Println("cO2")
-	fmt.Println(cO2)
+	o2 := getDecimalFromBinary(o2Reduction[0])
+	cO2 := getDecimalFromBinary(cO2Reduction[0])
+	fmt.Println("o2 -", o2)
+	fmt.Println("cO2 -", cO2)
+
+	finalValue := o2 * cO2
+	fmt.Println("finalValue -", finalValue)
 }
