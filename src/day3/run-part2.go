@@ -29,7 +29,6 @@ func stringToIntArr(str string) ([]int) {
 
 func reduceDiagnosticMatrix(matrix map[int]map[int]int, keepMostCommon bool, targetColumn int) map[int]map[int]int {
 	rowCount := len(matrix)
-	fmt.Println("rowCount - ", rowCount)
 	if rowCount == 1 {
 		return matrix
 	}
@@ -56,7 +55,6 @@ func reduceDiagnosticMatrix(matrix map[int]map[int]int, keepMostCommon bool, tar
 			valueToKeep = 1
 		}
 	}
-	fmt.Println("value to keep -", valueToKeep)
 
 	for i := 0; i < rowCount; i++ {
 		if matrix[i][targetColumn] == valueToKeep {
@@ -67,9 +65,8 @@ func reduceDiagnosticMatrix(matrix map[int]map[int]int, keepMostCommon bool, tar
 			}
 		}
 	}
-	fmt.Println("new matrix -", newMatrix)
 
-	return reduceDiagnosticMatrix(matrix, keepMostCommon, (targetColumn + 1))
+	return reduceDiagnosticMatrix(newMatrix, keepMostCommon, (targetColumn + 1))
 }
 
 func reverse(numbers map[int]int) map[int]int {
