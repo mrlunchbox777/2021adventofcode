@@ -45,12 +45,14 @@ func findMostCommonNumber(numbers map[int]int, keepMostCommon bool) int {
 	for i := 1; i < len(commonalityCounter); i++ {
 		current := commonalityCounter[i]
 		if keepMostCommon && current > largestCount {
-			mostCommonNumber = i
+			mostCommonNumber = current
 		} else if !keepMostCommon && current < largestCount {
-			mostCommonNumber = i
+			mostCommonNumber = current
 		} else if current == largestCount {
 			if keepMostCommon {
 				mostCommonNumber = 1
+			} else {
+				mostCommonNumber = 0
 			}
 		}
 	}
@@ -94,7 +96,7 @@ func getDecimalFromBinary(numbers map[int]int) float64 {
 }
 
 func main() {
-	file, err := os.Open("./data/input")
+	file, err := os.Open("./data/input test")
 	if err != nil {
 		panic(err)
 	}
@@ -121,17 +123,17 @@ func main() {
 
 	invertedMatrix := invertMatrix(matrix)
 
-	oxygen := make(map[int]int)
+	o2 := make(map[int]int)
 	cO2 := make(map[int]int)
 	for i := 0; i < len(invertedMatrix); i++ {
-		oxygen[i] = findMostCommonNumber(invertedMatrix[i], true)
+		o2[i] = findMostCommonNumber(invertedMatrix[i], true)
 		cO2[i] = findMostCommonNumber(invertedMatrix[i], false)
 	}
 
-	fmt.Println("regular")
-	fmt.Println(matrix)
-	fmt.Println("inverted")
-	fmt.Println(invertedMatrix)
+	fmt.Println("o2")
+	fmt.Println(o2)
+	fmt.Println("cO2")
+	fmt.Println(cO2)
 
 	// gammaIntArr, epsilonIntArr := calcGammaEpsilon(lineCount, diagByColumn)
 	// fmt.Println("gammaIntArr -", gammaIntArr, ", epsilonIntArr", epsilonIntArr)
