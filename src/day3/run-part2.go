@@ -44,9 +44,9 @@ func findMostCommonNumber(numbers map[int]int, keepMostCommon bool) int {
 	}
 	for i := 1; i < len(commonalityCounter); i++ {
 		current := commonalityCounter[i]
-		if keepMostCommon && current > largestCount {
+		if (keepMostCommon) && (current > largestCount) {
 			mostCommonNumber = current
-		} else if !keepMostCommon && current < largestCount {
+		} else if (!keepMostCommon) && (current < largestCount) {
 			mostCommonNumber = current
 		} else if current == largestCount {
 			if keepMostCommon {
