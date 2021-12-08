@@ -27,55 +27,49 @@ func stringToIntArr(str string) ([]int) {
 	return ints
 }
 
-func findMostCommonNumber(numbers map[int]int, keepMostCommon bool) int {
-	numberLen := len(numbers)
-	commonalityCounter := make(map[int]int)
-	largestCount := 0
-	mostCommonNumber := 0
-
-	for i := 0; i < numberLen; i++ {
-		commonalityCounter[numbers[i]]++
+func reduceDiagnosticMatrix(matrix map[int]map[int]int, keepMostCommon bool, targetColumn int) map[int]map[int]int {
+	rowCount := len(matrix)
+	fmt.Println("rowCount - ", rowCount)
+	if rowCount == 1 {
+		return matrix
 	}
 
-	if keepMostCommon {
-		largestCount = 0
+	halfRowCount := rowCount / 2
+	newMatrix := make(map[int]map[int]int)
+	commonalityCounter := 0
+	valueToKeep := 0
+
+	for i := 0; i < rowCount; i++ {
+		commonalityCounter += matrix[i][targetColumn]
+	}
+
+	if commonalityCounter >= halfRowCount {
+		if keepMostCommon {
+			valueToKeep = 1
+		} else {
+			valueToKeep = 0
+		}
 	} else {
-		largestCount = MaxInt
+		if keepMostCommon {
+			valueToKeep = 0
+		} else {
+			valueToKeep = 1
+		}
 	}
-	for i := 1; i < len(commonalityCounter); i++ {
-		current := commonalityCounter[i]
-		if (keepMostCommon) && (current > largestCount) {
-			mostCommonNumber = current
-		} else if (!keepMostCommon) && (current < largestCount) {
-			mostCommonNumber = current
-		} else if current == largestCount {
-			if keepMostCommon {
-				mostCommonNumber = 1
-			} else {
-				mostCommonNumber = 0
+	fmt.Println("value to keep -", valueToKeep)
+
+	for i := 0; i < rowCount; i++ {
+		if matrix[i][targetColumn] == valueToKeep {
+			newMatrixRow := len(newMatrix)
+			newMatrix[newMatrixRow] = make(map[int]int)
+			for j := 0; j < len(matrix[i]); j++ {
+				newMatrix[newMatrixRow][j] = matrix[i][j]
 			}
 		}
 	}
-	
-	return mostCommonNumber
-}
+	fmt.Println("new matrix -", newMatrix)
 
-func invertMatrix(matrix map[int]map[int]int) map[int]map[int]int {
-	if len(matrix) == 0 {
-		panic("no values in the matrix")
-	}
-
-	columnLength := len(matrix)
-	lineLength := len(matrix[0])
-	invertedMatrix := make(map[int]map[int]int)
-	for i := 0; i < lineLength; i++ {
-		invertedMatrix[i] = make(map[int]int)
-		for j := 0; j < columnLength; j ++ {
-			invertedMatrix[i][j] = matrix[j][i]  
-		}
-	}
-
-	return invertedMatrix
+	return reduceDiagnosticMatrix(matrix, keepMostCommon, (targetColumn + 1))
 }
 
 func reverse(numbers map[int]int) map[int]int {
@@ -112,7 +106,7 @@ func main() {
 		matrix[lineCount] = make(map[int]int)
 		for j := 0; j < len(ints); j ++ {
 			currentInt := ints[j]
-			matrix[lineCount][j] = currentInt  
+			matrix[lineCount][j] = currentInt
 		}
 		lineCount++
 	}
@@ -121,24 +115,11 @@ func main() {
 		panic("no values in the matrix")
 	}
 
-	invertedMatrix := invertMatrix(matrix)
-
-	o2 := make(map[int]int)
-	cO2 := make(map[int]int)
-	for i := 0; i < len(invertedMatrix); i++ {
-		o2[i] = findMostCommonNumber(invertedMatrix[i], true)
-		cO2[i] = findMostCommonNumber(invertedMatrix[i], false)
-	}
+	o2 := reduceDiagnosticMatrix(matrix, true, 0)
+	cO2 := reduceDiagnosticMatrix(matrix, false, 0)
 
 	fmt.Println("o2")
 	fmt.Println(o2)
 	fmt.Println("cO2")
 	fmt.Println(cO2)
-
-	// gammaIntArr, epsilonIntArr := calcGammaEpsilon(lineCount, diagByColumn)
-	// fmt.Println("gammaIntArr -", gammaIntArr, ", epsilonIntArr", epsilonIntArr)
-	// gamma := getDecimalFromBinary(gammaIntArr)
-	// epsilon := getDecimalFromBinary(epsilonIntArr)
-	// product := gamma * epsilon
-	// fmt.Println("gamma -", gamma, "epsilon -", epsilon, "product - ", product)
 }
