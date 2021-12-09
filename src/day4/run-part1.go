@@ -56,7 +56,6 @@ func getWinningNumbers(input string) (map[int]int, error) {
 			panic(err)
 		}
 	}
-	fmt.Println("winning Numbers -", winningNumbers)
 	return winningNumbers, err
 }
 
@@ -79,7 +78,6 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-			fmt.Println(winningNumbers)
 		} else{
 			if i != "" {
 				ints := stringToIntArr(i)
