@@ -46,6 +46,20 @@ type BingoBoard struct {
 	lines map[int]int
 }
 
+func getWinningNumbers(input string) (map[int]int, error) {
+	winningNumbers := make(map[int]int)
+	winningNumbersStringArr := strings.Split(input, ",")
+	err := error(nil)
+	for i := 0; i < len(winningNumbersStringArr); i++ {
+		winningNumbers[i], err = strconv.Atoi(winningNumbersStringArr[i])
+		if err != nil {
+			panic(err)
+		}
+	}
+	fmt.Println("winning Numbers -", winningNumbers)
+	return winningNumbers, err
+}
+
 func main() {
 	file, err := os.Open("./data/input")
 	if err != nil {
@@ -55,23 +69,19 @@ func main() {
 
 	// bingoBoards := make(map[int]BingoBoard)
 	scanner := bufio.NewScanner(file)
-	winningNumbers := make(map[int]int)
 	lineCount := 0
 
 	for scanner.Scan() {
 		lineCount++
-		i := scanner.Text()
+		i := strings.TrimSpace(scanner.Text())
 		if (lineCount == 1) {
-			winningNumbersStringArr := strings.Split(i, ",")
-			for j := 0; j < len(winningNumbersStringArr); j++ {
-				winningNumbers[j], err = strconv.Atoi(winningNumbersStringArr[j])
-				if err != nil {
-					panic(err)
-				}
+			winningNumbers, err := getWinningNumbers(i)
+			if err != nil {
+				panic(err)
 			}
-			fmt.Println("winning Numbers -", winningNumbers)
+			fmt.Println(winningNumbers)
 		} else{
-			if (i != "") {
+			if i != "" {
 				ints := stringToIntArr(i)
 				for j := 0; j < len(ints); j ++ {
 					currentInt := ints[j]
