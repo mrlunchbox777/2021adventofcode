@@ -50,28 +50,32 @@ func main() {
 	}
 	defer file.Close()
 
-	var bingoBoards []BingoBoard
+	// var bingoBoards []BingoBoard
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
 
 	for scanner.Scan() {
 		lineCount++
 		i := strings.TrimSpace(scanner.Text())
+		if i == "" || i == nil {
+			fmt.Println("emptyString")
+			continue
+		}
 		if (lineCount == 1) {
 			winningNumbers, err := getWinningNumbers(i)
 			if err != nil {
 				panic(err)
 			}
+			fmt.Println("winningNumbers -", winningNumbers)
 		} else{
-			if i != "" {
-				ints := stringToIntArr(i)
-				for j := 0; j < len(ints); j ++ {
-					currentInt := ints[j]
-					fmt.Println(currentInt);
-					// diagByColumn[j] += currentInt  
+			intsStrings := strings.Split(i, " ")
+			// bingoBoardsCount := len(bingoBoards)
+			for j := 0; j < len(intsStrings); j ++ {
+				currentInt, err := strconv.Atoi(intsStrings[j])
+				if err != nil {
+					panic(err)
 				}
-			} else {
-				fmt.Println("emptyString")
+				fmt.Println(currentInt);
 			}
 		}
 	}
