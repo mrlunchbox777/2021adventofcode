@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"math"
+	// "math"
 	"os"
 	"strconv"
 	"strings"
@@ -25,29 +25,13 @@ func stringToIntArr(str string) ([]int) {
 	return ints
 }
 
-func reverse(numbers map[int]int) map[int]int {
-	for i := 0; i < len(numbers)/2; i++ {
-		j := len(numbers) - i - 1
-		numbers[i], numbers[j] = numbers[j], numbers[i]
-	}
-	return numbers
-}
-
-func getDecimalFromBinary(numbers map[int]int) float64 {
-	retVal := float64(0)
-	reverseNumbers := reverse(numbers)
-	for i, j := range reverseNumbers {
-		retVal += float64(j) * math.Pow(float64(2), float64(i))
-	}
-	return retVal
-}
-
 type BingoBoard struct {
-	lines map[int]int
+	sourceLines []int
+	answerLines []int
 }
 
-func getWinningNumbers(input string) (map[int]int, error) {
-	winningNumbers := make(map[int]int)
+func getWinningNumbers(input string) ([]int, error) {
+	var winningNumbers []int
 	winningNumbersStringArr := strings.Split(input, ",")
 	err := error(nil)
 	for i := 0; i < len(winningNumbersStringArr); i++ {
@@ -66,7 +50,7 @@ func main() {
 	}
 	defer file.Close()
 
-	// bingoBoards := make(map[int]BingoBoard)
+	var bingoBoards []BingoBoard
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
 
