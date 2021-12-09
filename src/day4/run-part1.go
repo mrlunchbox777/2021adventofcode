@@ -5,6 +5,7 @@ import (
 	"os"
 	"bufio"
 	"strconv"
+	"strings"
 	"math"
 )
 
@@ -52,20 +53,34 @@ func main() {
 	}
 	defer file.Close()
 
-	bingoBoards := make(map[int]BingoBoard)
+	// bingoBoards := make(map[int]BingoBoard)
 	scanner := bufio.NewScanner(file)
+	winningNumbers := make(map[int]int)
 	lineCount := 0
 
 	for scanner.Scan() {
 		lineCount++
-		if (lineCount == 1) {
-			f
-		}
 		i := scanner.Text()
-		ints := stringToIntArr(i)
-		for j := 0; j < len(ints); j ++ {
-			currentInt := ints[j]
-			diagByColumn[j] += currentInt  
+		if (lineCount == 1) {
+			winningNumbersStringArr := strings.Split(i, ",")
+			for j := 0; j < len(winningNumbersStringArr); j++ {
+				winningNumbers[j], err = strconv.Atoi(winningNumbersStringArr[j])
+				if err != nil {
+					panic(err)
+				}
+			}
+			fmt.Println("winning Numbers -", winningNumbers)
+		} else{
+			if (i != "") {
+				ints := stringToIntArr(i)
+				for j := 0; j < len(ints); j ++ {
+					currentInt := ints[j]
+					fmt.Println(currentInt);
+					// diagByColumn[j] += currentInt  
+				}
+			} else {
+				fmt.Println("emptyString")
+			}
 		}
 	}
 
