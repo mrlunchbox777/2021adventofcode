@@ -30,7 +30,6 @@ func stringToIntArr(str string) ([]int) {
 func reduceDiagnosticMatrix(matrix map[int]map[int]int, keepMostCommon bool, targetColumn int) map[int]map[int]int {
 	rowCount := len(matrix)
 	if rowCount == 1 {
-		fmt.Println("targetColumn -", targetColumn, "keepMostCommon -", keepMostCommon, "valueToKeep -", matrix[0][targetColumn])
 		return matrix
 	}
 
@@ -43,13 +42,7 @@ func reduceDiagnosticMatrix(matrix map[int]map[int]int, keepMostCommon bool, tar
 		commonalityCounter += matrix[i][targetColumn]
 	}
 
-	if commonalityCounter == halfRowCount {
-		if keepMostCommon {
-			valueToKeep = 1
-		} else {
-			valueToKeep = 0
-		}
-	} else if commonalityCounter > halfRowCount {
+	if commonalityCounter >= halfRowCount {
 		if keepMostCommon {
 			valueToKeep = 1
 		} else {
@@ -72,7 +65,6 @@ func reduceDiagnosticMatrix(matrix map[int]map[int]int, keepMostCommon bool, tar
 			}
 		}
 	}
-	fmt.Println("targetColumn -", targetColumn, "keepMostCommon -", keepMostCommon, "valueToKeep -", valueToKeep)
 
 	return reduceDiagnosticMatrix(newMatrix, keepMostCommon, (targetColumn + 1))
 }
@@ -120,20 +112,10 @@ func main() {
 		panic("no values in the matrix")
 	}
 
-	fmt.Println("----------------------------------")
-	fmt.Println("o2")
 	o2Reduction := reduceDiagnosticMatrix(matrix, true, 0)
-	fmt.Println("o2 -", o2Reduction[0])
-	fmt.Println("----------------------------------")
-	fmt.Println("cO2")
 	cO2Reduction := reduceDiagnosticMatrix(matrix, false, 0)
-	fmt.Println("cO2 -", cO2Reduction[0])
-
 	o2 := getDecimalFromBinary(o2Reduction[0])
 	cO2 := getDecimalFromBinary(cO2Reduction[0])
-	fmt.Println("o2 -", o2)
-	fmt.Println("cO2 -", cO2)
-
 	finalValue := o2 * cO2
 	fmt.Printf("finalValue - %f\n", finalValue)
 }

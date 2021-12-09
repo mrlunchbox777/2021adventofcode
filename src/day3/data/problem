@@ -1,15 +1,14 @@
-
 Advent of Code
 
     [About][Events][Shop][Settings][Log Out]
 
-Andrew 5*
-        //2021
+Andrew 6*
+          2021
 
     [Calendar][AoC++][Sponsors][Leaderboard][Stats]
 
 Our sponsors help make Advent of Code possible:
-Formlabs - digital fabrication so anyone can make anything
+JetBrains - Get ready to jingle with Advent of Code in Kotlin! Have fun, learn new things, and win prizes. Believe in magic with Kotlin. Happy holidays! https://jb.gg/AoC
 --- Day 3: Binary Diagnostic ---
 
 The submarine has been making some odd creaking noises, so you ask it to produce a diagnostic report just in case.
@@ -46,8 +45,6 @@ The epsilon rate is calculated in a similar way; rather than use the most common
 Use the binary numbers in your diagnostic report to calculate the gamma rate and epsilon rate, then multiply them together. What is the power consumption of the submarine? (Be sure to represent your answer in decimal, not binary.)
 
 Your puzzle answer was 4160394.
-
-The first half of this puzzle is complete! It provides one gold star: *
 --- Part Two ---
 
 Next, you should verify the life support rating, which can be determined by multiplying the oxygen generator rating by the CO2 scrubber rating.
@@ -83,8 +80,12 @@ Finally, to find the life support rating, multiply the oxygen generator rating (
 
 Use the binary numbers in your diagnostic report to calculate the oxygen generator rating and CO2 scrubber rating, then multiply them together. What is the life support rating of the submarine? (Be sure to represent your answer in decimal, not binary.)
 
-Answer:
+Your puzzle answer was 4125600.
 
-Although it hasn't changed, you can still get your puzzle input.
+Both parts of this puzzle are complete! They provide two gold stars: **
+
+At this point, you should return to your Advent calendar and try another puzzle.
+
+If you still want to see it, you can get your puzzle input.
 
 You can also [Shareon Twitter Mastodon] this puzzle.
