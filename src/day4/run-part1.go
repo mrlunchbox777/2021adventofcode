@@ -36,10 +36,8 @@ func getWinningNumbers(input string) ([]int, error) {
 	fmt.Println("winningNumbersStringArr -", winningNumbersStringArr)
 	err := error(nil)
 	for i := 0; i < len(winningNumbersStringArr); i++ {
-		fmt.Println("i -", i)
 		currentInt, err := strconv.Atoi(winningNumbersStringArr[i])
 		if err != nil {
-			fmt.Println("-->", err, "<--")
 			panic(err)
 		}
 		winningNumbers = append(winningNumbers, currentInt)
@@ -75,6 +73,10 @@ func main() {
 			intsStrings := strings.Split(i, " ")
 			// bingoBoardsCount := len(bingoBoards)
 			for j := 0; j < len(intsStrings); j ++ {
+				if intsStrings[j] == "" {
+					fmt.Println("emptyString")
+					continue
+				}
 				currentInt, err := strconv.Atoi(intsStrings[j])
 				if err != nil {
 					panic(err)
