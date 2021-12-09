@@ -34,7 +34,7 @@ func reduceDiagnosticMatrix(matrix map[int]map[int]int, keepMostCommon bool, tar
 		return matrix
 	}
 
-	halfRowCount := rowCount / 2
+	halfRowCount := int(math.Round(float64(rowCount) / 2.0))
 	newMatrix := make(map[int]map[int]int)
 	commonalityCounter := 0
 	valueToKeep := 0
@@ -43,7 +43,13 @@ func reduceDiagnosticMatrix(matrix map[int]map[int]int, keepMostCommon bool, tar
 		commonalityCounter += matrix[i][targetColumn]
 	}
 
-	if commonalityCounter >= halfRowCount {
+	if commonalityCounter == halfRowCount {
+		if keepMostCommon {
+			valueToKeep = 1
+		} else {
+			valueToKeep = 0
+		}
+	} else if commonalityCounter > halfRowCount {
 		if keepMostCommon {
 			valueToKeep = 1
 		} else {
@@ -129,5 +135,5 @@ func main() {
 	fmt.Println("cO2 -", cO2)
 
 	finalValue := o2 * cO2
-	fmt.Println("finalValue -", finalValue)
+	fmt.Printf("finalValue - %f\n", finalValue)
 }
