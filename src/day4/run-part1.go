@@ -33,12 +33,16 @@ type BingoBoard struct {
 func getWinningNumbers(input string) ([]int, error) {
 	var winningNumbers []int
 	winningNumbersStringArr := strings.Split(input, ",")
+	fmt.Println("winningNumbersStringArr -", winningNumbersStringArr)
 	err := error(nil)
 	for i := 0; i < len(winningNumbersStringArr); i++ {
-		winningNumbers[i], err = strconv.Atoi(winningNumbersStringArr[i])
+		fmt.Println("i -", i)
+		currentInt, err := strconv.Atoi(winningNumbersStringArr[i])
 		if err != nil {
+			fmt.Println("-->", err, "<--")
 			panic(err)
 		}
+		winningNumbers = append(winningNumbers, currentInt)
 	}
 	return winningNumbers, err
 }
@@ -57,7 +61,7 @@ func main() {
 	for scanner.Scan() {
 		lineCount++
 		i := strings.TrimSpace(scanner.Text())
-		if i == "" || i == nil {
+		if i == "" {
 			fmt.Println("emptyString")
 			continue
 		}
