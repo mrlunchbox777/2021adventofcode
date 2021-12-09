@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"bufio"
+	"fmt"
+	"math"
+	"os"
 	"strconv"
 	"strings"
-	"math"
 )
 
 func stringToIntArr(str string) ([]int) {

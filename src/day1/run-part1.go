@@ -1,13 +1,13 @@
 package main
 
 import (
-	"math/rand"
-	"time"
-	"fmt"
-	"os"
-	"log"
 	"bufio"
+	"fmt"
+	"log"
+	"math/rand"
+	"os"
 	"strconv"
+	"time"
 )
 
 func getNextDepth(a int, b int, input int) (int, int, int) {

@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"bufio"
-	"strconv"
+	"fmt"
 	"math"
+	"os"
+	"strconv"
 )
 
 const MaxUint = ^uint(0) 
