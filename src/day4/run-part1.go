@@ -26,8 +26,8 @@ func stringToIntArr(str string) ([]int) {
 }
 
 type BingoBoard struct {
-	sourceLines [][]int
-	answerLines [][]int
+	boardLines [5][5]int
+	answerLines [5][5]int
 }
 
 func getWinningNumbers(input string) ([]int, error) {
@@ -51,7 +51,7 @@ func main() {
 	}
 	defer file.Close()
 
-	var bingoBoards []BingoBoard
+	bingoBoards := make(map[int]BingoBoard)
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
 	currentBingoBoard := 0
@@ -72,6 +72,7 @@ func main() {
 			fmt.Println("winningNumbers - ", winningNumbers)
 		} else {
 			intsStrings := strings.Split(i, " ")
+			currentBingoBoardStruct := BingoBoard{}
 			for j := 0; j < len(intsStrings); j ++ {
 				currentString := strings.TrimSpace(intsStrings[j])
 				if currentString == ""{
@@ -81,24 +82,33 @@ func main() {
 				if err != nil {
 					panic(err)
 				}
+				fmt.Println("")
+				fmt.Println("------------------------------------------------------")
+				fmt.Println("next item")
+				fmt.Println("currentBingoBoard -", currentBingoBoard, "currentBingoBoardRow -", currentBingoBoardRow, "currentBingoBoardColumn -", currentBingoBoardColumn)
 				if currentBingoBoardColumn == 5 {
 					currentBingoBoardRow++
 					currentBingoBoardColumn = 0
 				}
 				if currentBingoBoardRow == 5 {
+					bingoBoards[currentBingoBoard] = currentBingoBoardStruct
+					currentBingoBoardStruct = BingoBoard {}
 					currentBingoBoard++
 					currentBingoBoardRow = 0
 				}
-				bingoBoards[currentBingoBoard].sourceLines[currentBingoBoardRow][currentBingoBoardColumn] = currentInt
+				fmt.Println("currentBingoBoard -", currentBingoBoard, "currentBingoBoardRow -", currentBingoBoardRow, "currentBingoBoardColumn -", currentBingoBoardColumn)
+				fmt.Println("------------------------------------------------------")
+				currentBingoBoardStruct.boardLines[currentBingoBoardRow][currentBingoBoardColumn] = currentInt
+				currentBingoBoardColumn++
 			}
 		}
 
 		for i := 0; i < len(bingoBoards); i++ {
 			fmt.Println("Bingo Board - ", i)
-			for j := 0; j < len(bingoBoards[i].sourceLines); j++ {
+			for j := 0; j < len(bingoBoards[i].boardLines); j++ {
 				lineValue := ""
-				for k := 0; k < len(bingoBoards[i].sourceLines[j]); k++ {
-					lineValue += strconv.Itoa(bingoBoards[i].sourceLines[j][k])
+				for k := 0; k < len(bingoBoards[i].boardLines[j]); k++ {
+					lineValue += strconv.Itoa(bingoBoards[i].boardLines[j][k])
 				}
 				fmt.Println(lineValue)
 			}
