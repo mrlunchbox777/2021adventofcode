@@ -33,7 +33,6 @@ type BingoBoard struct {
 func getWinningNumbers(input string) ([]int, error) {
 	var winningNumbers []int
 	winningNumbersStringArr := strings.Split(input, ",")
-	fmt.Println("winningNumbersStringArr -", winningNumbersStringArr)
 	err := error(nil)
 	for i := 0; i < len(winningNumbersStringArr); i++ {
 		currentInt, err := strconv.Atoi(winningNumbersStringArr[i])
