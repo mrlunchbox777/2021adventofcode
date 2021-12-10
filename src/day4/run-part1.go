@@ -105,17 +105,19 @@ func main() {
 			}
 		}
 
-		// for i := 0; i < len(bingoBoards); i++ {
-		// 	fmt.Println("Bingo Board - ", i)
-		// 	for j := 0; j < len(bingoBoards[i].boardLines); j++ {
-		// 		lineValue := ""
-		// 		for k := 0; k < len(bingoBoards[i].boardLines[j]); k++ {
-		// 			lineValue += strconv.Itoa(bingoBoards[i].boardLines[j][k])
-		// 		}
-		// 		fmt.Println(lineValue)
-		// 	}
-		// 	fmt.Println("")
-		// }
+		for i := 0; i < len(bingoBoards); i++ {
+			fmt.Println("Bingo Board - ", i)
+			for j := 0; j < len(bingoBoards[i].boardLines); j++ {
+				var lineValue strings.Builder
+				for k := 0; k < len(bingoBoards[i].boardLines[j]); k++ {
+					nextValue := strconv.Itoa(bingoBoards[i].boardLines[j][k])
+					// fmt.Println("val -", nextValue, "raw -", bingoBoards[i].boardLines[j][k])
+					lineValue.WriteString(nextValue)
+				}
+				fmt.Println(lineValue.String())
+			}
+			fmt.Println("")
+		}
 	}
 }
 
