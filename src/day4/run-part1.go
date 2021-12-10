@@ -18,10 +18,10 @@ type BingoBoard struct {
 	answerLines []BingoBoardLine
 }
 
-func getBingoBoardLine(intsStrings []string) ([]int) {
-	boardLine := []int
-	for j := 0; j < len(intsStrings); j ++ {
-		currentString := strings.TrimSpace(intsStrings[j])
+func getBingoBoardLine(valueStrings []string) (BingoBoardLine) {
+	var boardLine []int
+	for i := 0; i < len(valueStrings); i++ {
+		currentString := strings.TrimSpace(valueStrings[i])
 		if currentString == ""{
 			continue
 		}
@@ -34,9 +34,22 @@ func getBingoBoardLine(intsStrings []string) ([]int) {
 	return BingoBoardLine{ values: boardLine }
 }
 
-getBingoBoard()
+func getBingoBoard(lineStrings []string) (BingoBoard) {
+	var boardLines []BingoBoardLine
+	for i := 0; i < len(lineStrings); i++ {
+		currentString := strings.TrimSpace(lineStrings[i])
+		if currentString == ""{
+			continue
+		}
+		valueStrings := strings.Split(currentString, " ")
+		currentBoardLine := getBingoBoardLine(valueStrings)
+		boardLines = append(boardLines, currentBoardLine)
+	}
+	return BingoBoard{ boardLines: boardLines }
+}
 
-func getBingoBoard() 
+// func getBingoBoards(strings []string) ([]BingoBoard) {
+// }
 
 func comments() {
 		// fmt.Println("")
@@ -157,29 +170,21 @@ func main() {
 	}
 	defer file.Close()
 
-	bingoBoards := make(map[int]BingoBoard)
+	// var bingoBoards []BingoBoard
 	scanner := bufio.NewScanner(file)
-	lineCount := 0
-	currentBingoBoard := 0
-	currentBingoBoardRow := 0
-	currentBingoBoardColumn := 0
+	gotWinningNumbers := false
 
 	for scanner.Scan() {
-		lineCount++
 		i := strings.TrimSpace(scanner.Text())
-		if i == "" {
-			continue
-		}
-		if (lineCount == 1) {
+		if (!gotWinningNumbers) {
 			winningNumbers, err := getWinningNumbers(i)
 			if err != nil {
 				panic(err)
 			}
+			gotWinningNumbers = true
 			fmt.Println("winningNumbers - ", winningNumbers)
 		} else {
-			intsStrings := strings.Split(i, " ")
-			tempBoard := make(map[int]map[int]int)
-			tempBoard[0] = make(map[int]int)
+			// bingoBoards = getBingoBoards()
 		}
 
 	// 	for i := 0; i < len(bingoBoards); i++ {
