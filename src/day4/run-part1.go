@@ -26,8 +26,8 @@ func stringToIntArr(str string) ([]int) {
 }
 
 type BingoBoard struct {
-	sourceLines []int
-	answerLines []int
+	sourceLines [][]int
+	answerLines [][]int
 }
 
 func getWinningNumbers(input string) ([]int, error) {
@@ -54,6 +54,9 @@ func main() {
 	var bingoBoards []BingoBoard
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
+	currentBingoBoard := 0
+	currentBingoBoardRow := 0
+	currentBingoBoardColumn := 0
 
 	for scanner.Scan() {
 		lineCount++
@@ -66,9 +69,9 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-		} else{
+			fmt.Println("winningNumbers - ", winningNumbers)
+		} else {
 			intsStrings := strings.Split(i, " ")
-			bingoBoardsCount := len(bingoBoards)
 			for j := 0; j < len(intsStrings); j ++ {
 				currentString := strings.TrimSpace(intsStrings[j])
 				if currentString == ""{
@@ -78,8 +81,28 @@ func main() {
 				if err != nil {
 					panic(err)
 				}
-				fmt.Println(currentInt);
+				if currentBingoBoardColumn == 5 {
+					currentBingoBoardRow++
+					currentBingoBoardColumn = 0
+				}
+				if currentBingoBoardRow == 5 {
+					currentBingoBoard++
+					currentBingoBoardRow = 0
+				}
+				bingoBoards[currentBingoBoard].sourceLines[currentBingoBoardRow][currentBingoBoardColumn] = currentInt
 			}
+		}
+
+		for i := 0; i < len(bingoBoards); i++ {
+			fmt.Println("Bingo Board - ", i)
+			for j := 0; j < len(bingoBoards[i].sourceLines); j++ {
+				lineValue := ""
+				for k := 0; k < len(bingoBoards[i].sourceLines[j]); k++ {
+					lineValue += strconv.Itoa(bingoBoards[i].sourceLines[j][k])
+				}
+				fmt.Println(lineValue)
+			}
+			fmt.Println("")
 		}
 	}
 
