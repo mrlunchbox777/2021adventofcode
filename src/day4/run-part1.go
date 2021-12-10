@@ -48,6 +48,40 @@ func getBingoBoard(lineStrings []string) (BingoBoard) {
 	return BingoBoard{ boardLines: boardLines }
 }
 
+func getBingoBoards(scanner *bufio.Scanner) ([]int, []BingoBoard) {
+	gotWinningNumbers := false
+	boardStrings := []string{}
+	bingoBoards := []BingoBoard{}
+	var winningNumbers []int
+
+	for scanner.Scan() {
+		i := strings.TrimSpace(scanner.Text())
+		if (!gotWinningNumbers) {
+			tempWinningNumbers, err := getWinningNumbers(i)
+			winningNumbers = tempWinningNumbers
+			if err != nil {
+				panic(err)
+			}
+			gotWinningNumbers = true
+			fmt.Println("winningNumbers - ", winningNumbers)
+		} else {
+			if i == "" {
+				if len(boardStrings) > 0 {
+					bingoBoards = append(bingoBoards, getBingoBoard(boardStrings))
+					boardStrings = []string{}
+				}
+			} else {
+				boardStrings = append(boardStrings, i)
+			}
+		}
+	}
+	if len(boardStrings) > 0 {
+		bingoBoards = append(bingoBoards, getBingoBoard(boardStrings))
+	}
+
+	return winningNumbers, bingoBoards
+}
+
 func stringToIntArr(str string) ([]int) {
 	chars := []rune(str)
 	ints := []int{}
@@ -107,38 +141,11 @@ func main() {
 	}
 	defer file.Close()
 
-	var bingoBoards []BingoBoard
 	scanner := bufio.NewScanner(file)
-	gotWinningNumbers := false
-	boardStrings := []string{}
-	// numberOfResets := 0
-
-	for scanner.Scan() {
-		i := strings.TrimSpace(scanner.Text())
-		if (!gotWinningNumbers) {
-			winningNumbers, err := getWinningNumbers(i)
-			if err != nil {
-				panic(err)
-			}
-			gotWinningNumbers = true
-			fmt.Println("winningNumbers - ", winningNumbers)
-		} else {
-			if i == "" {
-				if len(boardStrings) > 0 {
-					// numberOfResets++
-					bingoBoards = append(bingoBoards, getBingoBoard(boardStrings))
-					boardStrings = []string{}
-				}
-			} else {
-				boardStrings = append(boardStrings, i)
-			}
-		}
-	}
-	if len(boardStrings) > 0 {
-		bingoBoards = append(bingoBoards, getBingoBoard(boardStrings))
-	}
+	winningNumbers, bingoBoards := getBingoBoards(scanner)
 
 	printAllBingoBoards(bingoBoards)
-	// fmt.Println("numberOfResets -", numberOfResets)
+	fmt.Println("winningNumbers - ", winningNumbers)
+
 }
 
