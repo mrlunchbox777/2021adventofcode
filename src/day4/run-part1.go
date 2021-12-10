@@ -9,6 +9,117 @@ import (
 	"strings"
 )
 
+type BingoBoardLine struct {
+	values []int
+}
+
+type BingoBoard struct {
+	boardLines []BingoBoardLine
+	answerLines []BingoBoardLine
+}
+
+func getBingoBoardLine(intsStrings []string) ([]int) {
+	boardLine := []int
+	for j := 0; j < len(intsStrings); j ++ {
+		currentString := strings.TrimSpace(intsStrings[j])
+		if currentString == ""{
+			continue
+		}
+		currentInt, err := strconv.Atoi(currentString)
+		if err != nil {
+			panic(err)
+		}
+		boardLine = append(boardLine, currentInt)
+	}
+	return BingoBoardLine{ values: boardLine }
+}
+
+getBingoBoard()
+
+func getBingoBoard() 
+
+func comments() {
+		// fmt.Println("")
+		// fmt.Println("------------------------------------------------------")
+		// if currentBingoBoardColumn == 5 {
+		// 	currentBingoBoardRow++
+		// 	tempBoard[currentBingoBoardRow] = make(map[int]int)
+		// 	currentBingoBoardColumn = 0
+		// }
+		// if currentBingoBoardRow == 5 {
+		// 	oldBingoBoardStruct := BingoBoard {
+		// 		boardLines: [5][5]int {
+		// 			{
+		// 				tempBoard[0][0],
+		// 				tempBoard[0][1],
+		// 				tempBoard[0][2],
+		// 				tempBoard[0][3],
+		// 				tempBoard[0][4],
+		// 			},
+		// 			{
+		// 				tempBoard[1][0],
+		// 				tempBoard[1][1],
+		// 				tempBoard[1][2],
+		// 				tempBoard[1][3],
+		// 				tempBoard[1][4],
+		// 			},
+		// 			{
+		// 				tempBoard[2][0],
+		// 				tempBoard[2][1],
+		// 				tempBoard[2][2],
+		// 				tempBoard[2][3],
+		// 				tempBoard[2][4],
+		// 			},
+		// 			{
+		// 				tempBoard[3][0],
+		// 				tempBoard[3][1],
+		// 				tempBoard[3][2],
+		// 				tempBoard[3][3],
+		// 				tempBoard[3][4],
+		// 			},
+		// 			{
+		// 				tempBoard[4][0],
+		// 				tempBoard[4][1],
+		// 				tempBoard[4][2],
+		// 				tempBoard[4][3],
+		// 				tempBoard[4][4],
+		// 			},
+		// 		},
+		// 	}
+		// 	bingoBoards[currentBingoBoard] = oldBingoBoardStruct
+		// 	fmt.Println("printing board struct")
+		// 	for j := 0; j < len(tempBoard); j++ {
+		// 		var lineValue strings.Builder
+		// 		for k := 0; k < len(tempBoard[j]); k++ {
+		// 			nextValue := strconv.Itoa(tempBoard[j][k])
+		// 			// fmt.Println("val -", nextValue, "raw -", oldBingoBoardStruct.boardLines[j][k])
+		// 			lineValue.WriteString(nextValue)
+		// 		}
+		// 		fmt.Println(lineValue.String())
+		// 	}
+
+		// 	// for j := 0; j < len(oldBingoBoardStruct.boardLines); j++ {
+		// 	// 	var lineValue strings.Builder
+		// 	// 	for k := 0; k < len(oldBingoBoardStruct.boardLines[j]); k++ {
+		// 	// 		nextValue := strconv.Itoa(oldBingoBoardStruct.boardLines[j][k])
+		// 			// 		// fmt.Println("val -", nextValue, "raw -", oldBingoBoardStruct.boardLines[j][k])
+		// 	// 		lineValue.WriteString(nextValue)
+		// 	// 	}
+		// 	// 	fmt.Println(lineValue.String())
+		// 	// }
+		// 	currentBingoBoard++
+		// 	currentBingoBoardRow = 0
+		// }
+		// fmt.Println("currentBingoBoard -", currentBingoBoard)
+		// fmt.Println("currentBingoBoardRow -", currentBingoBoardRow)
+		// fmt.Println("currentBingoBoardColumn -", currentBingoBoardColumn)
+		// fmt.Println("currentInt -", currentInt)
+		// tempBoard[currentBingoBoardRow][currentBingoBoardColumn] = currentInt
+		// fmt.Println("tempBoard[currentBingoBoardRow][currentBingoBoardColumn] -", tempBoard[currentBingoBoardRow][currentBingoBoardColumn])
+		// fmt.Println("------------------------------------------------------")
+		// currentBingoBoardColumn++
+}
+
 func stringToIntArr(str string) ([]int) {
 	chars := []rune(str)
 	ints := []int{}
@@ -23,11 +134,6 @@ func stringToIntArr(str string) ([]int) {
 	}
 
 	return ints
-}
-
-type BingoBoard struct {
-	boardLines [5][5]int
-	answerLines [5][5]int
 }
 
 func getWinningNumbers(input string) ([]int, error) {
@@ -74,95 +180,6 @@ func main() {
 			intsStrings := strings.Split(i, " ")
 			tempBoard := make(map[int]map[int]int)
 			tempBoard[0] = make(map[int]int)
-			for j := 0; j < len(intsStrings); j ++ {
-				currentString := strings.TrimSpace(intsStrings[j])
-				if currentString == ""{
-					continue
-				}
-				currentInt, err := strconv.Atoi(currentString)
-				if err != nil {
-					panic(err)
-				}
-				fmt.Println("")
-				fmt.Println("------------------------------------------------------")
-				if currentBingoBoardColumn == 5 {
-					currentBingoBoardRow++
-					tempBoard[currentBingoBoardRow] = make(map[int]int)
-					currentBingoBoardColumn = 0
-				}
-				if currentBingoBoardRow == 5 {
-					oldBingoBoardStruct := BingoBoard {
-						boardLines: [5][5]int {
-							{
-								tempBoard[0][0],
-								tempBoard[0][1],
-								tempBoard[0][2],
-								tempBoard[0][3],
-								tempBoard[0][4],
-							},
-							{
-								tempBoard[1][0],
-								tempBoard[1][1],
-								tempBoard[1][2],
-								tempBoard[1][3],
-								tempBoard[1][4],
-							},
-							{
-								tempBoard[2][0],
-								tempBoard[2][1],
-								tempBoard[2][2],
-								tempBoard[2][3],
-								tempBoard[2][4],
-							},
-							{
-								tempBoard[3][0],
-								tempBoard[3][1],
-								tempBoard[3][2],
-								tempBoard[3][3],
-								tempBoard[3][4],
-							},
-							{
-								tempBoard[4][0],
-								tempBoard[4][1],
-								tempBoard[4][2],
-								tempBoard[4][3],
-								tempBoard[4][4],
-							},
-						},
-					}
-					bingoBoards[currentBingoBoard] = oldBingoBoardStruct
-					fmt.Println("printing board struct")
-					for j := 0; j < len(tempBoard); j++ {
-						var lineValue strings.Builder
-						for k := 0; k < len(tempBoard[j]); k++ {
-							nextValue := strconv.Itoa(tempBoard[j][k])
-							// fmt.Println("val -", nextValue, "raw -", oldBingoBoardStruct.boardLines[j][k])
-							lineValue.WriteString(nextValue)
-						}
-						fmt.Println(lineValue.String())
-					}
-
-					// for j := 0; j < len(oldBingoBoardStruct.boardLines); j++ {
-					// 	var lineValue strings.Builder
-					// 	for k := 0; k < len(oldBingoBoardStruct.boardLines[j]); k++ {
-					// 		nextValue := strconv.Itoa(oldBingoBoardStruct.boardLines[j][k])
-					// 		// fmt.Println("val -", nextValue, "raw -", oldBingoBoardStruct.boardLines[j][k])
-					// 		lineValue.WriteString(nextValue)
-					// 	}
-					// 	fmt.Println(lineValue.String())
-					// }
-					currentBingoBoard++
-					currentBingoBoardRow = 0
-				}
-				fmt.Println("currentBingoBoard -", currentBingoBoard)
-				fmt.Println("currentBingoBoardRow -", currentBingoBoardRow)
-				fmt.Println("currentBingoBoardColumn -", currentBingoBoardColumn)
-				fmt.Println("currentInt -", currentInt)
-				tempBoard[currentBingoBoardRow][currentBingoBoardColumn] = currentInt
-				fmt.Println("tempBoard[currentBingoBoardRow][currentBingoBoardColumn] -", tempBoard[currentBingoBoardRow][currentBingoBoardColumn])
-				fmt.Println("------------------------------------------------------")
-				currentBingoBoardColumn++
-			}
 		}
 
 	// 	for i := 0; i < len(bingoBoards); i++ {
