@@ -21,6 +21,7 @@ type BingoBoard struct {
 func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 	var boardLine []int
 	var err error
+
 	for i := 0; i < len(valueStrings); i++ {
 		currentString := strings.TrimSpace(valueStrings[i])
 		if currentString == ""{
@@ -144,6 +145,7 @@ func getWinningNumbers(input string) ([]int, error) {
 	var winningNumbers []int
 	winningNumbersStringArr := strings.Split(input, ",")
 	err := error(nil)
+
 	for i := 0; i < len(winningNumbersStringArr); i++ {
 		currentInt, newErr := strconv.Atoi(winningNumbersStringArr[i])
 		if newErr != nil {
@@ -155,6 +157,7 @@ func getWinningNumbers(input string) ([]int, error) {
 		}
 		winningNumbers = append(winningNumbers, currentInt)
 	}
+
 	return winningNumbers, err
 }
 
@@ -195,6 +198,4 @@ func main() {
 
 	printAllBingoBoards(bingoBoards)
 	fmt.Println("winningNumbers - ", winningNumbers)
-
 }
-
