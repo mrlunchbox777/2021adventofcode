@@ -84,39 +84,38 @@ func main() {
 				}
 				fmt.Println("")
 				fmt.Println("------------------------------------------------------")
-				fmt.Println("next item")
-				fmt.Println("currentBingoBoard -", currentBingoBoard, "currentBingoBoardRow -", currentBingoBoardRow, "currentBingoBoardColumn -", currentBingoBoardColumn)
 				if currentBingoBoardColumn == 5 {
 					currentBingoBoardRow++
 					currentBingoBoardColumn = 0
 				}
 				if currentBingoBoardRow == 5 {
-					bingoBoards[currentBingoBoard] = currentBingoBoardStruct
+					oldBingoBoardStruct := currentBingoBoardStruct
+					bingoBoards[currentBingoBoard] = oldBingoBoardStruct
 					currentBingoBoardStruct = BingoBoard {}
 					currentBingoBoard++
 					currentBingoBoardRow = 0
 				}
-				fmt.Println("currentBingoBoard -", currentBingoBoard, "currentBingoBoardRow -", currentBingoBoardRow, "currentBingoBoardColumn -", currentBingoBoardColumn)
+				fmt.Println("currentBingoBoard -", currentBingoBoard)
+				fmt.Println("currentBingoBoardRow -", currentBingoBoardRow)
+				fmt.Println("currentBingoBoardColumn -", currentBingoBoardColumn)
+				fmt.Println("currentInt -", currentInt)
 				fmt.Println("------------------------------------------------------")
 				currentBingoBoardStruct.boardLines[currentBingoBoardRow][currentBingoBoardColumn] = currentInt
 				currentBingoBoardColumn++
 			}
 		}
 
-		for i := 0; i < len(bingoBoards); i++ {
-			fmt.Println("Bingo Board - ", i)
-			for j := 0; j < len(bingoBoards[i].boardLines); j++ {
-				lineValue := ""
-				for k := 0; k < len(bingoBoards[i].boardLines[j]); k++ {
-					lineValue += strconv.Itoa(bingoBoards[i].boardLines[j][k])
-				}
-				fmt.Println(lineValue)
-			}
-			fmt.Println("")
-		}
+		// for i := 0; i < len(bingoBoards); i++ {
+		// 	fmt.Println("Bingo Board - ", i)
+		// 	for j := 0; j < len(bingoBoards[i].boardLines); j++ {
+		// 		lineValue := ""
+		// 		for k := 0; k < len(bingoBoards[i].boardLines[j]); k++ {
+		// 			lineValue += strconv.Itoa(bingoBoards[i].boardLines[j][k])
+		// 		}
+		// 		fmt.Println(lineValue)
+		// 	}
+		// 	fmt.Println("")
+		// }
 	}
-
-	fmt.Println("starting")
-
 }
 
