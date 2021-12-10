@@ -30,10 +30,8 @@ func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 		if newErr != nil {
 			if (err != nil){
 				err = newErr
-				fmt.Println("7", err)
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
-				fmt.Println("8", err)
 			}
 		}
 		boardLine = append(boardLine, currentInt)
@@ -56,10 +54,8 @@ func getBingoBoard(lineStrings []string) (BingoBoard, error) {
 		if newErr != nil {
 			if (err != nil){
 				err = newErr
-				fmt.Println("9", err)
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
-				fmt.Println("10", err)
 			}
 		}
 		boardLines = append(boardLines, currentBoardLine)
@@ -83,10 +79,8 @@ func getBingoBoards(scanner *bufio.Scanner) ([]int, []BingoBoard, error) {
 			if newErr != nil {
 				if (err != nil){
 					err = newErr
-					fmt.Println("11", err)
 				} else {
 					err = fmt.Errorf("Combined error: %v %v", err, newErr)
-					fmt.Println("12", err)
 				}
 			}
 			gotWinningNumbers = true
@@ -98,10 +92,8 @@ func getBingoBoards(scanner *bufio.Scanner) ([]int, []BingoBoard, error) {
 					if newErr != nil {
 						if (err != nil){
 							err = newErr
-							fmt.Println("13", err)
 						} else {
 							err = fmt.Errorf("Combined error: %v %v", err, newErr)
-							fmt.Println("14", err)
 						}
 					}
 					bingoBoards = append(bingoBoards, newBoard)
@@ -117,10 +109,8 @@ func getBingoBoards(scanner *bufio.Scanner) ([]int, []BingoBoard, error) {
 		if newErr != nil {
 			if (err != nil){
 				err = newErr
-				fmt.Println("1", err)
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
-				fmt.Println("2", err)
 			}
 		}
 		bingoBoards = append(bingoBoards, newBoard)
@@ -140,10 +130,8 @@ func stringToIntArr(str string) ([]int, error) {
 		if newErr != nil {
 			if (err != nil){
 				err = newErr
-				fmt.Println("3", err)
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
-				fmt.Println("4", err)
 			}
 		}
 		ints = append(ints, currentInt)
@@ -161,10 +149,8 @@ func getWinningNumbers(input string) ([]int, error) {
 		if newErr != nil {
 			if (err != nil){
 				err = newErr
-				fmt.Println("5", err)
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
-				fmt.Println("6", err)
 			}
 		}
 		winningNumbers = append(winningNumbers, currentInt)
