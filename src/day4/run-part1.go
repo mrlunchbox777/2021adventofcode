@@ -51,7 +51,7 @@ func main() {
 	}
 	defer file.Close()
 
-	// var bingoBoards []BingoBoard
+	var bingoBoards []BingoBoard
 	scanner := bufio.NewScanner(file)
 	lineCount := 0
 
@@ -59,7 +59,6 @@ func main() {
 		lineCount++
 		i := strings.TrimSpace(scanner.Text())
 		if i == "" {
-			fmt.Println("emptyString")
 			continue
 		}
 		if (lineCount == 1) {
@@ -67,16 +66,15 @@ func main() {
 			if err != nil {
 				panic(err)
 			}
-			fmt.Println("winningNumbers -", winningNumbers)
 		} else{
 			intsStrings := strings.Split(i, " ")
-			// bingoBoardsCount := len(bingoBoards)
+			bingoBoardsCount := len(bingoBoards)
 			for j := 0; j < len(intsStrings); j ++ {
-				if intsStrings[j] == "" {
-					fmt.Println("emptyString")
+				currentString := strings.TrimSpace(intsStrings[j])
+				if currentString == ""{
 					continue
 				}
-				currentInt, err := strconv.Atoi(intsStrings[j])
+				currentInt, err := strconv.Atoi(currentString)
 				if err != nil {
 					panic(err)
 				}
