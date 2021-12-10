@@ -111,6 +111,7 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	gotWinningNumbers := false
 	boardStrings := []string{}
+	// numberOfResets := 0
 
 	for scanner.Scan() {
 		i := strings.TrimSpace(scanner.Text())
@@ -124,6 +125,7 @@ func main() {
 		} else {
 			if i == "" {
 				if len(boardStrings) > 0 {
+					// numberOfResets++
 					bingoBoards = append(bingoBoards, getBingoBoard(boardStrings))
 					boardStrings = []string{}
 				}
@@ -132,7 +134,11 @@ func main() {
 			}
 		}
 	}
+	if len(boardStrings) > 0 {
+		bingoBoards = append(bingoBoards, getBingoBoard(boardStrings))
+	}
 
 	printAllBingoBoards(bingoBoards)
+	// fmt.Println("numberOfResets -", numberOfResets)
 }
 
