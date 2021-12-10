@@ -78,6 +78,28 @@ func getWinningNumbers(input string) ([]int, error) {
 	return winningNumbers, err
 }
 
+func printAllBingoBoards(bingoBoards []BingoBoard) {
+	for i := 0; i < len(bingoBoards); i++ {
+		fmt.Println("Bingo Board -", i)
+		for j := 0; j < len(bingoBoards[i].boardLines); j++ {
+			var lineValue strings.Builder
+			for k := 0; k < len(bingoBoards[i].boardLines[j].values); k++ {
+				currentInt := bingoBoards[i].boardLines[j].values[k]
+				nextValue := strconv.Itoa(currentInt)
+				// fmt.Println("val -", nextValue, "raw -", bingoBoards[i].boardLines[j].values[k])
+				if currentInt < 10 {
+					lineValue.WriteString(" ")
+				}
+				lineValue.WriteString(nextValue)
+				lineValue.WriteString(" ")
+			}
+			fmt.Println(lineValue.String())
+		}
+		fmt.Println("")
+	}
+	fmt.Println("number of Boards -", len(bingoBoards))
+}
+
 func main() {
 	file, err := os.Open("./data/input")
 	if err != nil {
@@ -111,24 +133,6 @@ func main() {
 		}
 	}
 
-	for i := 0; i < len(bingoBoards); i++ {
-		fmt.Println("Bingo Board -", i)
-		for j := 0; j < len(bingoBoards[i].boardLines); j++ {
-			var lineValue strings.Builder
-			for k := 0; k < len(bingoBoards[i].boardLines[j].values); k++ {
-				currentInt := bingoBoards[i].boardLines[j].values[k]
-				nextValue := strconv.Itoa(currentInt)
-				// fmt.Println("val -", nextValue, "raw -", bingoBoards[i].boardLines[j].values[k])
-				if currentInt < 10 {
-					lineValue.WriteString(" ")
-				}
-				lineValue.WriteString(nextValue)
-				lineValue.WriteString(" ")
-			}
-			fmt.Println(lineValue.String())
-		}
-		fmt.Println("")
-	}
-	fmt.Println("number of Boards -", len(bingoBoards))
+	printAllBingoBoards(bingoBoards)
 }
 
