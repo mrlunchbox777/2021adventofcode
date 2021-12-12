@@ -1,4 +1,4 @@
-package main
+package day2-part1
 
 import (
 	"bufio"
@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	file, err := os.Open("../data/input")
+	file, err := os.Open("src/day2/data/input")
 	if err != nil {
 		log.Fatal(err)
 	}

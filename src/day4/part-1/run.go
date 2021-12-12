@@ -1,4 +1,4 @@
-package main
+package day4-part1
 
 import (
 	"bufio"
@@ -6,6 +6,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"github.com/mrlunchbox777/2021adventofcode/src/day4"
 )
 
 func stringToIntArr(str string) ([]int, error) {
