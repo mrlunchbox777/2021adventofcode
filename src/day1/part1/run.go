@@ -1,4 +1,4 @@
-package day1-part1
+package day1part1
 
 import (
 	"bufio"
