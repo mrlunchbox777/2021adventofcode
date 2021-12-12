@@ -7,11 +7,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	// "bingo-board-line"
 )
-
-type BingoBoardLine struct {
-	values []int
-}
 
 type BingoBoard struct {
 	boardLines []BingoBoardLine
