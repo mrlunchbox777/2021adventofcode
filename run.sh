@@ -21,7 +21,7 @@ if [[ "$day_choice" =~ ^[^0-9]*$ ]] || [ "$day_choice" -gt "$day_count" ] || [ "
 	exit 1
 fi
 
-list_of_parts=$(ls "./src/day$day_choice" | grep run\-.*\.go)
+list_of_parts=$(ls "./src/day$day_choice" | grep '^part\-[0-9]*$')
 part_count=$(echo "$list_of_parts" | wc -l)
 part_choice=$part_count
 if [ -z "$part_override" ]; then
@@ -43,8 +43,8 @@ echo "running day $day_choice, part $part_choice"
 old_dir=$(pwd)
 
 {
-	cd "./src/day$day_choice"
-	go build -o run.o "run-part$part_choice.go"
+	cd "./src/day$day_choice/part-$part_choice"
+	go build -o run.o .
 	./run.o
 	rm run.o
 } || {

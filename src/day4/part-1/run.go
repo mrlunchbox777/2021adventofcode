@@ -181,7 +181,7 @@ func printAllBingoBoards(bingoBoards []BingoBoard) {
 }
 
 func main() {
-	file, err := os.Open("./data/input")
+	file, err := os.Open("../data/input")
 	if err != nil {
 		panic(err)
 	}

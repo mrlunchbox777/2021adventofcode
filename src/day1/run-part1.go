@@ -17,7 +17,7 @@ func getNextDepth(a int, b int, input int) (int, int, int) {
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	file, err := os.Open("./data/input")
+	file, err := os.Open("../data/input")
 	if err != nil {
 		log.Fatal(err)
 	}

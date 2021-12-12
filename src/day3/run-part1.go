@@ -61,7 +61,7 @@ func getDecimalFromBinary(numbers map[int]int) float64 {
 }
 
 func main() {
-	file, err := os.Open("./data/input")
+	file, err := os.Open("../data/input")
 	if err != nil {
 		panic(err)
 	}
