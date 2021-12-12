@@ -1,4 +1,4 @@
-package day3-part2
+package day3part2
 
 import (
 	"bufio"
@@ -86,7 +86,7 @@ func getDecimalFromBinary(numbers map[int]int) float64 {
 	return retVal
 }
 
-func main() {
+func Main() {
 	file, err := os.Open("src/day3/data/input")
 	if err != nil {
 		panic(err)
