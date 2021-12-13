@@ -64,6 +64,38 @@ func main() {
 		}
 	}
 
+	partDirs, err := IOReadDir("./src/day" + strconv.Itoa(day))
+	if err != nil {
+		panic(err)
+	}
+	sort.Strings(partDirs)
+	part, err := strconv.Atoi(regGetNum.FindString(partDirs[len(partDirs) - 1]))
+	if err != nil {
+		panic(err)
+	}
+	regPart := regexp.MustCompile("^[0-" + strconv.Itoa(part) + "]+$")
+
+	var latestPartString string
+	fmt.Println("Use Latest Part?")
+	fmt.Scanln(&latestPartString)
+	if !regYes.MatchString(latestPartString) {
+		var partString string
+		fmt.Println("Which Part?")
+		fmt.Scanln(&partString)
+		fmt.Println("partString -" + partString + "-")
+		///
+		if regPart.MatchString(partString) {
+			part, err = strconv.Atoi(partString)
+			if day == 0 {
+				panic("Error: Bad Day Selection")
+			}
+			if err != nil {
+				panic(err)
+			}
+		} else {
+			panic("Error: Bad Day Selection")
+		}
+	}
 	// var partString string
 	// fmt.Println("Use Latest Part?")
 	// fmt.Scanln(&partString)
