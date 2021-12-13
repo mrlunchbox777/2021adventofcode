@@ -3,9 +3,9 @@ package day4part1
 import (
 	"bufio"
 	"fmt"
+	d4 "github.com/mrlunchbox777/2021adventofcode/src/day4"
 	"os"
 	"strconv"
-	d4 "github.com/mrlunchbox777/2021adventofcode/src/day4"
 )
 
 func stringToIntArr(str string) ([]int, error) {
@@ -30,6 +30,7 @@ func stringToIntArr(str string) ([]int, error) {
 }
 
 func Main() {
+	// https://raw.githubusercontent.com/mrlunchbox777/2021adventofcode/main/src/day1/data/input
 	file, err := os.Open("src/day4/data/input")
 	if err != nil {
 		panic(err)
