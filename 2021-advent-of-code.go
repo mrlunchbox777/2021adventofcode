@@ -53,6 +53,9 @@ func main() {
 		fmt.Println("dayString -" + dayString + "-")
 		if regDay.MatchString(dayString) {
 			day, err = strconv.Atoi(dayString)
+			if day == 0 {
+				panic("Error: Bad Day Selection")
+			}
 			if err != nil {
 				panic(err)
 			}
