@@ -4,13 +4,12 @@ import (
 	"errors"
 	"fmt"
 	d1p1 "github.com/mrlunchbox777/2021adventofcode/src/day1/part1"
-	// d2p1 "github.com/mrlunchbox777/2021adventofcode/src/day2/part1"
-	// d2p2 "github.com/mrlunchbox777/2021adventofcode/src/day2/part2"
-	// d3p1 "github.com/mrlunchbox777/2021adventofcode/src/day3/part1"
-	// d3p2 "github.com/mrlunchbox777/2021adventofcode/src/day3/part2"
-	// d4p1 "github.com/mrlunchbox777/2021adventofcode/src/day4/part1"
+	d2p1 "github.com/mrlunchbox777/2021adventofcode/src/day2/part1"
+	d2p2 "github.com/mrlunchbox777/2021adventofcode/src/day2/part2"
+	d3p1 "github.com/mrlunchbox777/2021adventofcode/src/day3/part1"
+	d3p2 "github.com/mrlunchbox777/2021adventofcode/src/day3/part2"
+	d4p1 "github.com/mrlunchbox777/2021adventofcode/src/day4/part1"
 	"io/ioutil"
-	// "os"
 	"regexp"
 	"sort"
 	"strconv"
@@ -22,11 +21,53 @@ func runDayPart(day int, part int) (error){
 	switch day {
 	case 1:
 		err = day1(part)
+	case 2:
+		err = day2(part)
+	case 3:
+		err = day3(part)
+	case 4:
+		err = day4(part)
 	default:
 		return errors.New("got an unknown day")
 	}
 	fmt.Println("Ran for day", day, "part", part)
 	return err;
+}
+
+func day4(part int) (error) {
+	switch part {
+	case 1:
+		d4p1.Main()
+	// case 2:
+	// 	d4p2.Main()
+	default:
+		return errors.New("got an unknown part")
+	}
+	return error(nil)
+}
+
+func day3(part int) (error) {
+	switch part {
+	case 1:
+		d3p1.Main()
+	case 2:
+		d3p2.Main()
+	default:
+		return errors.New("got an unknown part")
+	}
+	return error(nil)
+}
+
+func day2(part int) (error) {
+	switch part {
+	case 1:
+		d2p1.Main()
+	case 2:
+		d2p2.Main()
+	default:
+		return errors.New("got an unknown part")
+	}
+	return error(nil)
 }
 
 func day1(part int) (error) {
