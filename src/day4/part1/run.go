@@ -30,7 +30,6 @@ func stringToIntArr(str string) ([]int, error) {
 }
 
 func Main() (error) {
-	// https://raw.githubusercontent.com/mrlunchbox777/2021adventofcode/main/src/day1/data/input
 	file, err := os.Open("src/day4/data/input")
 	if err != nil {
 		return err
