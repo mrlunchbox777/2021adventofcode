@@ -30,7 +30,8 @@ func IOReadDir(root string) ([]string, error) {
 
 func main() {
 	regGetNum := regexp.MustCompile("[0-9]+")
-	regYes := regexp.MustCompile("^[Yy][Ee]*[Ss]*$")
+	regNo := regexp.MustCompile("^[Nn][Oo]*$")
+	regPartDir := regexp.MustCompile("^part[0-9]+$")
 
 	dayDirs, err := IOReadDir("./src")
 	if err != nil {
@@ -46,7 +47,7 @@ func main() {
 	var lastestDayString string
 	fmt.Println("Use Latest Day?")
 	fmt.Scanln(&lastestDayString)
-	if !regYes.MatchString(lastestDayString) {
+	if regNo.MatchString(lastestDayString) {
 		var dayString string
 		fmt.Println("Which Day?")
 		fmt.Scanln(&dayString)
@@ -64,11 +65,21 @@ func main() {
 		}
 	}
 
-	partDirs, err := IOReadDir("./src/day" + strconv.Itoa(day))
+	daySubDirs, err := IOReadDir("./src/day" + strconv.Itoa(day))
+	var partDirs []string
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(daySubDirs)
+	for i := 0; i < len(daySubDirs); i++ {
+		currentItem := daySubDirs[i]
+		if regPartDir.MatchString(currentItem) {
+			partDirs = append(partDirs, currentItem)
+		}
+	}
 	sort.Strings(partDirs)
+	fmt.Println(partDirs[len(partDirs) - 1])
+	fmt.Println(regGetNum.FindString(partDirs[len(partDirs) - 1]))
 	part, err := strconv.Atoi(regGetNum.FindString(partDirs[len(partDirs) - 1]))
 	if err != nil {
 		panic(err)
@@ -76,32 +87,26 @@ func main() {
 	regPart := regexp.MustCompile("^[0-" + strconv.Itoa(part) + "]+$")
 
 	var latestPartString string
+	var partString string
 	fmt.Println("Use Latest Part?")
 	fmt.Scanln(&latestPartString)
-	if !regYes.MatchString(latestPartString) {
-		var partString string
+	if regNo.MatchString(latestPartString) {
 		fmt.Println("Which Part?")
 		fmt.Scanln(&partString)
-		fmt.Println("partString -" + partString + "-")
-		///
 		if regPart.MatchString(partString) {
 			part, err = strconv.Atoi(partString)
-			if day == 0 {
-				panic("Error: Bad Day Selection")
+			if part == 0 {
+				panic("Error: Bad Part Selection")
 			}
 			if err != nil {
 				panic(err)
 			}
 		} else {
-			panic("Error: Bad Day Selection")
+			panic("Error: Bad Part Selection")
 		}
 	}
-	// var partString string
-	// fmt.Println("Use Latest Part?")
-	// fmt.Scanln(&partString)
 
-
-	fmt.Println("Running for day", day)
+	fmt.Println("Running for day", day, "part", partString)
 	// d4p1.Main()
 	fmt.Println("Ran for day", day)
 }
