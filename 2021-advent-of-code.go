@@ -1,8 +1,9 @@
 package main
 
 import (
+	"errors"
 	"fmt"
-	// d1p1 "github.com/mrlunchbox777/2021adventofcode/src/day1/part1"
+	d1p1 "github.com/mrlunchbox777/2021adventofcode/src/day1/part1"
 	// d2p1 "github.com/mrlunchbox777/2021adventofcode/src/day2/part1"
 	// d2p2 "github.com/mrlunchbox777/2021adventofcode/src/day2/part2"
 	// d3p1 "github.com/mrlunchbox777/2021adventofcode/src/day3/part1"
@@ -15,10 +16,27 @@ import (
 	"strconv"
 )
 
-func runDayPart(day int, part int) {
+func runDayPart(day int, part int) (error){
 	fmt.Println("Running for day", day, "part", part)
-	// d4p1.Main()
+	var err error
+	switch day {
+	case 1:
+		err = day1(part)
+	default:
+		return errors.New("got an unknown day")
+	}
 	fmt.Println("Ran for day", day, "part", part)
+	return err;
+}
+
+func day1(part int) (error) {
+	switch part {
+	case 1:
+		d1p1.Main()
+	default:
+		return errors.New("got an unknown part")
+	}
+	return error(nil)
 }
 
 func IOReadDir(root string) ([]string, error) {
@@ -29,7 +47,7 @@ func IOReadDir(root string) ([]string, error) {
 	}
 
 	for _, file := range fileInfo {
-			files = append(files, file.Name())
+		files = append(files, file.Name())
 	}
 	return files, nil
 }
@@ -118,5 +136,8 @@ func main() {
 	day := getDay(regNo, regGetNum)
 	part := getPart(regNo, regGetNum, regPartDir, day)
 
-	runDayPart(day, part)
+	err := runDayPart(day, part)
+	if err != nil {
+		panic(err)
+	}
 }
