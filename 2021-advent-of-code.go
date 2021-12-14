@@ -51,7 +51,6 @@ func main() {
 		var dayString string
 		fmt.Println("Which Day?")
 		fmt.Scanln(&dayString)
-		fmt.Println("dayString -" + dayString + "-")
 		if regDay.MatchString(dayString) {
 			day, err = strconv.Atoi(dayString)
 			if day == 0 {
@@ -70,7 +69,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(daySubDirs)
 	for i := 0; i < len(daySubDirs); i++ {
 		currentItem := daySubDirs[i]
 		if regPartDir.MatchString(currentItem) {
@@ -78,8 +76,6 @@ func main() {
 		}
 	}
 	sort.Strings(partDirs)
-	fmt.Println(partDirs[len(partDirs) - 1])
-	fmt.Println(regGetNum.FindString(partDirs[len(partDirs) - 1]))
 	part, err := strconv.Atoi(regGetNum.FindString(partDirs[len(partDirs) - 1]))
 	if err != nil {
 		panic(err)
@@ -106,7 +102,7 @@ func main() {
 		}
 	}
 
-	fmt.Println("Running for day", day, "part", partString)
+	fmt.Println("Running for day", day, "part", part)
 	// d4p1.Main()
-	fmt.Println("Ran for day", day)
+	fmt.Println("Ran for day", day, "part", part)
 }
