@@ -93,15 +93,15 @@ func IOReadDir(root string) ([]string, error) {
 	return files, nil
 }
 
-func getDay(regNo *regexp.Regexp, regGetNum *regexp.Regexp) (int) {
+func getDay(regNo *regexp.Regexp, regGetNum *regexp.Regexp) (int, error) {
 	dayDirs, err := IOReadDir("./src")
 	if err != nil {
-		panic(err)
+		return 0, err
 	}
 	sort.Strings(dayDirs)
 	day, err := strconv.Atoi(regGetNum.FindString(dayDirs[len(dayDirs) - 1]))
 	if err != nil {
-		panic(err)
+		return 0, err
 	}
 	regDay := regexp.MustCompile("^[0-" + strconv.Itoa(day) + "]+$")
 
@@ -115,24 +115,24 @@ func getDay(regNo *regexp.Regexp, regGetNum *regexp.Regexp) (int) {
 		if regDay.MatchString(dayString) {
 			day, err = strconv.Atoi(dayString)
 			if day == 0 {
-				panic("Error: Bad Day Selection")
+				return 0, errors.New("Error: Bad Day Selection")
 			}
 			if err != nil {
-				panic(err)
+				return 0, err
 			}
 		} else {
-			panic("Error: Bad Day Selection")
+			return 0, errors.New("Error: Bad Day Selection")
 		}
 	}
 
-	return day
+	return day, nil
 }
 
-func getPart(regNo *regexp.Regexp, regGetNum *regexp.Regexp, regPartDir *regexp.Regexp, day int) (int) {
+func getPart(regNo *regexp.Regexp, regGetNum *regexp.Regexp, regPartDir *regexp.Regexp, day int) (int, error) {
 	daySubDirs, err := IOReadDir("./src/day" + strconv.Itoa(day))
 	var partDirs []string
 	if err != nil {
-		panic(err)
+		return 0, err
 	}
 	for i := 0; i < len(daySubDirs); i++ {
 		currentItem := daySubDirs[i]
@@ -143,7 +143,7 @@ func getPart(regNo *regexp.Regexp, regGetNum *regexp.Regexp, regPartDir *regexp.
 	sort.Strings(partDirs)
 	part, err := strconv.Atoi(regGetNum.FindString(partDirs[len(partDirs) - 1]))
 	if err != nil {
-		panic(err)
+		return 0, err
 	}
 	regPart := regexp.MustCompile("^[0-" + strconv.Itoa(part) + "]+$")
 
@@ -157,27 +157,33 @@ func getPart(regNo *regexp.Regexp, regGetNum *regexp.Regexp, regPartDir *regexp.
 		if regPart.MatchString(partString) {
 			part, err = strconv.Atoi(partString)
 			if part == 0 {
-				panic("Error: Bad Part Selection")
+				return 0, errors.New("Error: Bad Part Selection")
 			}
 			if err != nil {
-				panic(err)
+				return 0, err
 			}
 		} else {
-			panic("Error: Bad Part Selection")
+			return 0, errors.New("Error: Bad Part Selection")
 		}
 	}
 
-	return part
+	return part, nil
 }
 
 func main() {
 	regGetNum := regexp.MustCompile("[0-9]+")
 	regNo := regexp.MustCompile("^[Nn][Oo]*$")
 	regPartDir := regexp.MustCompile("^part[0-9]+$")
-	day := getDay(regNo, regGetNum)
-	part := getPart(regNo, regGetNum, regPartDir, day)
+	day, err := getDay(regNo, regGetNum)
+	if err != nil {
+		panic(err)
+	}
+	part, err := getPart(regNo, regGetNum, regPartDir, day)
+	if err != nil {
+		panic(err)
+	}
 
-	err := runDayPart(day, part)
+	err = runDayPart(day, part)
 	if err != nil {
 		panic(err)
 	}
