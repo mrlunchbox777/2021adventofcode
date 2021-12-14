@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-func stringToIntArr(str string) ([]int) {
+func stringToIntArr(str string) ([]int, error) {
 	chars := []rune(str)
 	ints := []int{}
 
@@ -16,12 +16,12 @@ func stringToIntArr(str string) ([]int) {
 		currentChar := string(chars[i])
 		currentInt, err := strconv.Atoi(currentChar)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		ints = append(ints, currentInt)
 	}
 
-	return ints
+	return ints, nil
 }
 
 func calcGammaEpsilon(lineCount int, diagByColumn map[int]int) (map[int]int, map[int]int) {
@@ -60,10 +60,10 @@ func getDecimalFromBinary(numbers map[int]int) float64 {
 	return retVal
 }
 
-func Main() {
+func Main() (error) {
 	file, err := os.Open("src/day3/data/input")
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer file.Close()
 
@@ -74,7 +74,10 @@ func Main() {
 	for scanner.Scan() {
 		lineCount++
 		i := scanner.Text()
-		ints := stringToIntArr(i)
+		ints, err := stringToIntArr(i)
+		if err != nil {
+			return err
+		}
 		for j := 0; j < len(ints); j ++ {
 			currentInt := ints[j]
 			diagByColumn[j] += currentInt  
@@ -87,4 +90,6 @@ func Main() {
 	epsilon := getDecimalFromBinary(epsilonIntArr)
 	product := gamma * epsilon
 	fmt.Println("gamma -", gamma, "epsilon -", epsilon, "product - ", product)
+
+	return nil
 }

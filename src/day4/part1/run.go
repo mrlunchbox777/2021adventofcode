@@ -29,20 +29,21 @@ func stringToIntArr(str string) ([]int, error) {
 	return ints, err
 }
 
-func Main() {
+func Main() (error) {
 	// https://raw.githubusercontent.com/mrlunchbox777/2021adventofcode/main/src/day1/data/input
 	file, err := os.Open("src/day4/data/input")
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
 	winningNumbers, bingoBoards, err := d4.GetBingoBoards(scanner)
 	if (err != nil){
-		panic(err)
+		return err
 	}
 
 	d4.PrintAllBingoBoards(bingoBoards)
 	fmt.Println("winningNumbers - ", winningNumbers)
+	return nil
 }

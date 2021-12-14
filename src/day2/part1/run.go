@@ -3,16 +3,15 @@ package day2part1
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
 )
 
-func Main() {
+func Main() (error) {
 	file, err := os.Open("src/day2/data/input")
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer file.Close()
 
@@ -37,4 +36,6 @@ func Main() {
 	}
 	final_product := x * y
 	fmt.Println("final_product", final_product)
+
+	return nil
 }

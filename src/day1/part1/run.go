@@ -3,7 +3,6 @@ package day1part1
 import (
 	"bufio"
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
 	"strconv"
@@ -15,11 +14,11 @@ func getNextDepth(a int, b int, input int) (int, int, int) {
 	return b, input, total
 }
 
-func Main() {
+func Main() (error) {
 	rand.Seed(time.Now().UnixNano())
 	file, err := os.Open("src/day1/data/input")
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer file.Close()
 
@@ -50,6 +49,8 @@ func Main() {
 	fmt.Println("Increases", totalIncreases)
 
 	if err := scanner.Err(); err != nil {
-		log.Fatal(err)
+		return err
 	}
+
+	return nil
 }

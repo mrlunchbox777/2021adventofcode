@@ -2,6 +2,7 @@ package day3part2
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"math"
 	"os"
@@ -11,7 +12,7 @@ import (
 const MaxUint = ^uint(0) 
 const MaxInt = int(MaxUint >> 1) 
 
-func stringToIntArr(str string) ([]int) {
+func stringToIntArr(str string) ([]int, error) {
 	chars := []rune(str)
 	ints := []int{}
 
@@ -19,12 +20,12 @@ func stringToIntArr(str string) ([]int) {
 		currentChar := string(chars[i])
 		currentInt, err := strconv.Atoi(currentChar)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		ints = append(ints, currentInt)
 	}
 
-	return ints
+	return ints, nil
 }
 
 func reduceDiagnosticMatrix(matrix map[int]map[int]int, keepMostCommon bool, targetColumn int) map[int]map[int]int {
@@ -86,10 +87,10 @@ func getDecimalFromBinary(numbers map[int]int) float64 {
 	return retVal
 }
 
-func Main() {
+func Main() (error){
 	file, err := os.Open("src/day3/data/input")
 	if err != nil {
-		panic(err)
+		return err
 	}
 	defer file.Close()
 
@@ -99,7 +100,10 @@ func Main() {
 
 	for scanner.Scan() {
 		i := scanner.Text()
-		ints := stringToIntArr(i)
+		ints, err := stringToIntArr(i)
+		if err != nil {
+			return err
+		}
 		matrix[lineCount] = make(map[int]int)
 		for j := 0; j < len(ints); j ++ {
 			currentInt := ints[j]
@@ -109,7 +113,7 @@ func Main() {
 	}
 
 	if len(matrix) == 0 {
-		panic("no values in the matrix")
+		return errors.New("no values in the matrix")
 	}
 
 	o2Reduction := reduceDiagnosticMatrix(matrix, true, 0)
@@ -118,4 +122,5 @@ func Main() {
 	cO2 := getDecimalFromBinary(cO2Reduction[0])
 	finalValue := o2 * cO2
 	fmt.Printf("finalValue - %f\n", finalValue)
+	return nil
 }

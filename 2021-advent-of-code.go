@@ -35,49 +35,53 @@ func runDayPart(day int, part int) (error){
 }
 
 func day4(part int) (error) {
+	var err error
 	switch part {
 	case 1:
-		d4p1.Main()
+		err = d4p1.Main()
 	// case 2:
-	// 	d4p2.Main()
+	// 	err = d4p2.Main()
 	default:
 		return errors.New("got an unknown part")
 	}
-	return error(nil)
+	return error(err)
 }
 
 func day3(part int) (error) {
+	var err error
 	switch part {
 	case 1:
-		d3p1.Main()
+		err = d3p1.Main()
 	case 2:
-		d3p2.Main()
+		err = d3p2.Main()
 	default:
 		return errors.New("got an unknown part")
 	}
-	return error(nil)
+	return error(err)
 }
 
 func day2(part int) (error) {
+	var err error
 	switch part {
 	case 1:
-		d2p1.Main()
+		err = d2p1.Main()
 	case 2:
-		d2p2.Main()
+		err = d2p2.Main()
 	default:
 		return errors.New("got an unknown part")
 	}
-	return error(nil)
+	return error(err)
 }
 
 func day1(part int) (error) {
+	var err error
 	switch part {
 	case 1:
-		d1p1.Main()
+		err = d1p1.Main()
 	default:
 		return errors.New("got an unknown part")
 	}
-	return error(nil)
+	return error(err)
 }
 
 func IOReadDir(root string) ([]string, error) {
