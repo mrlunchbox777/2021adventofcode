@@ -15,6 +15,12 @@ import (
 	"strconv"
 )
 
+func runDayPart(day int, part int) {
+	fmt.Println("Running for day", day, "part", part)
+	// d4p1.Main()
+	fmt.Println("Ran for day", day, "part", part)
+}
+
 func IOReadDir(root string) ([]string, error) {
 	var files []string
 	fileInfo, err := ioutil.ReadDir(root)
@@ -112,7 +118,5 @@ func main() {
 	day := getDay(regNo, regGetNum)
 	part := getPart(regNo, regGetNum, regPartDir, day)
 
-	fmt.Println("Running for day", day, "part", part)
-	// d4p1.Main()
-	fmt.Println("Ran for day", day, "part", part)
+	runDayPart(day, part)
 }
