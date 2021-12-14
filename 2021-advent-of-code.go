@@ -28,11 +28,7 @@ func IOReadDir(root string) ([]string, error) {
 	return files, nil
 }
 
-func main() {
-	regGetNum := regexp.MustCompile("[0-9]+")
-	regNo := regexp.MustCompile("^[Nn][Oo]*$")
-	regPartDir := regexp.MustCompile("^part[0-9]+$")
-
+func getDay(regNo *regexp.Regexp, regGetNum *regexp.Regexp) (int) {
 	dayDirs, err := IOReadDir("./src")
 	if err != nil {
 		panic(err)
@@ -63,6 +59,18 @@ func main() {
 			panic("Error: Bad Day Selection")
 		}
 	}
+
+	return day
+}
+
+// func getPart(regNo *regexp.Regexp, regGetNum *regexp.Regexp) (int) {
+// }
+
+func main() {
+	regGetNum := regexp.MustCompile("[0-9]+")
+	regNo := regexp.MustCompile("^[Nn][Oo]*$")
+	regPartDir := regexp.MustCompile("^part[0-9]+$")
+	day := getDay(regNo, regGetNum)
 
 	daySubDirs, err := IOReadDir("./src/day" + strconv.Itoa(day))
 	var partDirs []string
