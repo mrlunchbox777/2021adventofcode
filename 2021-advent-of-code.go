@@ -63,15 +63,7 @@ func getDay(regNo *regexp.Regexp, regGetNum *regexp.Regexp) (int) {
 	return day
 }
 
-// func getPart(regNo *regexp.Regexp, regGetNum *regexp.Regexp) (int) {
-// }
-
-func main() {
-	regGetNum := regexp.MustCompile("[0-9]+")
-	regNo := regexp.MustCompile("^[Nn][Oo]*$")
-	regPartDir := regexp.MustCompile("^part[0-9]+$")
-	day := getDay(regNo, regGetNum)
-
+func getPart(regNo *regexp.Regexp, regGetNum *regexp.Regexp, regPartDir *regexp.Regexp, day int) (int) {
 	daySubDirs, err := IOReadDir("./src/day" + strconv.Itoa(day))
 	var partDirs []string
 	if err != nil {
@@ -109,6 +101,16 @@ func main() {
 			panic("Error: Bad Part Selection")
 		}
 	}
+
+	return part
+}
+
+func main() {
+	regGetNum := regexp.MustCompile("[0-9]+")
+	regNo := regexp.MustCompile("^[Nn][Oo]*$")
+	regPartDir := regexp.MustCompile("^part[0-9]+$")
+	day := getDay(regNo, regGetNum)
+	part := getPart(regNo, regGetNum, regPartDir, day)
 
 	fmt.Println("Running for day", day, "part", part)
 	// d4p1.Main()
