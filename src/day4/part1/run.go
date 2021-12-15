@@ -37,7 +37,7 @@ func Main() (error) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	winningNumbers, bingoBoards, err := d4.GetBingoBoards(scanner)
+	winningNumbers, bingoBoards, err := d4.GetBingoBoards(scanner, false)
 	if (err != nil){
 		return err
 	}

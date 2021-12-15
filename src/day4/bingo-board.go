@@ -36,7 +36,7 @@ func getBingoBoard(lineStrings []string) (BingoBoard, error) {
 	return BingoBoard{ boardLines: boardLines }, err
 }
 
-func GetBingoBoards(scanner *bufio.Scanner) ([]int, []BingoBoard, error) {
+func GetBingoBoards(scanner *bufio.Scanner, printWinningNumbers bool) ([]int, []BingoBoard, error) {
 	gotWinningNumbers := false
 	boardStrings := []string{}
 	bingoBoards := []BingoBoard{}
@@ -56,7 +56,9 @@ func GetBingoBoards(scanner *bufio.Scanner) ([]int, []BingoBoard, error) {
 				}
 			}
 			gotWinningNumbers = true
-			fmt.Println("winningNumbers - ", winningNumbers)
+			if (printWinningNumbers) {
+				fmt.Println("winningNumbers - ", winningNumbers)
+			}
 		} else {
 			if i == "" {
 				if len(boardStrings) > 0 {
@@ -76,6 +78,7 @@ func GetBingoBoards(scanner *bufio.Scanner) ([]int, []BingoBoard, error) {
 			}
 		}
 	}
+
 	if len(boardStrings) > 0 {
 		newBoard, newErr := getBingoBoard(boardStrings)
 		if newErr != nil {
