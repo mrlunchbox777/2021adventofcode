@@ -35,6 +35,7 @@ func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 }
 
 func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winningNumber int) (BingoBoardLine, error) {
+	var areExistingAnswers bool
 	if values == nil {
 		return nil, errors.New("boardline values poco was nil")
 	}
@@ -42,23 +43,26 @@ func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winn
 		return nil, errors.New("boardline values.values poco was nil")
 	}
 	if answers == nil {
-		return nil, errors.New("boardline answers poco was nil")
-	}
-	if answers.values == nil {
-		return nil, errors.New("boardline answers.values poco was nil")
+		areExistingAnswers = false
+	} else {
+		areExistingAnswers := len(answers.values) > 0
 	}
 
 	var newAnswers []int
-	boardLength := len(answerLines.values)
+	boardLength := len(values.values)
 
-	if boardLength != len(values.values) {
-		return nil, errors.New("boardline answers.values length != boardline values.values length")
+	if areExistingAnswers {
+		if boardLength != len(values.values) {
+			return nil, errors.New("boardline answers.values length != boardline values.values length")
+		}
 	}
 
 	for i := 0; i < boardLength; i++ {
-		if answers.values[i] == 1 {
-			append(newAnswers, 1)
-			continue
+		if areExistingAnswers {
+			if answers.values[i] == 1 {
+				append(newAnswers, 1)
+				continue
+			}
 		}
 
 		if values.values[i] == winningNumber {
