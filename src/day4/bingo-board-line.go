@@ -73,5 +73,5 @@ func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winn
 		append(newAnswers, 0)
 	}
 
-	return newAnswers
+	return newAnswers, nil
 }
