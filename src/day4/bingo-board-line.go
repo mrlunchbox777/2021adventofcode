@@ -1,6 +1,7 @@
 package day4
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -31,4 +32,42 @@ func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 	}
 
 	return BingoBoardLine{ values: boardLine }, err
+}
+
+func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winningNumber int) (BingoBoardLine, error) {
+	if values == nil {
+		return nil, errors.New("boardline values poco was nil")
+	}
+	if values.values == nil {
+		return nil, errors.New("boardline values.values poco was nil")
+	}
+	if answers == nil {
+		return nil, errors.New("boardline answers poco was nil")
+	}
+	if answers.values == nil {
+		return nil, errors.New("boardline answers.values poco was nil")
+	}
+
+	var newAnswers []int
+	boardLength := len(answerLines.values)
+
+	if boardLength != len(values.values) {
+		return nil, errors.New("boardline answers.values length != boardline values.values length")
+	}
+
+	for i := 0; i < boardLength; i++ {
+		if answers.values[i] == 1 {
+			append(newAnswers, 1)
+			continue
+		}
+
+		if values.values[i] == winningNumber {
+			append(newAnswers, 1)
+			continue
+		}
+
+		append(newAnswers, 0)
+	}
+
+	return newAnswers
 }
