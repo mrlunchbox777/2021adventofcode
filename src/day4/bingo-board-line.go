@@ -17,7 +17,7 @@ func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 
 	for i := 0; i < len(valueStrings); i++ {
 		currentString := strings.TrimSpace(valueStrings[i])
-		if currentString == ""{
+		if currentString == "" {
 			continue
 		}
 		currentInt, newErr := strconv.Atoi(currentString)

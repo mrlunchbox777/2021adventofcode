@@ -36,6 +36,35 @@ func getBingoBoard(lineStrings []string) (BingoBoard, error) {
 	return BingoBoard{ boardLines: boardLines }, err
 }
 
+func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard, error) {
+	var err error
+	if bingoBoard == nil {
+		return nil, errors.New("bingoBoard poco was nil")
+	}
+	if bingoBoard.boardLines == nil {
+		return nil, errors.New("bingoBoard.boardLines poco was nil")
+	}
+
+	bingoBoardLinesLen := len(bingoBoard.boardLines)
+	if bingoBoardLinesLen == 0 {
+		return nil, errors.New("bingoBoard.boardLines count was 0")
+	}
+
+	for i := 0; i < bingoBoardLinesLen; i++ {
+		newAnswers, newErr := getBingoBoardLineAnswer(bingoBoard.values, bingoBoard.answers, winningNumber)
+		if newErr != nil {
+			if (err == nil){
+				err = newErr
+			} else {
+				err = fmt.Errorf("Combined error: %v %v", err, newErr)
+			}
+		}
+		bingoBoard.answers = newAnswers
+	}
+
+	return BingoBoard{ boardLines: bingoBoard.values, answerLines: newAnswers }, err
+}
+
 func GetBingoBoards(scanner *bufio.Scanner, printWinningNumbers bool) ([]int, []BingoBoard, error) {
 	gotWinningNumbers := false
 	boardStrings := []string{}
