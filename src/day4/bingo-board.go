@@ -24,7 +24,7 @@ func getBingoBoard(lineStrings []string) (BingoBoard, error) {
 		valueStrings := strings.Split(currentString, " ")
 		currentBoardLine, newErr := getBingoBoardLine(valueStrings)
 		if newErr != nil {
-			if (err != nil){
+			if (err == nil){
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -49,7 +49,7 @@ func GetBingoBoards(scanner *bufio.Scanner) ([]int, []BingoBoard, error) {
 			tempWinningNumbers, newErr := getWinningNumbers(i)
 			winningNumbers = tempWinningNumbers
 			if newErr != nil {
-				if (err != nil){
+				if (err == nil){
 					err = newErr
 				} else {
 					err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -62,7 +62,7 @@ func GetBingoBoards(scanner *bufio.Scanner) ([]int, []BingoBoard, error) {
 				if len(boardStrings) > 0 {
 					newBoard, newErr := getBingoBoard(boardStrings)
 					if newErr != nil {
-						if (err != nil){
+						if (err == nil){
 							err = newErr
 						} else {
 							err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -79,7 +79,7 @@ func GetBingoBoards(scanner *bufio.Scanner) ([]int, []BingoBoard, error) {
 	if len(boardStrings) > 0 {
 		newBoard, newErr := getBingoBoard(boardStrings)
 		if newErr != nil {
-			if (err != nil){
+			if (err == nil){
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)

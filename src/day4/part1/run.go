@@ -17,7 +17,7 @@ func stringToIntArr(str string) ([]int, error) {
 		currentChar := string(chars[i])
 		currentInt, newErr := strconv.Atoi(currentChar)
 		if newErr != nil {
-			if (err != nil){
+			if (err == nil){
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)

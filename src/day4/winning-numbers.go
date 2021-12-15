@@ -14,7 +14,7 @@ func getWinningNumbers(input string) ([]int, error) {
 	for i := 0; i < len(winningNumbersStringArr); i++ {
 		currentInt, newErr := strconv.Atoi(winningNumbersStringArr[i])
 		if newErr != nil {
-			if (err != nil){
+			if (err == nil){
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)

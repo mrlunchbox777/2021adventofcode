@@ -21,7 +21,7 @@ func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 		}
 		currentInt, newErr := strconv.Atoi(currentString)
 		if newErr != nil {
-			if (err != nil){
+			if (err == nil){
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
