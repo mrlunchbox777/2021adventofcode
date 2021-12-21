@@ -65,6 +65,33 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 	return BingoBoard{ boardLines: bingoBoard.values, answerLines: newAnswers }, err
 }
 
+func getBingoBoardsAnswersForWinningNumber(bingoBoards BingoBoard[], winningNumber int) ([]BingoBoards, error) {
+	var err error
+	if bingoBoards == nil {
+		return nil, errors.New("bingoBoards array was nil")
+	}
+	bingoBoardsLen := len(bingoBoards)
+	if  bingoBoardsLen == 0 {
+		return nil, errors.New("bingoBoards array was empty")
+	}
+
+	newBoards := []BingoBoard
+	for i := 0; i < bingoBoardLen; i++ {
+		newBoard, newErr := getBingoBoardAnswers(bingoBoards[i], winningNumber)
+		if newErr != nil {
+			if (err == nil){
+				err = newErr
+			} else {
+				err = fmt.Errorf("Combined error: %v %v", err, newErr)
+			}
+		}
+
+		newBoards := append(newBoards, newBoard)
+	}
+
+	return newErr, err
+}
+
 func GetBingoBoards(scanner *bufio.Scanner, printWinningNumbers bool) ([]int, []BingoBoard, error) {
 	gotWinningNumbers := false
 	boardStrings := []string{}
@@ -121,33 +148,6 @@ func GetBingoBoards(scanner *bufio.Scanner, printWinningNumbers bool) ([]int, []
 	}
 
 	return winningNumbers, bingoBoards, err
-}
-
-func getBingoBoardsAnswersForWinningNumber(bingoBoards BingoBoard[], winningNumber int) ([]BingoBoards, error) {
-	var err error
-	if bingoBoards == nil {
-		return nil, errors.New("bingoBoards array was nil")
-	}
-	bingoBoardsLen := len(bingoBoards)
-	if  bingoBoardsLen == 0 {
-		return nil, errors.New("bingoBoards array was empty")
-	}
-
-	newBoards := []BingoBoard
-	for i := 0; i < bingoBoardLen; i++ {
-		newBoard, newErr := getBingoBoardAnswers(bingoBoards[i], winningNumber)
-		if newErr != nil {
-			if (err == nil){
-				err = newErr
-			} else {
-				err = fmt.Errorf("Combined error: %v %v", err, newErr)
-			}
-		}
-
-		newBoards := append(newBoards, newBoard)
-	}
-
-	return newErr, err
 }
 
 func PrintAllBingoBoards(bingoBoards []BingoBoard) {
