@@ -36,7 +36,7 @@ func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 
 func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winningNumber int) (BingoBoardLine, error) {
 	areExistingAnswers := len(answers.values) > 0
-	var newAnswers []int
+	var newAnswers = []int{}
 	boardLength := len(values.values)
 
 	if areExistingAnswers {
@@ -48,18 +48,18 @@ func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winn
 	for i := 0; i < boardLength; i++ {
 		if areExistingAnswers {
 			if answers.values[i] == 1 {
-				append(newAnswers, 1)
+				newAnswers := append(newAnswers, 1)
 				continue
 			}
 		}
 
 		if values.values[i] == winningNumber {
-			append(newAnswers, 1)
+			newAnswers := append(newAnswers, 1)
 			continue
 		}
 
-		append(newAnswers, 0)
+		newAnswers := append(newAnswers, 0)
 	}
 
-	return newAnswers, nil
+	return BingoBoardLine{ values: newAnswers }, nil
 }
