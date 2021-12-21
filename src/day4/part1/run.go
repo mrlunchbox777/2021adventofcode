@@ -2,8 +2,8 @@ package day4part1
 
 import (
 	"bufio"
-	"fmt"
 	d4 "github.com/mrlunchbox777/2021adventofcode/src/day4"
+	"fmt"
 	"os"
 	"strconv"
 )
