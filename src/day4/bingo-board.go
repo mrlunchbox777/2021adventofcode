@@ -123,6 +123,17 @@ func GetBingoBoards(scanner *bufio.Scanner, printWinningNumbers bool) ([]int, []
 	return winningNumbers, bingoBoards, err
 }
 
+func GetBingoBoardsAnswers(bingoBoards BingoBoard[], winningNumbers []int) ([]BingoBoards, error) {
+	var err error
+	if bingoBoards == nil {
+		return nil, errors.New("bingoBoards array was nil")
+	}
+	bingoBoardsLen := len(bingoBoards)
+	if  bingoBoardsLen == 0 {
+		return nil, errors.New("bingoBoards array was empty")
+	}
+}
+
 func PrintAllBingoBoards(bingoBoards []BingoBoard) {
 	for i := 0; i < len(bingoBoards); i++ {
 		fmt.Println("Bingo Board -", i)
