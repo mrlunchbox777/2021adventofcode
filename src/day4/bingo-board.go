@@ -123,7 +123,7 @@ func GetBingoBoards(scanner *bufio.Scanner, printWinningNumbers bool) ([]int, []
 	return winningNumbers, bingoBoards, err
 }
 
-func GetBingoBoardsAnswers(bingoBoards BingoBoard[], winningNumbers []int) ([]BingoBoards, error) {
+func getBingoBoardsAnswersForWinningNumber(bingoBoards BingoBoard[], winningNumber int) ([]BingoBoards, error) {
 	var err error
 	if bingoBoards == nil {
 		return nil, errors.New("bingoBoards array was nil")
@@ -132,6 +132,22 @@ func GetBingoBoardsAnswers(bingoBoards BingoBoard[], winningNumbers []int) ([]Bi
 	if  bingoBoardsLen == 0 {
 		return nil, errors.New("bingoBoards array was empty")
 	}
+
+	newBoards := []BingoBoard
+	for i := 0; i < bingoBoardLen; i++ {
+		newBoard, newErr := getBingoBoardAnswers(bingoBoards[i], winningNumber)
+		if newErr != nil {
+			if (err == nil){
+				err = newErr
+			} else {
+				err = fmt.Errorf("Combined error: %v %v", err, newErr)
+			}
+		}
+
+		newBoards := append(newBoards, newBoard)
+	}
+
+	return newErr, err
 }
 
 func PrintAllBingoBoards(bingoBoards []BingoBoard) {
