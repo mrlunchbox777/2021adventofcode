@@ -1,9 +1,8 @@
 package day4
 
 import (
-	"bufio"
+	"errors"
 	"fmt"
-	"strconv"
 	"strings"
 )
 
@@ -38,20 +37,16 @@ func getBingoBoard(lineStrings []string) (BingoBoard, error) {
 
 func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard, error) {
 	var err error
-	if bingoBoard == nil {
-		return nil, errors.New("bingoBoard poco was nil")
-	}
-	if bingoBoard.boardLines == nil {
-		return nil, errors.New("bingoBoard.boardLines poco was nil")
-	}
 
 	bingoBoardLinesLen := len(bingoBoard.boardLines)
 	if bingoBoardLinesLen == 0 {
-		return nil, errors.New("bingoBoard.boardLines count was 0")
+		return BingoBoard{}, errors.New("bingoBoard.boardLines count was 0")
 	}
 
+	var newAnswers = []BingoBoardLine{}
 	for i := 0; i < bingoBoardLinesLen; i++ {
-		newAnswers, newErr := getBingoBoardLineAnswer(bingoBoard.values, bingoBoard.answers, winningNumber)
+		// TODO: this is going error because we haven't set up blank answers (should probably do that at this point)
+		newAnswer, newErr := getBingoBoardLineAnswer(bingoBoard.boardLines[i], bingoBoard.answerLines[i], winningNumber)
 		if newErr != nil {
 			if (err == nil){
 				err = newErr
@@ -59,13 +54,13 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
 			}
 		}
-		bingoBoard.answers = newAnswers
+		newAnswers := append(newAnswers, newAnswer)
 	}
 
-	return BingoBoard{ boardLines: bingoBoard.values, answerLines: newAnswers }, err
+	return BingoBoard{ boardLines: bingoBoard.boardLines, answerLines: newAnswers }, err
 }
 
-func getBingoBoardsAnswersForWinningNumber(bingoBoards []BingoBoard, winningNumber int) ([]BingoBoards, error) {
+func getBingoBoardsAnswersForWinningNumber(bingoBoards []BingoBoard, winningNumber int) ([]BingoBoard, error) {
 	var err error
 	if bingoBoards == nil {
 		return nil, errors.New("bingoBoards array was nil")
