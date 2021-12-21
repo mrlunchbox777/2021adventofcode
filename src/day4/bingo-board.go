@@ -89,7 +89,7 @@ func getBingoBoardsAnswersForWinningNumber(bingoBoards BingoBoard[], winningNumb
 		newBoards := append(newBoards, newBoard)
 	}
 
-	return newErr, err
+	return newBoards, err
 }
 
 func GetBingoBoards(scanner *bufio.Scanner, printWinningNumbers bool) ([]int, []BingoBoard, error) {
