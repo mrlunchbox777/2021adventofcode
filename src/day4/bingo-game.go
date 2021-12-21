@@ -12,7 +12,7 @@ type BingoGame struct {
 	answers WinningNumbers
 }
 
-func CalcGame(bingoGame BingoGame) (bingoGame BingoGame, error) {
+func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	var err error
 	if bingoGame == nil {
 		return nil, errors.New("bingoGame was nil")

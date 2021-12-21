@@ -65,7 +65,7 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 	return BingoBoard{ boardLines: bingoBoard.values, answerLines: newAnswers }, err
 }
 
-func getBingoBoardsAnswersForWinningNumber(bingoBoards BingoBoard[], winningNumber int) ([]BingoBoards, error) {
+func getBingoBoardsAnswersForWinningNumber(bingoBoards []BingoBoard, winningNumber int) ([]BingoBoards, error) {
 	var err error
 	if bingoBoards == nil {
 		return nil, errors.New("bingoBoards array was nil")
