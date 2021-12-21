@@ -42,7 +42,7 @@ func Main() (error) {
 		return err
 	}
 
-	d4.PrintAllBingoBoards(bingoBoards)
+	d4.PrintBingoBoards(bingoBoards)
 	fmt.Println("winningNumbers - ", winningNumbers)
 	return nil
 }
