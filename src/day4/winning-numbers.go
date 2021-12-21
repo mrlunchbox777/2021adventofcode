@@ -6,7 +6,11 @@ import (
 	"strings"
 )
 
-func getWinningNumbers(input string) ([]int, error) {
+type WinningNumbers struct {
+	values []int
+}
+
+func getWinningNumbers(input string) (WinningNumbers, error) {
 	var winningNumbers []int
 	winningNumbersStringArr := strings.Split(input, ",")
 	err := error(nil)
@@ -23,5 +27,5 @@ func getWinningNumbers(input string) ([]int, error) {
 		winningNumbers = append(winningNumbers, currentInt)
 	}
 
-	return winningNumbers, err
+	return WinningNumbers{ values: winningNumbers }, err
 }

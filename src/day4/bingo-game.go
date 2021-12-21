@@ -9,7 +9,7 @@ import (
 
 type BingoGame struct {
 	bingoBoards []BingoBoard
-	answers []int
+	answers WinningNumbers
 }
 
 func GetBingoBoardsAnswers(bingoBoards BingoBoard[], winningNumbers []int) ([]BingoBoards, error) {
@@ -43,14 +43,12 @@ func PrepGame(scanner *bufio.Scanner, printWinningNumbers bool) (bingoGame Bingo
 	gotWinningNumbers := false
 	boardStrings := []string{}
 	bingoBoards := []BingoBoard{}
-	var winningNumbers []int
 	var err error
 
 	for scanner.Scan() {
 		i := strings.TrimSpace(scanner.Text())
 		if (!gotWinningNumbers) {
-			tempWinningNumbers, newErr := getWinningNumbers(i)
-			winningNumbers = tempWinningNumbers
+			winningNumbers, newErr := getWinningNumbers(i)
 			if newErr != nil {
 				if (err == nil){
 					err = newErr
@@ -60,7 +58,7 @@ func PrepGame(scanner *bufio.Scanner, printWinningNumbers bool) (bingoGame Bingo
 			}
 			gotWinningNumbers = true
 			if (printWinningNumbers) {
-				fmt.Println("winningNumbers - ", winningNumbers)
+				fmt.Println("winningNumbers - ", winningNumbers.values)
 			}
 		} else {
 			if i == "" {
