@@ -35,25 +35,13 @@ func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 }
 
 func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winningNumber int) (BingoBoardLine, error) {
-	var areExistingAnswers bool
-	if values == nil {
-		return nil, errors.New("boardline values poco was nil")
-	}
-	if values.values == nil {
-		return nil, errors.New("boardline values.values poco was nil")
-	}
-	if answers == nil {
-		areExistingAnswers = false
-	} else {
-		areExistingAnswers := len(answers.values) > 0
-	}
-
+	areExistingAnswers := len(answers.values) > 0
 	var newAnswers []int
 	boardLength := len(values.values)
 
 	if areExistingAnswers {
 		if boardLength != len(values.values) {
-			return nil, errors.New("boardline answers.values length != boardline values.values length")
+			return BingoBoardLine{}, errors.New("boardline answers.values length != boardline values.values length")
 		}
 	}
 

@@ -36,6 +36,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	if len(winningNumbers) == 0 {
 		return nil, errors.New("winningNumbers was empty")
 	}
+	// do the work
 
 	newBoards := []BingoBoard
 	for i := 0; i < len(winningNumbers); i++ {
