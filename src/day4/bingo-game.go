@@ -12,19 +12,35 @@ type BingoGame struct {
 	answers WinningNumbers
 }
 
-func GetBingoBoardsAnswers(bingoBoards BingoBoard[], winningNumbers []int) ([]BingoBoards, error) {
+func CalcGame(bingoGame BingoGame) (bingoGame BingoGame, error) {
 	var err error
-	if winningNumbers == nil {
-		return nil, errors.New("bingoBoards array was nil")
+	if bingoGame == nil {
+		return nil, errors.New("bingoGame was nil")
 	}
-	winningNumbersLen := len(winningNumbers)
-	if  winningNumbersLen == 0 {
-		return nil, errors.New("bingoBoards array was empty")
+	if bingoGame.bingoBoards == nil {
+		return nil, errors.New("bingoGame.bingoBoards was nil")
+	}
+	if bingoGame.answers == nil {
+		return nil, errors.New("bingoGame.answers was nil")
+	}
+	if len(bingoGame.bingoBoards) == 0 {
+		return nil, errors.New("bingoGame.bingoBoards was empty")
+	}
+	if len(bingoGame.answers) == 0 {
+		return nil, errors.New("bingoGame.answers was empty")
+	}
+	if bingoGame.answers.values == nil {
+		return nil, errors.New("bingoGame.answers.values was nil")
+	}
+	winningNumbers := bingoGame.answers.values
+	if len(winningNumbers) == 0 {
+		return nil, errors.New("winningNumbers was empty")
 	}
 
 	newBoards := []BingoBoard
-	for i := 0; i < bingoBoardLen; i++ {
-		newBoard, newErr := getBingoBoardAnswers(bingoBoards[i], winningNumber)
+	for i := 0; i < len(winningNumbers); i++ {
+		winningNumber := winningNumber[i]
+		newBoard, newErr := getBingoBoardAnswers(bingoGame.bingoBoards, winningNumber)
 		if newErr != nil {
 			if (err == nil){
 				err = newErr
