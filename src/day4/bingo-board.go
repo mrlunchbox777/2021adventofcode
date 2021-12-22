@@ -37,16 +37,18 @@ func getBingoBoard(lineStrings []string) (BingoBoard, error) {
 
 func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard, error) {
 	var err error
+	newBoard := BingoBoard{ boardLines: bingoBoard.boardLines }
 
 	bingoBoardLinesLen := len(bingoBoard.boardLines)
 	if bingoBoardLinesLen == 0 {
-		return BingoBoard{}, errors.New("bingoBoard.boardLines count was 0")
+		err = errors.New("bingoBoard.boardLines count was 0")
 	}
 
-	var newAnswers = []BingoBoardLine{}
+	newBoard.answerLines = []BingoBoardLine{}
 	for i := 0; i < bingoBoardLinesLen; i++ {
 		// TODO: this is going error because we haven't set up blank answers (should probably do that at this point)
 		newAnswer, newErr := getBingoBoardLineAnswer(bingoBoard.boardLines[i], bingoBoard.answerLines[i], winningNumber)
+		newBoard.answerLines = append(newBoard.answerLines, newAnswer)
 		if newErr != nil {
 			if (err == nil){
 				err = newErr
@@ -54,10 +56,9 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
 			}
 		}
-		newAnswers := append(newAnswers, newAnswer)
 	}
 
-	return BingoBoard{ boardLines: bingoBoard.boardLines, answerLines: newAnswers }, err
+	return newBoard, err
 }
 
 func getBingoBoardsAnswersForWinningNumber(bingoBoards []BingoBoard, winningNumber int) ([]BingoBoard, error) {
