@@ -37,11 +37,12 @@ func Main() (error) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	bingoGame, err := d4.PrepGame(scanner, false)
+	bingoGame, err := d4.PrepGame(scanner)
 	if (err != nil){
 		return err
 	}
 	// d4.PrintBingoBoards(bingoGame)
+	// d4.PrintWinningNumbers(bingoGame)
 
 	bingoGame, err = d4.CalcGame(bingoGame)
 	if (err != nil){

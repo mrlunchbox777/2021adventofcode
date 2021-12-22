@@ -46,7 +46,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	return newGame, err
 }
 
-func PrepGame(scanner *bufio.Scanner, printWinningNumbers bool) (BingoGame, error) {
+func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
 	gotWinningNumbers := false
 	boardStrings := []string{}
 	bingoBoards := []BingoBoard{}
@@ -66,9 +66,6 @@ func PrepGame(scanner *bufio.Scanner, printWinningNumbers bool) (BingoGame, erro
 				}
 			}
 			gotWinningNumbers = true
-			if (printWinningNumbers) {
-				printWinningNumbersStruct(winningNumbers)
-			}
 		} else {
 			if i == "" {
 				if len(boardStrings) > 0 {
