@@ -10,6 +10,10 @@ type WinningNumbers struct {
 	values []int
 }
 
+func PrintWinningNumbers(bingoGame BingoGame) () {
+	fmt.Println("winningNumbers - ", bingoGame.answers.values)
+}
+
 func getWinningNumbers(input string) (WinningNumbers, error) {
 	var winningNumbers []int
 	winningNumbersStringArr := strings.Split(input, ",")
