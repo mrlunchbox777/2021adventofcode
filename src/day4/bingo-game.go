@@ -133,3 +133,30 @@ func PrintBingoBoards(bingoGame BingoGame) {
 	}
 	fmt.Println("number of Boards -", len(bingoGame.bingoBoards))
 }
+
+func getBingoBoardsAnswersForWinningNumber(bingoBoards []BingoBoard, winningNumber int) ([]BingoBoard, error) {
+	var err error
+	if bingoBoards == nil {
+		return nil, errors.New("bingoBoards array was nil")
+	}
+	bingoBoardsLen := len(bingoBoards)
+	if  bingoBoardsLen == 0 {
+		return nil, errors.New("bingoBoards array was empty")
+	}
+
+	newBoards := []BingoBoard{}
+	for i := 0; i < bingoBoardsLen; i++ {
+		newBoard, newErr := getBingoBoardAnswers(bingoBoards[i], winningNumber)
+		if newErr != nil {
+			if (err == nil){
+				err = newErr
+			} else {
+				err = fmt.Errorf("Combined error: %v %v", err, newErr)
+			}
+		}
+
+		newBoards := append(newBoards, newBoard)
+	}
+
+	return newBoards, err
+}
