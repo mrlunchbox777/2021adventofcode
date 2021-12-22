@@ -2,6 +2,7 @@ package day4
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -14,34 +15,25 @@ type BingoGame struct {
 
 func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	var err error
-	if bingoGame == nil {
-		return nil, errors.New("bingoGame was nil")
-	}
+	newGame := BingoGame{bingoBoards: bingoGame.bingoBoards, answers: bingoGame.answers}
 	if bingoGame.bingoBoards == nil {
-		return nil, errors.New("bingoGame.bingoBoards was nil")
-	}
-	if bingoGame.answers == nil {
-		return nil, errors.New("bingoGame.answers was nil")
+		return newGame, errors.New("bingoGame.bingoBoards was nil")
 	}
 	if len(bingoGame.bingoBoards) == 0 {
-		return nil, errors.New("bingoGame.bingoBoards was empty")
-	}
-	if len(bingoGame.answers) == 0 {
-		return nil, errors.New("bingoGame.answers was empty")
+		return newGame, errors.New("bingoGame.bingoBoards was empty")
 	}
 	if bingoGame.answers.values == nil {
-		return nil, errors.New("bingoGame.answers.values was nil")
+		return newGame, errors.New("bingoGame.answers.values was nil")
 	}
 	winningNumbers := bingoGame.answers.values
 	if len(winningNumbers) == 0 {
-		return nil, errors.New("winningNumbers was empty")
+		return newGame, errors.New("winningNumbers was empty")
 	}
-	// do the work
 
-	newBoards := []BingoBoard
 	for i := 0; i < len(winningNumbers); i++ {
-		winningNumber := winningNumber[i]
-		newBoard, newErr := getBingoBoardAnswers(bingoGame.bingoBoards, winningNumber)
+		winningNumber := winningNumbers[i]
+		newBoards, newErr := getBingoBoardsAnswers(newGame.bingoBoards, winningNumber)
+		newGame.bingoBoards = newBoards
 		if newErr != nil {
 			if (err == nil){
 				err = newErr
@@ -49,11 +41,9 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
 			}
 		}
-
-		newBoards := append(newBoards, newBoard)
 	}
 
-	return newBoards, err
+	return newGame, err
 }
 
 func PrepGame(scanner *bufio.Scanner, printWinningNumbers bool) (bingoGame BingoGame) {

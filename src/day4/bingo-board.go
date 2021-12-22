@@ -59,3 +59,27 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 
 	return newBoard, err
 }
+
+func getBingoBoardsAnswers(bingoBoards []BingoBoard, winningNumber int) ([]BingoBoard, error) {
+	var err error
+	bingoBoardsLen := len(bingoBoards)
+	newBoards := []BingoBoard{}
+
+	if bingoBoardsLen == 0 {
+		return newBoards, errors.New("bingoBoards count was 0")
+	}
+
+	for i := 0; i < bingoBoardsLen; i++ {
+		newBoard, newErr := getBingoBoardAnswers(bingoBoards[i], winningNumber)
+		newBoards = append(newBoards, newBoard)
+		if newErr != nil {
+			if (err == nil){
+				err = newErr
+			} else {
+				err = fmt.Errorf("Combined error: %v %v", err, newErr)
+			}
+		}
+	}
+
+	return newBoards, err
+}
