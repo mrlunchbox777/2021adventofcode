@@ -66,7 +66,7 @@ func PrepGame(scanner *bufio.Scanner, printWinningNumbers bool) (BingoGame, erro
 			}
 			gotWinningNumbers = true
 			if (printWinningNumbers) {
-				fmt.Println("winningNumbers - ", winningNumbers.values)
+				printWinningNumbersStruct(winningNumbers)
 			}
 		} else {
 			if i == "" {
@@ -111,7 +111,6 @@ func PrintBingoBoards(bingoGame BingoGame) {
 			for k := 0; k < len(bingoGame.bingoBoards[i].boardLines[j].values); k++ {
 				currentInt := bingoGame.bingoBoards[i].boardLines[j].values[k]
 				nextValue := strconv.Itoa(currentInt)
-				// fmt.Println("val -", nextValue, "raw -", bingoGame.bingoBoards[i].boardLines[j].values[k])
 				if currentInt < 10 {
 					lineValue.WriteString(" ")
 				}

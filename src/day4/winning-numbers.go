@@ -11,7 +11,12 @@ type WinningNumbers struct {
 }
 
 func PrintWinningNumbers(bingoGame BingoGame) () {
-	fmt.Println("winningNumbers - ", bingoGame.answers.values)
+	printWinningNumbersStruct(bingoGame.answers)
+}
+
+func printWinningNumbersStruct(winningNumbers WinningNumbers) () {
+	fmt.Println("winningNumbersLen - ", len(winningNumbers.values))
+	fmt.Println("winningNumbers - ", winningNumbers.values)
 }
 
 func getWinningNumbers(input string) (WinningNumbers, error) {
