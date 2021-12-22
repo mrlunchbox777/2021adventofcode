@@ -46,7 +46,6 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 
 	newBoard.answerLines = []BingoBoardLine{}
 	for i := 0; i < bingoBoardLinesLen; i++ {
-		// TODO: this is going error because we haven't set up blank answers (should probably do that at this point)
 		newAnswer, newErr := getBingoBoardLineAnswer(bingoBoard.boardLines[i], bingoBoard.answerLines[i], winningNumber)
 		newBoard.answerLines = append(newBoard.answerLines, newAnswer)
 		if newErr != nil {
