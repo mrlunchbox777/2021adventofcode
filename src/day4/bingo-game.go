@@ -46,10 +46,11 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	return newGame, err
 }
 
-func PrepGame(scanner *bufio.Scanner, printWinningNumbers bool) (bingoGame BingoGame) {
+func PrepGame(scanner *bufio.Scanner, printWinningNumbers bool) (BingoGame, error) {
 	gotWinningNumbers := false
 	boardStrings := []string{}
 	bingoBoards := []BingoBoard{}
+	var winningNumbers WinningNumbers
 	var err error
 
 	for scanner.Scan() {
