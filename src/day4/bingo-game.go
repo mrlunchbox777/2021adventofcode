@@ -124,3 +124,24 @@ func PrintBingoBoards(bingoGame BingoGame) {
 	}
 	fmt.Println("number of Boards -", len(bingoGame.bingoBoards))
 }
+
+func PrintBingoBoardsAnswers(bingoGame BingoGame) {
+	for i := 0; i < len(bingoGame.bingoBoards); i++ {
+		fmt.Println("Bingo Board -", i)
+		for j := 0; j < len(bingoGame.bingoBoards[i].answerLines); j++ {
+			var lineValue strings.Builder
+			for k := 0; k < len(bingoGame.bingoBoards[i].answerLines[j].values); k++ {
+				currentInt := bingoGame.bingoBoards[i].answerLines[j].values[k]
+				nextValue := strconv.Itoa(currentInt)
+				if currentInt < 10 {
+					lineValue.WriteString(" ")
+				}
+				lineValue.WriteString(nextValue)
+				lineValue.WriteString(" ")
+			}
+			fmt.Println(lineValue.String())
+		}
+		fmt.Println("")
+	}
+	fmt.Println("number of Boards -", len(bingoGame.bingoBoards))
+}

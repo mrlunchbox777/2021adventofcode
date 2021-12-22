@@ -48,7 +48,7 @@ func Main() (error) {
 		return err
 	}
 
-	// d4.PrintBingoBoards(bingoGame)
+	d4.PrintBingoBoardsAnswers(bingoGame)
 	d4.PrintWinningNumbers(bingoGame)
 	return nil
 }
