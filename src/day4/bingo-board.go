@@ -44,6 +44,10 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 		return newBoard, errors.New("bingoBoard.boardLines count was 0")
 	}
 
+	if len(bingoBoard.answerLines) == 0 {
+		bingoBoard.answerLines = make([]BingoBoardLine, bingoBoardLinesLen)
+	}
+
 	newBoard.answerLines = []BingoBoardLine{}
 	for i := 0; i < bingoBoardLinesLen; i++ {
 		newAnswer, newErr := getBingoBoardLineAnswer(bingoBoard.boardLines[i], bingoBoard.answerLines[i], winningNumber)

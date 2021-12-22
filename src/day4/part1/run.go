@@ -41,8 +41,14 @@ func Main() (error) {
 	if (err != nil){
 		return err
 	}
+	// d4.PrintBingoBoards(bingoGame)
 
-	d4.PrintBingoBoards(bingoGame)
+	bingoGame, err = d4.CalcGame(bingoGame)
+	if (err != nil){
+		return err
+	}
+
+	// d4.PrintBingoBoards(bingoGame)
 	d4.PrintWinningNumbers(bingoGame)
 	return nil
 }
