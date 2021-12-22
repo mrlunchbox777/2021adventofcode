@@ -41,7 +41,7 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 
 	bingoBoardLinesLen := len(bingoBoard.boardLines)
 	if bingoBoardLinesLen == 0 {
-		err = errors.New("bingoBoard.boardLines count was 0")
+		return newBoard, errors.New("bingoBoard.boardLines count was 0")
 	}
 
 	newBoard.answerLines = []BingoBoardLine{}
@@ -71,8 +71,8 @@ func getBingoBoardsAnswersForWinningNumber(bingoBoards []BingoBoard, winningNumb
 		return nil, errors.New("bingoBoards array was empty")
 	}
 
-	newBoards := []BingoBoard
-	for i := 0; i < bingoBoardLen; i++ {
+	newBoards := []BingoBoard{}
+	for i := 0; i < bingoBoardsLen; i++ {
 		newBoard, newErr := getBingoBoardAnswers(bingoBoards[i], winningNumber)
 		if newErr != nil {
 			if (err == nil){
