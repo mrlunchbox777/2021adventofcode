@@ -16,6 +16,7 @@ type BingoGame struct {
 func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	var err error
 	newGame := BingoGame{bingoBoards: bingoGame.bingoBoards, answers: bingoGame.answers}
+
 	if bingoGame.bingoBoards == nil {
 		return newGame, errors.New("bingoGame.bingoBoards was nil")
 	}
@@ -31,9 +32,12 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	}
 
 	for i := 0; i < len(winningNumbers); i++ {
-		winningNumber := winningNumbers[i]
-		newBoards, newErr := getBingoBoardsAnswers(newGame.bingoBoards, winningNumber)
-		newGame.bingoBoards = newBoards
+		if (i > 10) {
+			// continue
+		}
+		newGameTemp, newErr := calcGameRound(newGame, winningNumbers[i])
+		newGame = newGameTemp
+
 		if newErr != nil {
 			if (err == nil){
 				err = newErr
@@ -141,4 +145,22 @@ func PrintBingoBoardsAnswers(bingoGame BingoGame) {
 		fmt.Println("")
 	}
 	fmt.Println("number of Boards -", len(bingoGame.bingoBoards))
+}
+
+func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
+	var err error
+	newGame := BingoGame{bingoBoards: bingoGame.bingoBoards, answers: bingoGame.answers}
+
+	newBoards, newErr := getBingoBoardsAnswers(newGame.bingoBoards, winningNumber)
+	newGame.bingoBoards = newBoards
+	if newErr != nil {
+		if (err == nil){
+			err = newErr
+		} else {
+			err = fmt.Errorf("Combined error: %v %v", err, newErr)
+		}
+	}
+	// check for win
+
+	return newGame, err
 }
