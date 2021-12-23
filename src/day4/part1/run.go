@@ -8,27 +8,6 @@ import (
 	"strconv"
 )
 
-func stringToIntArr(str string) ([]int, error) {
-	chars := []rune(str)
-	ints := []int{}
-	var err error
-
-	for i := 0; i < len(chars); i++ {
-		currentChar := string(chars[i])
-		currentInt, newErr := strconv.Atoi(currentChar)
-		if newErr != nil {
-			if (err == nil){
-				err = newErr
-			} else {
-				err = fmt.Errorf("Combined error: %v %v", err, newErr)
-			}
-		}
-		ints = append(ints, currentInt)
-	}
-
-	return ints, err
-}
-
 func Main() (error) {
 	file, err := os.Open("src/day4/data/input")
 	if err != nil {
