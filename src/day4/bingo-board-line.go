@@ -18,10 +18,13 @@ func getBingoBoardLinePrintString(boardLine BingoBoardLine) (string) {
 	for i := 0; i < bingoBoardLinesLen; i++ {
 		currentInt := boardLine.values[i]
 		nextValue := strconv.Itoa(currentInt)
+
 		if currentInt < 10 {
 			lineValue.WriteString(" ")
 		}
+
 		lineValue.WriteString(nextValue)
+
 		if i < (bingoBoardLinesLen - 1) {
 			lineValue.WriteString(" ")
 		}
