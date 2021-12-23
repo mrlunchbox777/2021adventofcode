@@ -11,6 +11,29 @@ type BingoBoard struct {
 	answerLines []BingoBoardLine
 }
 
+func getBingoBoardPrintString(board BingoBoard, getAnswersInstead bool) (string) {
+	var boardValue strings.Builder
+	var bingoBoardLen int
+	if getAnswersInstead {
+		bingoBoardLen = len(board.answerLines)
+	} else {
+		bingoBoardLen = len(board.boardLines)
+	}
+
+	for i := 0; i < bingoBoardLen; i++ {
+		if getAnswersInstead {
+			boardValue.WriteString(getBingoBoardLinePrintString(board.answerLines[i]))
+		} else {
+			boardValue.WriteString(getBingoBoardLinePrintString(board.boardLines[i]))
+		}
+		if i < (bingoBoardLen - 1) {
+			boardValue.WriteString("\n")
+		}
+	}
+
+	return boardValue.String()
+}
+
 func getBingoBoard(lineStrings []string) (BingoBoard, error) {
 	var boardLines []BingoBoardLine
 	var err error

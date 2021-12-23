@@ -11,6 +11,25 @@ type BingoBoardLine struct {
 	values []int
 }
 
+func getBingoBoardLinePrintString(boardLine BingoBoardLine) (string) {
+	var lineValue strings.Builder
+	bingoBoardLinesLen := len(boardLine.values)
+
+	for i := 0; i < bingoBoardLinesLen; i++ {
+		currentInt := boardLine.values[i]
+		nextValue := strconv.Itoa(currentInt)
+		if currentInt < 10 {
+			lineValue.WriteString(" ")
+		}
+		lineValue.WriteString(nextValue)
+		if i < (bingoBoardLinesLen - 1) {
+			lineValue.WriteString(" ")
+		}
+	}
+
+	return lineValue.String()
+}
+
 func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 	var boardLine []int
 	var err error

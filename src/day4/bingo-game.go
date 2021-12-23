@@ -4,13 +4,13 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"strconv"
 	"strings"
 )
 
 type BingoGame struct {
 	bingoBoards []BingoBoard
 	answers WinningNumbers
+	winningBoard BingoBoard
 }
 
 func CalcGame(bingoGame BingoGame) (BingoGame, error) {
@@ -105,45 +105,8 @@ func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
 	return BingoGame{ bingoBoards: bingoBoards, answers: winningNumbers}, err
 }
 
-func PrintBingoBoards(bingoGame BingoGame) {
-	for i := 0; i < len(bingoGame.bingoBoards); i++ {
-		fmt.Println("Bingo Board -", i)
-		for j := 0; j < len(bingoGame.bingoBoards[i].boardLines); j++ {
-			var lineValue strings.Builder
-			for k := 0; k < len(bingoGame.bingoBoards[i].boardLines[j].values); k++ {
-				currentInt := bingoGame.bingoBoards[i].boardLines[j].values[k]
-				nextValue := strconv.Itoa(currentInt)
-				if currentInt < 10 {
-					lineValue.WriteString(" ")
-				}
-				lineValue.WriteString(nextValue)
-				lineValue.WriteString(" ")
-			}
-			fmt.Println(lineValue.String())
-		}
-		fmt.Println("")
-	}
-	fmt.Println("number of Boards -", len(bingoGame.bingoBoards))
-}
-
-func PrintBingoBoardsAnswers(bingoGame BingoGame) {
-	for i := 0; i < len(bingoGame.bingoBoards); i++ {
-		fmt.Println("Bingo Board -", i)
-		for j := 0; j < len(bingoGame.bingoBoards[i].answerLines); j++ {
-			var lineValue strings.Builder
-			for k := 0; k < len(bingoGame.bingoBoards[i].answerLines[j].values); k++ {
-				currentInt := bingoGame.bingoBoards[i].answerLines[j].values[k]
-				nextValue := strconv.Itoa(currentInt)
-				if currentInt < 10 {
-					lineValue.WriteString(" ")
-				}
-				lineValue.WriteString(nextValue)
-				lineValue.WriteString(" ")
-			}
-			fmt.Println(lineValue.String())
-		}
-		fmt.Println("")
-	}
+func PrintBingoBoards(bingoGame BingoGame, getAnswersInstead bool) {
+	fmt.Println(printBingoBoardsStruct(bingoGame, getAnswersInstead))
 	fmt.Println("number of Boards -", len(bingoGame.bingoBoards))
 }
 
@@ -163,4 +126,20 @@ func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 	// check for win
 
 	return newGame, err
+}
+
+func printBingoBoardsStruct(bingoGame BingoGame, getAnswersInstead bool) (string) {
+	var gameValue strings.Builder
+	bingoGameLen := len(bingoGame.bingoBoards)
+
+	for i := 0; i < bingoGameLen ; i++ {
+		if i > 0 {
+			gameValue.WriteString("\n")
+		}
+		gameValue.WriteString(fmt.Sprintf("Bingo Board - %v\n", i))
+		gameValue.WriteString(getBingoBoardPrintString(bingoGame.bingoBoards[i], getAnswersInstead))
+		gameValue.WriteString("\n")
+	}
+
+	return gameValue.String()
 }
