@@ -3,9 +3,7 @@ package day4part1
 import (
 	"bufio"
 	d4 "github.com/mrlunchbox777/2021adventofcode/src/day4"
-	"fmt"
 	"os"
-	"strconv"
 )
 
 func Main() (error) {

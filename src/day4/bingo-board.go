@@ -38,8 +38,8 @@ func getBingoBoard(lineStrings []string) (BingoBoard, error) {
 	var boardLines []BingoBoardLine
 	var err error
 
-	for i := 0; i < len(lineStrings); i++ {
-		currentString := strings.TrimSpace(lineStrings[i])
+	for _, value := range lineStrings {
+		currentString := strings.TrimSpace(value)
 		if currentString == ""{
 			continue
 		}
@@ -72,8 +72,8 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 	}
 
 	newBoard.answerLines = []BingoBoardLine{}
-	for i := 0; i < bingoBoardLinesLen; i++ {
-		newAnswer, newErr := getBingoBoardLineAnswer(bingoBoard.boardLines[i], bingoBoard.answerLines[i], winningNumber)
+	for i, boardLine := range bingoBoard.boardLines {
+		newAnswer, newErr := getBingoBoardLineAnswer(boardLine, bingoBoard.answerLines[i], winningNumber)
 		newBoard.answerLines = append(newBoard.answerLines, newAnswer)
 		if newErr != nil {
 			if (err == nil){
@@ -89,15 +89,14 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 
 func getBingoBoardsAnswers(bingoBoards []BingoBoard, winningNumber int) ([]BingoBoard, error) {
 	var err error
-	bingoBoardsLen := len(bingoBoards)
 	newBoards := []BingoBoard{}
 
-	if bingoBoardsLen == 0 {
+	if len(bingoBoards) == 0 {
 		return newBoards, errors.New("bingoBoards count was 0")
 	}
 
-	for i := 0; i < bingoBoardsLen; i++ {
-		newBoard, newErr := getBingoBoardAnswers(bingoBoards[i], winningNumber)
+	for _, bingoBoard := range bingoBoards {
+		newBoard, newErr := getBingoBoardAnswers(bingoBoard, winningNumber)
 		newBoards = append(newBoards, newBoard)
 		if newErr != nil {
 			if (err == nil){

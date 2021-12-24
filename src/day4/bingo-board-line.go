@@ -15,8 +15,7 @@ func getBingoBoardLinePrintString(boardLine BingoBoardLine) (string) {
 	var lineValue strings.Builder
 	bingoBoardLinesLen := len(boardLine.values)
 
-	for i := 0; i < bingoBoardLinesLen; i++ {
-		currentInt := boardLine.values[i]
+	for i, currentInt := range boardLine.values {
 		nextValue := strconv.Itoa(currentInt)
 
 		if currentInt < 10 {
@@ -37,8 +36,8 @@ func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 	var boardLine []int
 	var err error
 
-	for i := 0; i < len(valueStrings); i++ {
-		currentString := strings.TrimSpace(valueStrings[i])
+	for _, value := range valueStrings {
+		currentString := strings.TrimSpace(value)
 		if currentString == "" {
 			continue
 		}

@@ -10,7 +10,7 @@ import (
 type BingoGame struct {
 	bingoBoards []BingoBoard
 	answers WinningNumbers
-	winningBoard BingoBoard
+	winningBoards []BingoBoard
 }
 
 func CalcGame(bingoGame BingoGame) (BingoGame, error) {
@@ -124,6 +124,16 @@ func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 		}
 	}
 	// check for win
+	// bingoGameLen := len(bingoGame.bingoBoards)
+
+	// for i, board := range bingoGame.bingoBoards {
+	// 	if i > 0 {
+	// 		gameValue.WriteString("\n")
+	// 	}
+	// 	gameValue.WriteString(fmt.Sprintf("Bingo Board - %v\n", i))
+	// 	gameValue.WriteString(getBingoBoardPrintString(bingoGame.bingoBoards[i], getAnswersInstead))
+	// 	gameValue.WriteString("\n")
+	// }
 
 	return newGame, err
 }
