@@ -31,11 +31,11 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 		return newGame, errors.New("winningNumbers was empty")
 	}
 
-	for i := 0; i < len(winningNumbers); i++ {
+	for i, winningNumber := range winningNumbers {
 		if (i > 10) {
-			// continue
+			continue
 		}
-		newGameTemp, newErr := calcGameRound(newGame, winningNumbers[i])
+		newGameTemp, newErr := calcGameRound(newGame, winningNumber)
 		newGame = newGameTemp
 
 		if newErr != nil {
@@ -140,14 +140,13 @@ func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 
 func printBingoBoardsStruct(bingoGame BingoGame, getAnswersInstead bool) (string) {
 	var gameValue strings.Builder
-	bingoGameLen := len(bingoGame.bingoBoards)
 
-	for i := 0; i < bingoGameLen ; i++ {
+	for i, bingoBoard := range bingoGame.bingoBoards {
 		if i > 0 {
 			gameValue.WriteString("\n")
 		}
 		gameValue.WriteString(fmt.Sprintf("Bingo Board - %v\n", i))
-		gameValue.WriteString(getBingoBoardPrintString(bingoGame.bingoBoards[i], getAnswersInstead))
+		gameValue.WriteString(getBingoBoardPrintString(bingoBoard, getAnswersInstead))
 		gameValue.WriteString("\n")
 	}
 

@@ -24,8 +24,8 @@ func getWinningNumbers(input string) (WinningNumbers, error) {
 	winningNumbersStringArr := strings.Split(input, ",")
 	err := error(nil)
 
-	for i := 0; i < len(winningNumbersStringArr); i++ {
-		currentInt, newErr := strconv.Atoi(winningNumbersStringArr[i])
+	for _, currentIntStr := range winningNumbersStringArr {
+		currentInt, newErr := strconv.Atoi(currentIntStr)
 		if newErr != nil {
 			if (err == nil){
 				err = newErr
