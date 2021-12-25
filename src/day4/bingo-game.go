@@ -46,11 +46,10 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 			}
 		}
 
-		if len(newGame.winningBoards) != 0 {
-			fmt.Println(fmt.Sprintf("WINNERS - %v:", len(newGame.winningBoards)))
-			fmt.Println(newGame.winningBoards[0].answerLines[0].values[0])
-			printBingoBoardsStruct(bingoGame.winningBoards, false)
-			fmt.Println("printed board")
+		if len(newGame.winningBoards) > 0 {
+			fmt.Println(printBingoBoardsStruct(newGame.winningBoards, false))
+			fmt.Println(fmt.Sprintf("IT TOOK %v ROUNDS", i))
+			fmt.Println(fmt.Sprintf("THERE WERE (%v) WINNERS:", len(newGame.winningBoards)))
 			return newGame, err
 		}
 	}
