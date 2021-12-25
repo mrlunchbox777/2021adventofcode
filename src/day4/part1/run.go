@@ -26,7 +26,7 @@ func Main() (error) {
 		return err
 	}
 
-	d4.PrintBingoBoards(bingoGame, true)
+	// d4.PrintBingoBoards(bingoGame, true)
 	d4.PrintWinningNumbers(bingoGame)
 	return nil
 }

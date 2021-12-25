@@ -33,7 +33,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 
 	for i, winningNumber := range winningNumbers {
 		if (i > 10) {
-			continue
+			// continue
 		}
 		newGameTemp, newErr := calcGameRound(newGame, winningNumber)
 		newGame = newGameTemp
@@ -44,6 +44,14 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
 			}
+		}
+
+		if len(newGame.winningBoards) != 0 {
+			fmt.Println(fmt.Sprintf("WINNERS - %v:", len(newGame.winningBoards)))
+			fmt.Println(newGame.winningBoards[0].answerLines[0].values[0])
+			printBingoBoardsStruct(bingoGame.winningBoards, false)
+			fmt.Println("printed board")
+			return newGame, err
 		}
 	}
 
@@ -106,7 +114,7 @@ func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
 }
 
 func PrintBingoBoards(bingoGame BingoGame, getAnswersInstead bool) {
-	fmt.Println(printBingoBoardsStruct(bingoGame, getAnswersInstead))
+	fmt.Println(printBingoBoardsStruct(bingoGame.bingoBoards, getAnswersInstead))
 	fmt.Println("number of Boards -", len(bingoGame.bingoBoards))
 }
 
@@ -138,15 +146,13 @@ func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 		}
 	}
 
-	// check if there are winning boards (maybe one level up in funcs?)
-
 	return newGame, err
 }
 
-func printBingoBoardsStruct(bingoGame BingoGame, getAnswersInstead bool) (string) {
+func printBingoBoardsStruct(boards []BingoBoard, getAnswersInstead bool) (string) {
 	var gameValue strings.Builder
 
-	for i, bingoBoard := range bingoGame.bingoBoards {
+	for i, bingoBoard := range boards {
 		if i > 0 {
 			gameValue.WriteString("\n")
 		}
