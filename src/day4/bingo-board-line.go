@@ -11,6 +11,21 @@ type BingoBoardLine struct {
 	values []int
 }
 
+func checkForBingoBoardAnswerLineWin(answerLine BingoBoardLine) (bool, error) {
+	if len(answerLine.values) == 0 {
+		return false, errors.New("answerLine was empty")
+	}
+
+	winningLine := true
+	for _, val := range answerLine.values {
+		if val != 1 {
+			winningLine = false
+		}
+	}
+
+	return winningLine, nil
+}
+
 func getBingoBoardLinePrintString(boardLine BingoBoardLine) (string) {
 	var lineValue strings.Builder
 	bingoBoardLinesLen := len(boardLine.values)

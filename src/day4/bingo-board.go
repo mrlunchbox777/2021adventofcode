@@ -11,6 +11,44 @@ type BingoBoard struct {
 	answerLines []BingoBoardLine
 }
 
+func checkForBingoBoardAnswerLinesWin(lines []BingoBoardLine) (bool, error) {
+	var err error
+	won := false
+
+	for _, answerLine := range lines {
+		wonTemp, newErr := checkForBingoBoardAnswerLineWin(answerLine)
+
+		if newErr != nil {
+			return won, newErr
+		}
+
+		if wonTemp {
+			return wonTemp, err
+		}
+	}
+
+	return won, err
+}
+
+func checkForBingoBoardWin(board BingoBoard) (bool, error) {
+	won, err := checkForBingoBoardAnswerLinesWin(board.answerLines) 
+	if won || err != nil {
+		return won, err
+	}
+
+	newLines := []BingoBoardLine{}
+	for i, _ := range board.answerLines[0].values {
+		newLine := BingoBoardLine{}
+		for _, currentLine := range board.answerLines {
+			newLine.values = append(newLine.values, currentLine.values[i])
+		}
+		newLines = append(newLines, newLine)
+	}
+
+	won, err = checkForBingoBoardAnswerLinesWin(newLines) 
+	return won, err
+}
+
 func getBingoBoardPrintString(board BingoBoard, getAnswersInstead bool) (string) {
 	var boardValue strings.Builder
 	var bingoBoardLen int

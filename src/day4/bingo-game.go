@@ -123,17 +123,22 @@ func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 			err = fmt.Errorf("Combined error: %v %v", err, newErr)
 		}
 	}
-	// check for win
-	// bingoGameLen := len(bingoGame.bingoBoards)
 
-	// for i, board := range bingoGame.bingoBoards {
-	// 	if i > 0 {
-	// 		gameValue.WriteString("\n")
-	// 	}
-	// 	gameValue.WriteString(fmt.Sprintf("Bingo Board - %v\n", i))
-	// 	gameValue.WriteString(getBingoBoardPrintString(bingoGame.bingoBoards[i], getAnswersInstead))
-	// 	gameValue.WriteString("\n")
-	// }
+	for _, board := range newGame.bingoBoards {
+		gotWinner, newErr := checkForBingoBoardWin(board)
+		if gotWinner {
+			newGame.winningBoards = append(bingoGame.winningBoards, board)
+		}
+		if newErr != nil {
+			if (err == nil){
+				err = newErr
+			} else {
+				err = fmt.Errorf("Combined error: %v %v", err, newErr)
+			}
+		}
+	}
+
+	// check if there are winning boards (maybe one level up in funcs?)
 
 	return newGame, err
 }
