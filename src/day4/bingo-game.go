@@ -11,6 +11,7 @@ type BingoGame struct {
 	bingoBoards []BingoBoard
 	answers WinningNumbers
 	winningBoards []BingoBoard
+	rounds int
 }
 
 func CalcGame(bingoGame BingoGame) (BingoGame, error) {
@@ -36,6 +37,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 			// continue
 		}
 		newGameTemp, newErr := calcGameRound(newGame, winningNumber)
+		newGameTemp.rounds = i
 		newGame = newGameTemp
 
 		if newErr != nil {
@@ -47,9 +49,6 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 		}
 
 		if len(newGame.winningBoards) > 0 {
-			fmt.Println(printBingoBoardsStruct(newGame.winningBoards, false))
-			fmt.Println(fmt.Sprintf("IT TOOK %v ROUNDS", i))
-			fmt.Println(fmt.Sprintf("THERE WERE (%v) WINNERS:", len(newGame.winningBoards)))
 			return newGame, err
 		}
 	}
@@ -115,6 +114,17 @@ func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
 func PrintBingoBoards(bingoGame BingoGame, getAnswersInstead bool) {
 	fmt.Println(printBingoBoardsStruct(bingoGame.bingoBoards, getAnswersInstead))
 	fmt.Println("number of Boards -", len(bingoGame.bingoBoards))
+}
+
+func PrintResults(bingoGame BingoGame) (error) {
+	if len(bingoGame.winningBoards) == 0 {
+		return errors.New("No Winning Boards")
+	}
+
+	fmt.Println(fmt.Sprintf("IT TOOK %v ROUNDS", bingoGame.rounds))
+	fmt.Println(fmt.Sprintf("THERE WERE (%v) WINNERS:", len(bingoGame.winningBoards)))
+	fmt.Println(printBingoBoardsStruct(bingoGame.winningBoards, false))
+	return nil
 }
 
 func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
