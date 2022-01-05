@@ -153,6 +153,7 @@ func sumUnmarkedNumbersBoard(bingoBoard BingoBoard) (int, error) {
 	bingoBoardAnswersLen := len(bingoBoard.answerLines)
 	var err error
 	var newErr error
+	sum := 0
 	currentSum := 0
 
 	if bingoBoardLinesLen <= 0 {
@@ -171,7 +172,8 @@ func sumUnmarkedNumbersBoard(bingoBoard BingoBoard) (int, error) {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
 			}
 		}
+		sum += currentSum
 	}
 
-	return currentSum, err
+	return sum, err
 }
