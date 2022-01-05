@@ -10,6 +10,7 @@ import (
 type WinningNumbers struct {
 	values []int
 	latestWinningNumber int
+	latestLosingNumber int
 }
 
 func PrintWinningNumbers(bingoGame BingoGame) () {
@@ -20,6 +21,7 @@ func printWinningNumbersStruct(winningNumbers WinningNumbers) () {
 	fmt.Println("winningNumbersLen - ", len(winningNumbers.values))
 	fmt.Println("winningNumbers - ", winningNumbers.values)
 	fmt.Println("latestWinningNumber - ", winningNumbers.latestWinningNumber)
+	fmt.Println("latestLosingNumber - ", winningNumbers.latestLosingNumber)
 }
 
 func getWinningNumbers(input string) (WinningNumbers, error) {
@@ -47,13 +49,21 @@ func getWinningNumbers(input string) (WinningNumbers, error) {
 	return WinningNumbers{ values: winningNumbers }, err
 }
 
-func setLatestWinningNumber(winningNumbers WinningNumbers, newLatest int) (WinningNumbers, error) {
+func setLatestNumber(winningNumbers WinningNumbers, newLatest int, setLoser bool) (WinningNumbers, error) {
 	if winningNumbers.values == nil || len(winningNumbers.values) == 0 {
 		return winningNumbers, errors.New("winningNumbers was nil, or len(winningNumbers.values) == 0")
 	}
-	return WinningNumbers{ values: winningNumbers.values, latestWinningNumber: newLatest}, nil
+	if setLoser {
+		return WinningNumbers{ values: winningNumbers.values, latestWinningNumber: winningNumbers.latestWinningNumber, latestLosingNumber: newLatest}, nil
+	} else {
+		return WinningNumbers{ values: winningNumbers.values, latestWinningNumber: newLatest, latestLosingNumber: winningNumbers.latestLosingNumber}, nil
+	}
 }
 
-func getLatestWinningNumber(winningNumbers WinningNumbers) (int) {
-	return winningNumbers.latestWinningNumber
+func getLatestNumber(winningNumbers WinningNumbers, getLoser bool) (int) {
+	if getLoser {
+		return winningNumbers.latestLosingNumber
+	} else {
+		return winningNumbers.latestWinningNumber
+	}
 }

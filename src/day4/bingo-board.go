@@ -148,7 +148,7 @@ func getBingoBoardsAnswers(bingoBoards []BingoBoard, winningNumber int) ([]Bingo
 	return newBoards, err
 }
 
-func sumUnmarkedNumbersBoard(bingoBoard BingoBoard) (int, error) {
+func sumUnmarkedNumbersBoard(bingoBoard BingoBoard, getLoser bool) (int, error) {
 	bingoBoardLinesLen := len(bingoBoard.boardLines)
 	bingoBoardAnswersLen := len(bingoBoard.answerLines)
 	var err error
@@ -164,7 +164,7 @@ func sumUnmarkedNumbersBoard(bingoBoard BingoBoard) (int, error) {
 	}
 
 	for i, line := range bingoBoard.boardLines {
-		currentSum, newErr = sumUnmarkedNumbersBoardLine(line, bingoBoard.answerLines[i])
+		currentSum, newErr = sumUnmarkedNumbersBoardLine(line, bingoBoard.answerLines[i], getLoser)
 		if newErr != nil {
 			if (err == nil){
 				err = newErr

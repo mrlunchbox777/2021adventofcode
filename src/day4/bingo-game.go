@@ -11,12 +11,19 @@ type BingoGame struct {
 	bingoBoards []BingoBoard
 	answers WinningNumbers
 	winningBoards []BingoBoard
+	losingBoards []BingoBoard
 	rounds int
 }
 
 func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	var err error
-	newGame := BingoGame{bingoBoards: bingoGame.bingoBoards, answers: bingoGame.answers}
+	newGame := BingoGame {
+		bingoBoards: bingoGame.bingoBoards,
+		answers: bingoGame.answers,
+		winningBoards: bingoGame.winningBoards,
+		losingBoards: bingoGame.losingBoards,
+		rounds: bingoGame.rounds,
+	}
 
 	if bingoGame.bingoBoards == nil {
 		return newGame, errors.New("bingoGame.bingoBoards was nil")
@@ -44,18 +51,24 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 
 		newGameTemp.rounds = i
 		newGame = newGameTemp
-		newGame.answers, newErr = setLatestWinningNumber(newGame.answers, winningNumber)
+		if len(newGame.winningBoards) > 0 {
+			newGame.answers, newErr = setLatestNumber(newGame.answers, winningNumber, false)
+			if newErr != nil {
+				if (err == nil){
+					err = newErr
+				} else {
+					err = fmt.Errorf("Combined error: %v %v", err, newErr)
+				}
+			}
+		}
 
+		newGame.answers, newErr = setLatestNumber(newGame.answers, winningNumber, true)
 		if newErr != nil {
 			if (err == nil){
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
 			}
-		}
-
-		if len(newGame.winningBoards) > 0 {
-			return newGame, err
 		}
 	}
 
@@ -127,7 +140,12 @@ func PrintResults(bingoGame BingoGame) (error) {
 		return errors.New("No Winning Boards")
 	}
 
-	winningScore, err := findWinningScore(bingoGame)
+	winningScore, err := findWinningScore(bingoGame, false)
+	if err != nil {
+		return err
+	}
+
+	losingScore, err := findWinningScore(bingoGame, true)
 	if err != nil {
 		return err
 	}
@@ -137,13 +155,20 @@ func PrintResults(bingoGame BingoGame) (error) {
 	fmt.Println(printBingoBoardsStruct(bingoGame.winningBoards, false))
 	fmt.Println("")
 	fmt.Println(fmt.Sprintf("THE WINNING SCORE IS - %v", winningScore))
+	fmt.Println(fmt.Sprintf("THE LOSING SCORE IS - %v", losingScore))
 
 	return nil
 }
 
 func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 	var err error
-	newGame := BingoGame{bingoBoards: bingoGame.bingoBoards, answers: bingoGame.answers}
+	newGame := BingoGame {
+		bingoBoards: bingoGame.bingoBoards,
+		answers: bingoGame.answers,
+		winningBoards: bingoGame.winningBoards,
+		losingBoards: bingoGame.losingBoards,
+		rounds: bingoGame.rounds,
+	}
 
 	newBoards, newErr := getBingoBoardsAnswers(newGame.bingoBoards, winningNumber)
 	newGame.bingoBoards = newBoards
@@ -169,25 +194,25 @@ func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 		}
 	}
 
+	newGame.losingBoards = reverseBingoBoards(bingoGame.winningBoards)
+
 	return newGame, err
 }
 
-func findWinningScore(bingoGame BingoGame) (int, error) {
+func findWinningScore(bingoGame BingoGame, getLoser bool) (int, error) {
 	winningBoardsLen := len(bingoGame.winningBoards)
-	if winningBoardsLen > 1 || winningBoardsLen == 0 {
-		return 0, fmt.Errorf("winningBoardsLen length invalid (expecting 1), winningBoardsLen length - %v", winningBoardsLen)
+	if winningBoardsLen == 0 {
+		return 0, fmt.Errorf("winningBoardsLen length invalid (expecting >1), winningBoardsLen length - %v", winningBoardsLen)
 	}
 
-	sumOfUnmarkedNumbers, err := sumUnmarkedNumbersGame(bingoGame)
+	sumOfUnmarkedNumbers, err := sumUnmarkedNumbersGame(bingoGame, getLoser)
 
 	if err != nil {
 		return 0, err
 	}
 
-	winningNumber := getLatestWinningNumber(bingoGame.answers)
+	winningNumber := getLatestNumber(bingoGame.answers, getLoser)
 	winningScore := sumOfUnmarkedNumbers * winningNumber
-
-	fmt.Println(fmt.Sprintf("winningNumber - %v, sumOfUnmarkedNumbers - %v, winningScore - %v", winningNumber, sumOfUnmarkedNumbers, winningScore))
 
 	return winningScore, nil
 }
@@ -207,10 +232,24 @@ func printBingoBoardsStruct(boards []BingoBoard, getAnswersInstead bool) (string
 	return gameValue.String()
 }
 
-func sumUnmarkedNumbersGame(bingoGame BingoGame) (int, error) {
-	if len(bingoGame.winningBoards) <= 0 {
-		return 0, fmt.Errorf("bad number of winning boards - %v", len(bingoGame.winningBoards))
+func reverseBingoBoards(boards []BingoBoard) []BingoBoard {
+	for i := 0; i < len(boards)/2; i++ {
+		j := len(boards) - i - 1
+		boards[i], boards[j] = boards[j], boards[i]
+	}
+	return boards
+}
+
+func sumUnmarkedNumbersGame(bingoGame BingoGame, getLoser bool) (int, error) {
+	var boardsToUse []BingoBoard
+	if getLoser {
+		boardsToUse = bingoGame.losingBoards
+	} else {
+		boardsToUse = bingoGame.winningBoards
+	}
+	if len(boardsToUse) <= 0 {
+		return 0, fmt.Errorf("bad number of boardsToUse - %v", len(boardsToUse))
 	}
 
-	return sumUnmarkedNumbersBoard(bingoGame.winningBoards[0])
+	return sumUnmarkedNumbersBoard(boardsToUse[0], getLoser)
 }

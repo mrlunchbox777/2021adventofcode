@@ -101,7 +101,7 @@ func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winn
 	return newLine, nil
 }
 
-func sumUnmarkedNumbersBoardLine(boardLine BingoBoardLine, answers BingoBoardLine) (int, error) {
+func sumUnmarkedNumbersBoardLine(boardLine BingoBoardLine, answers BingoBoardLine, getLoser bool) (int, error) {
 	boardLineLen := len(boardLine.values)
 	if boardLineLen == 0 {
 		return 0, errors.New("boardLine length was 0")
@@ -112,8 +112,14 @@ func sumUnmarkedNumbersBoardLine(boardLine BingoBoardLine, answers BingoBoardLin
 
 	newSum := 0
 	for i, val := range boardLine.values {
-		if answers.values[i] == 0 {
-			newSum += val
+		if getLoser {
+			if answers.values[i] != 0 {
+				newSum += val
+			}
+		} else {
+			if answers.values[i] == 0 {
+				newSum += val
+			}
 		}
 	}
 
