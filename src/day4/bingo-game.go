@@ -37,9 +37,17 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 			// continue
 		}
 		newGameTemp, newErr := calcGameRound(newGame, winningNumber)
+		if newErr != nil {
+			if (err == nil){
+				err = newErr
+			} else {
+				err = fmt.Errorf("Combined error: %v %v", err, newErr)
+			}
+		}
+
 		newGameTemp.rounds = i
 		newGame = newGameTemp
-		newGame.answers = setLatestWinningNumber(getLatestWinningNumber(winningBoard.answers), i)
+		newGame.answers, newErr = setLatestWinningNumber(newGame.answers, i)
 
 		if newErr != nil {
 			if (err == nil){
@@ -57,26 +65,19 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	return newGame, err
 }
 
-func FindWinningScore(bingoGames []BingoGame) (int, error) {
-	bingoGamesLen := len(bingoGames)
-	if bingoGamesLen > 1 || bingoGamesLen == 0 {
-		return 0, fmt.Errorf("bingoGames length invalid (expecting 1), bingoGames length - %v", bingoGamesLen)
-	}
-
-	bingoGame := bingoGames[0]
-	winningBoardsLen := len (bingoGames.winningBoards[0])
+func FindWinningScore(bingoGame BingoGame) (int, error) {
+	winningBoardsLen := len(bingoGame.winningBoards)
 	if winningBoardsLen > 1 || winningBoardsLen == 0 {
 		return 0, fmt.Errorf("winningBoardsLen length invalid (expecting 1), winningBoardsLen length - %v", winningBoardsLen)
 	}
 
-	winningBoard := bingoGame.winningBoards[0]
 	sumOfUnmarkedNumbers, err := sumUnmarkedNumbersGame(bingoGame)
 
 	if err != nil {
 		return 0, err
 	}
 
-	winningNumber := getLatestWinningNumber(winningBoard.answers)
+	winningNumber := getLatestWinningNumber(bingoGame.answers)
 	winningScore := sumOfUnmarkedNumbers * winningNumber
 
 	return winningScore, nil
@@ -204,5 +205,5 @@ func sumUnmarkedNumbersGame(bingoGame BingoGame) (int, error) {
 		return 0, fmt.Errorf("bad number of winning boards - %v", len(bingoGame.winningBoards))
 	}
 
-	return sumUnmarkedNumbersBoard(bingoBoard)
+	return sumUnmarkedNumbersBoard(bingoGame.winningBoards[0])
 }
