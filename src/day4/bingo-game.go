@@ -33,9 +33,6 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	}
 
 	for i, winningNumber := range winningNumbers {
-		if (i > 10) {
-			// continue
-		}
 		newGameTemp, newErr := calcGameRound(newGame, winningNumber)
 		if newErr != nil {
 			if (err == nil){

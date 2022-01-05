@@ -112,7 +112,7 @@ func sumUnmarkedNumbersBoardLine(boardLine BingoBoardLine, answers BingoBoardLin
 
 	newSum := 0
 	for i, val := range boardLine.values {
-		if answers.values[i] > 0 {
+		if answers.values[i] == 0 {
 			newSum += val
 		}
 	}

@@ -29,5 +29,7 @@ func Main() (error) {
 		return err
 	}
 
+	d4.PrintWinningNumbers(bingoGame)
+
 	return nil
 }
