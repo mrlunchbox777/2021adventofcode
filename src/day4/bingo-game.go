@@ -39,6 +39,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 		newGameTemp, newErr := calcGameRound(newGame, winningNumber)
 		newGameTemp.rounds = i
 		newGame = newGameTemp
+		newGame.answers = setLatestWinningNumber(getLatestWinningNumber(winningBoard.answers), i)
 
 		if newErr != nil {
 			if (err == nil){
@@ -54,6 +55,31 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	}
 
 	return newGame, err
+}
+
+func FindWinningScore(bingoGames []BingoGame) (int, error) {
+	bingoGamesLen := len(bingoGames)
+	if bingoGamesLen > 1 || bingoGamesLen == 0 {
+		return 0, fmt.Errorf("bingoGames length invalid (expecting 1), bingoGames length - %v", bingoGamesLen)
+	}
+
+	bingoGame := bingoGames[0]
+	winningBoardsLen := len (bingoGames.winningBoards[0])
+	if winningBoardsLen > 1 || winningBoardsLen == 0 {
+		return 0, fmt.Errorf("winningBoardsLen length invalid (expecting 1), winningBoardsLen length - %v", winningBoardsLen)
+	}
+
+	winningBoard := bingoGame.winningBoards[0]
+	sumOfUnmarkedNumbers, err := sumUnmarkedNumbersGame(bingoGame)
+
+	if err != nil {
+		return 0, err
+	}
+
+	winningNumber := getLatestWinningNumber(winningBoard.answers)
+	winningScore := sumOfUnmarkedNumbers * winningNumber
+
+	return winningScore, nil
 }
 
 func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
@@ -171,4 +197,12 @@ func printBingoBoardsStruct(boards []BingoBoard, getAnswersInstead bool) (string
 	}
 
 	return gameValue.String()
+}
+
+func sumUnmarkedNumbersGame(bingoGame BingoGame) (int, error) {
+	if len(bingoGame.winningBoards) <= 0 {
+		return 0, fmt.Errorf("bad number of winning boards - %v", len(bingoGame.winningBoards))
+	}
+
+	return sumUnmarkedNumbersBoard(bingoBoard BingoBoard)
 }

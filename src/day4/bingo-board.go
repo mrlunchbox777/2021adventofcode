@@ -147,3 +147,28 @@ func getBingoBoardsAnswers(bingoBoards []BingoBoard, winningNumber int) ([]Bingo
 
 	return newBoards, err
 }
+
+func sumUnmarkedNumbersBoard(bingoBoard BingoBoard) (int, error) {
+	bingoBoardLinesLen := len(bingoBoard.boardLines)
+	bingoBoardAnswersLen := len(bingoBoard.answerLines)
+	var err error
+	currentSum := 0
+
+	if bingoBoardLinesLen <= 0 {
+		return 0, fmt.Errorf("bingoBoard.boardLines length was less than or equal to 0 - %v", bingoBoardLinesLen)
+	}
+	if bingoBoardLinesLen != bingoBoardAnswersLen {
+		return 0, fmt.Errorf("bingoBoard.boardLines length didn't equal bingoBoard.answersLines length - %v - %v", bingoBoardLinesLen, bingoBoardAnswersLen)
+	}
+
+	for i, line := range bingoBoard.boardLines {
+		currentSum, newErr = sumUnmarkedNumbersBoardLine(line, bingoBoard.answerLines[i])
+		if newErr != nil {
+			if (err == nil){
+				err = newErr
+			} else {
+				err = fmt.Errorf("Combined error: %v %v", err, newErr)
+			}
+		}
+	}
+}

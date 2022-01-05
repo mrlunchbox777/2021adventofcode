@@ -100,3 +100,22 @@ func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winn
 
 	return newLine, nil
 }
+
+func sumUnmarkedNumbersBoardLine(boardLine BingoBoardLine, answers BingoBoardLine) (int, error) {
+	boardLineLen := len(boardLine)
+	if boardLineLen == 0 {
+		return 0, errors.New("boardLine length was 0")
+	}
+	if boardLineLen != len(answers) {
+		return 0, errors.New("boardLine length didn't equal answers length")
+	}
+
+	newSum := 0
+	for i, val := range boardLine {
+		if answers[i] > 0 {
+			newSum += i
+		}
+	}
+
+	return newSum
+}
