@@ -1,6 +1,7 @@
 package day4
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -22,8 +23,9 @@ func printWinningNumbersStruct(winningNumbers WinningNumbers) () {
 }
 
 func getWinningNumbers(input string) (WinningNumbers, error) {
-	if input == nil || len(input) == 0 {
-		return nil, error("input for getWinningNumbers was nil or empty")
+	if len(input) == 0 {
+		var emptyWinners WinningNumbers
+		return emptyWinners, errors.New("input for getWinningNumbers was nil or empty")
 	}
 
 	var winningNumbers []int
@@ -46,8 +48,8 @@ func getWinningNumbers(input string) (WinningNumbers, error) {
 }
 
 func setLatestWinningNumber(winningNumbers WinningNumbers, newLatest int) (WinningNumbers, error) {
-	if winningNumbers == nil || len(winningNumbers.values) == 0 {
-		return winningNumbers, error("winningNumbers was nil, or len(winningNumbers.values) == 0")
+	if winningNumbers.values == nil || len(winningNumbers.values) == 0 {
+		return winningNumbers, errors.New("winningNumbers was nil, or len(winningNumbers.values) == 0")
 	}
 	return WinningNumbers{ values: winningNumbers.values, latestWinningNumber: newLatest}, nil
 }
