@@ -47,7 +47,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 
 		newGameTemp.rounds = i
 		newGame = newGameTemp
-		newGame.answers, newErr = setLatestWinningNumber(newGame.answers, i)
+		newGame.answers, newErr = setLatestWinningNumber(newGame.answers, winningNumber)
 
 		if newErr != nil {
 			if (err == nil){
@@ -63,24 +63,6 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	}
 
 	return newGame, err
-}
-
-func FindWinningScore(bingoGame BingoGame) (int, error) {
-	winningBoardsLen := len(bingoGame.winningBoards)
-	if winningBoardsLen > 1 || winningBoardsLen == 0 {
-		return 0, fmt.Errorf("winningBoardsLen length invalid (expecting 1), winningBoardsLen length - %v", winningBoardsLen)
-	}
-
-	sumOfUnmarkedNumbers, err := sumUnmarkedNumbersGame(bingoGame)
-
-	if err != nil {
-		return 0, err
-	}
-
-	winningNumber := getLatestWinningNumber(bingoGame.answers)
-	winningScore := sumOfUnmarkedNumbers * winningNumber
-
-	return winningScore, nil
 }
 
 func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
@@ -148,9 +130,17 @@ func PrintResults(bingoGame BingoGame) (error) {
 		return errors.New("No Winning Boards")
 	}
 
+	winningScore, err := findWinningScore(bingoGame)
+	if err != nil {
+		return err
+	}
+
 	fmt.Println(fmt.Sprintf("IT TOOK %v ROUNDS", bingoGame.rounds))
 	fmt.Println(fmt.Sprintf("THERE WERE (%v) WINNERS:", len(bingoGame.winningBoards)))
 	fmt.Println(printBingoBoardsStruct(bingoGame.winningBoards, false))
+	fmt.Println("")
+	fmt.Println(fmt.Sprintf("THE WINNING SCORE IS - %v", winningScore))
+
 	return nil
 }
 
@@ -183,6 +173,26 @@ func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 	}
 
 	return newGame, err
+}
+
+func findWinningScore(bingoGame BingoGame) (int, error) {
+	winningBoardsLen := len(bingoGame.winningBoards)
+	if winningBoardsLen > 1 || winningBoardsLen == 0 {
+		return 0, fmt.Errorf("winningBoardsLen length invalid (expecting 1), winningBoardsLen length - %v", winningBoardsLen)
+	}
+
+	sumOfUnmarkedNumbers, err := sumUnmarkedNumbersGame(bingoGame)
+
+	if err != nil {
+		return 0, err
+	}
+
+	winningNumber := getLatestWinningNumber(bingoGame.answers)
+	winningScore := sumOfUnmarkedNumbers * winningNumber
+
+	fmt.Println(fmt.Sprintf("winningNumber - %v, sumOfUnmarkedNumbers - %v, winningScore - %v", winningNumber, sumOfUnmarkedNumbers, winningScore))
+
+	return winningScore, nil
 }
 
 func printBingoBoardsStruct(boards []BingoBoard, getAnswersInstead bool) (string) {
