@@ -102,20 +102,20 @@ func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winn
 }
 
 func sumUnmarkedNumbersBoardLine(boardLine BingoBoardLine, answers BingoBoardLine) (int, error) {
-	boardLineLen := len(boardLine)
+	boardLineLen := len(boardLine.values)
 	if boardLineLen == 0 {
 		return 0, errors.New("boardLine length was 0")
 	}
-	if boardLineLen != len(answers) {
+	if boardLineLen != len(answers.values) {
 		return 0, errors.New("boardLine length didn't equal answers length")
 	}
 
 	newSum := 0
-	for i, val := range boardLine {
-		if answers[i] > 0 {
-			newSum += i
+	for i, val := range boardLine.values {
+		if answers.values[i] > 0 {
+			newSum += val
 		}
 	}
 
-	return newSum
+	return newSum, nil
 }

@@ -204,5 +204,5 @@ func sumUnmarkedNumbersGame(bingoGame BingoGame) (int, error) {
 		return 0, fmt.Errorf("bad number of winning boards - %v", len(bingoGame.winningBoards))
 	}
 
-	return sumUnmarkedNumbersBoard(bingoBoard BingoBoard)
+	return sumUnmarkedNumbersBoard(bingoBoard)
 }

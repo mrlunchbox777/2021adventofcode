@@ -171,4 +171,6 @@ func sumUnmarkedNumbersBoard(bingoBoard BingoBoard) (int, error) {
 			}
 		}
 	}
+
+	return currentSum, err
 }
