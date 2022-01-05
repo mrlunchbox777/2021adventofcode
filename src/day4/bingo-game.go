@@ -135,7 +135,7 @@ func PrintBingoBoards(bingoGame BingoGame, getAnswersInstead bool) {
 	fmt.Println("number of Boards -", len(bingoGame.bingoBoards))
 }
 
-func PrintResults(bingoGame BingoGame) (error) {
+func PrintResults(bingoGame BingoGame, includeLoser bool) (error) {
 	if len(bingoGame.winningBoards) == 0 {
 		return errors.New("No Winning Boards")
 	}
@@ -155,7 +155,9 @@ func PrintResults(bingoGame BingoGame) (error) {
 	fmt.Println(printBingoBoardsStruct(bingoGame.winningBoards, false))
 	fmt.Println("")
 	fmt.Println(fmt.Sprintf("THE WINNING SCORE IS - %v", winningScore))
-	fmt.Println(fmt.Sprintf("THE LOSING SCORE IS - %v", losingScore))
+	if includeLoser {
+		fmt.Println(fmt.Sprintf("THE LOSING SCORE IS - %v", losingScore))
+	}
 
 	return nil
 }

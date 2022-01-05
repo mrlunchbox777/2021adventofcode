@@ -1,4 +1,4 @@
-package day4part1
+package day4part2
 
 import (
 	"bufio"
@@ -24,7 +24,7 @@ func Main() (error) {
 		return err
 	}
 
-	err = d4.PrintResults(bingoGame, false)
+	err = d4.PrintResults(bingoGame, true)
 	if err != nil {
 		return err
 	}

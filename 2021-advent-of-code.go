@@ -9,6 +9,7 @@ import (
 	d3p1 "github.com/mrlunchbox777/2021adventofcode/src/day3/part1"
 	d3p2 "github.com/mrlunchbox777/2021adventofcode/src/day3/part2"
 	d4p1 "github.com/mrlunchbox777/2021adventofcode/src/day4/part1"
+	d4p2 "github.com/mrlunchbox777/2021adventofcode/src/day4/part2"
 	"io/ioutil"
 	"regexp"
 	"sort"
@@ -39,8 +40,8 @@ func day4(part int) (error) {
 	switch part {
 	case 1:
 		err = d4p1.Main()
-	// case 2:
-	// 	err = d4p2.Main()
+	case 2:
+		err = d4p2.Main()
 	default:
 		return errors.New("got an unknown part")
 	}
