@@ -45,7 +45,7 @@ func getWinningNumbers(input string) (WinningNumbers, error) {
 	return WinningNumbers{ values: winningNumbers }, err
 }
 
-func setLatestWinningNumber(winningNumbers WinningNumbers, int newLatest) (WinningNumbers, error) {
+func setLatestWinningNumber(winningNumbers WinningNumbers, newLatest int) (WinningNumbers, error) {
 	if winningNumbers == nil || len(winningNumbers.values) == 0 {
 		return winningNumbers, error("winningNumbers was nil, or len(winningNumbers.values) == 0")
 	}

@@ -152,6 +152,7 @@ func sumUnmarkedNumbersBoard(bingoBoard BingoBoard) (int, error) {
 	bingoBoardLinesLen := len(bingoBoard.boardLines)
 	bingoBoardAnswersLen := len(bingoBoard.answerLines)
 	var err error
+	var newErr error
 	currentSum := 0
 
 	if bingoBoardLinesLen <= 0 {
