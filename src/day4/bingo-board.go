@@ -4,11 +4,14 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"github.com/google/uuid"
 )
 
 type BingoBoard struct {
-	boardLines []BingoBoardLine
 	answerLines []BingoBoardLine
+	boardLines []BingoBoardLine
+	completed bool
+	id string
 }
 
 func checkForBingoBoardAnswerLinesWin(lines []BingoBoardLine) (bool, error) {
@@ -30,23 +33,35 @@ func checkForBingoBoardAnswerLinesWin(lines []BingoBoardLine) (bool, error) {
 	return won, err
 }
 
-func checkForBingoBoardWin(board BingoBoard) (bool, error) {
-	won, err := checkForBingoBoardAnswerLinesWin(board.answerLines) 
-	if won || err != nil {
-		return won, err
+func checkForBingoBoardWin(bingoBoard BingoBoard) (BingoBoard, error) {
+	if bingoBoard.completed {
+		return bingoBoard, nil
+	}
+
+	newBoard := BingoBoard{
+		answerLines: bingoBoard.answerLines,
+		boardLines: bingoBoard.boardLines,
+		id: bingoBoard.id,
+		completed: bingoBoard.completed,
+	}
+	won, err := checkForBingoBoardAnswerLinesWin(bingoBoard.answerLines) 
+	if won && err != nil {
+		newBoard.completed = won
+		return newBoard, err
 	}
 
 	newLines := []BingoBoardLine{}
-	for i, _ := range board.answerLines[0].values {
+	for i, _ := range bingoBoard.answerLines[0].values {
 		newLine := BingoBoardLine{}
-		for _, currentLine := range board.answerLines {
+		for _, currentLine := range bingoBoard.answerLines {
 			newLine.values = append(newLine.values, currentLine.values[i])
 		}
 		newLines = append(newLines, newLine)
 	}
 
 	won, err = checkForBingoBoardAnswerLinesWin(newLines) 
-	return won, err
+	newBoard.completed = won
+	return newBoard, err
 }
 
 func getBingoBoardPrintString(board BingoBoard, getAnswersInstead bool) (string) {
@@ -93,12 +108,20 @@ func getBingoBoard(lineStrings []string) (BingoBoard, error) {
 		boardLines = append(boardLines, currentBoardLine)
 	}
 
-	return BingoBoard{ boardLines: boardLines }, err
+	return BingoBoard{ boardLines: boardLines, id: uuid.New().String(), completed: false }, err
 }
 
 func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard, error) {
 	var err error
-	newBoard := BingoBoard{ boardLines: bingoBoard.boardLines }
+	newBoard := BingoBoard{
+		boardLines: bingoBoard.boardLines,
+		id: bingoBoard.id,
+		completed: bingoBoard.completed,
+	}
+	
+	if newBoard.completed {
+		return newBoard, nil
+	}
 
 	bingoBoardLinesLen := len(bingoBoard.boardLines)
 	if bingoBoardLinesLen == 0 {

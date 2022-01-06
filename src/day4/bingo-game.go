@@ -152,7 +152,7 @@ func PrintResults(bingoGame BingoGame, includeLoser bool) (error) {
 
 	fmt.Println(fmt.Sprintf("IT TOOK %v ROUNDS", bingoGame.rounds))
 	fmt.Println(fmt.Sprintf("THERE WERE (%v) WINNERS:", len(bingoGame.winningBoards)))
-	fmt.Println(printBingoBoardsStruct(bingoGame.winningBoards, false))
+	// fmt.Println(printBingoBoardsStruct(bingoGame.winningBoards, false))
 	fmt.Println("")
 	fmt.Println(fmt.Sprintf("THE WINNING SCORE IS - %v", winningScore))
 	if includeLoser {
@@ -182,10 +182,12 @@ func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 		}
 	}
 
+	newBoards = []BingoBoard{}
 	for _, board := range newGame.bingoBoards {
-		gotWinner, newErr := checkForBingoBoardWin(board)
-		if gotWinner {
-			newGame.winningBoards = append(bingoGame.winningBoards, board)
+		potentialBoard, newErr := checkForBingoBoardWin(board)
+		newBoards = append(newBoards, potentialBoard)
+		if potentialBoard.completed {
+			newGame.winningBoards = append(bingoGame.winningBoards, potentialBoard)
 		}
 		if newErr != nil {
 			if (err == nil){
@@ -196,6 +198,7 @@ func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 		}
 	}
 
+	newGame.bingoBoards = newBoards
 	newGame.losingBoards = reverseBingoBoards(bingoGame.winningBoards)
 
 	return newGame, err
