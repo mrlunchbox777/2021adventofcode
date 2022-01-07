@@ -51,7 +51,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 
 		newGameTemp.rounds = i
 		newGame = newGameTemp
-		if len(newGame.winningBoards) > 0 {
+		if len(newGame.winningBoards) == 0 {
 			newGame.answers, newErr = setLatestNumber(newGame.answers, winningNumber, false)
 			if newErr != nil {
 				if (err == nil){

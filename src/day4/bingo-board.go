@@ -183,7 +183,7 @@ func sumUnmarkedNumbersBoard(bingoBoard BingoBoard, getLoser bool) (int, error) 
 		return 0, fmt.Errorf("bingoBoard.boardLines length was less than or equal to 0 - %v", bingoBoardLinesLen)
 	}
 	if bingoBoardLinesLen != bingoBoardAnswersLen {
-		return 0, fmt.Errorf("bingoBoard.boardLines length didn't equal bingoBoard.answersLines length - %v - %v", bingoBoardLinesLen, bingoBoardAnswersLen)
+		return 0, fmt.Errorf("bingoBoard.boardLines length (%v) didn't equal bingoBoard.answersLines length (%v)", bingoBoardLinesLen, bingoBoardAnswersLen)
 	}
 
 	for i, line := range bingoBoard.boardLines {
