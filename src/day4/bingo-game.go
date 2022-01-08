@@ -140,11 +140,13 @@ func PrintResults(bingoGame BingoGame, includeLoser bool) (error) {
 		return errors.New("No Winning Boards")
 	}
 
+	// getting errors here
 	winningScore, err := findWinningScore(bingoGame, false)
 	if err != nil {
 		return err
 	}
 
+	// getting errors here
 	losingScore, err := findWinningScore(bingoGame, true)
 	if err != nil {
 		return err
