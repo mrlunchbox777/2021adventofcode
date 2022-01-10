@@ -140,21 +140,25 @@ func PrintResults(bingoGame BingoGame, includeLoser bool) (error) {
 		return errors.New("No Winning Boards")
 	}
 
+	// fmt.Println(printBingoBoardsStruct(bingoGame.bingoBoards, false))
+	// fmt.Println(printBingoBoardsStruct(bingoGame.winningBoards, false))
+	// fmt.Println(printBingoBoardsStruct(bingoGame.losingBoards, false))
 	// getting errors here
 	winningScore, err := findWinningScore(bingoGame, false)
 	if err != nil {
 		return err
 	}
+	fmt.Println(fmt.Sprintf("THE WINNING SCORE IS - %v", winningScore))
 
 	// getting errors here
 	losingScore, err := findWinningScore(bingoGame, true)
 	if err != nil {
 		return err
 	}
+	fmt.Println(fmt.Sprintf("THE LOSING SCORE IS - %v", losingScore))
 
 	fmt.Println(fmt.Sprintf("IT TOOK %v ROUNDS", bingoGame.rounds))
 	fmt.Println(fmt.Sprintf("THERE WERE (%v) WINNERS:", len(bingoGame.winningBoards)))
-	// fmt.Println(printBingoBoardsStruct(bingoGame.winningBoards, false))
 	fmt.Println("")
 	fmt.Println(fmt.Sprintf("THE WINNING SCORE IS - %v", winningScore))
 	if includeLoser {
