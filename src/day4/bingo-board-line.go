@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// TODO refactor this out
 type BingoBoardLine struct {
 	values []int
 }
