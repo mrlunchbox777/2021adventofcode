@@ -2,7 +2,7 @@ package day4part2
 
 import (
 	"bufio"
-	d4 "github.com/mrlunchbox777/2021adventofcode/src/day4"
+	d4 "github.com/mrlunchbox777/2021adventofcode/src/day4/models"
 	"os"
 )
 

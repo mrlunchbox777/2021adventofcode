@@ -1,4 +1,4 @@
-package day4
+package models
 
 import (
 	"errors"
@@ -7,7 +7,6 @@ import (
 	"strings"
 )
 
-// TODO refactor this out
 type BingoBoardLine struct {
 	values []int
 }
