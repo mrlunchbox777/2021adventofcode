@@ -25,6 +25,10 @@ func (boardLine BingoBoardLine) Values() []int {
 	return boardLine.values
 }
 
+func (boardLine BingoBoardLine) SetValues(values []int) {
+	boardLine.values = values
+}
+
 //////////////////////////////////////////////////
 // Original Extensions
 //////////////////////////////////////////////////

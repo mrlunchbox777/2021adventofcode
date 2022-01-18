@@ -4,22 +4,24 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+
 	"github.com/google/uuid"
+	bbl "github.com/mrlunchbox777/2021adventofcode/src/day4/models/bingo-board-line"
 )
 
 type BingoBoard struct {
-	answerLines []BingoBoardLine
-	boardLines []BingoBoardLine
-	completed bool
-	id string
+	answerLines []bbl.BingoBoardLine
+	boardLines  []bbl.BingoBoardLine
+	completed   bool
+	id          string
 }
 
-func checkForBingoBoardAnswerLinesWin(lines []BingoBoardLine) (bool, error) {
+func checkForBingoBoardAnswerLinesWin(lines []bbl.BingoBoardLine) (bool, error) {
 	var err error
 	won := false
 
 	for _, answerLine := range lines {
-		wonTemp, newErr := checkForBingoBoardAnswerLineWin(answerLine)
+		wonTemp, newErr := answerLine.CheckForBingoBoardAnswerLineWin()
 
 		if newErr != nil {
 			return won, newErr
@@ -40,31 +42,31 @@ func checkForBingoBoardWin(bingoBoard BingoBoard) (BingoBoard, error) {
 
 	newBoard := BingoBoard{
 		answerLines: bingoBoard.answerLines,
-		boardLines: bingoBoard.boardLines,
-		id: bingoBoard.id,
-		completed: bingoBoard.completed,
+		boardLines:  bingoBoard.boardLines,
+		id:          bingoBoard.id,
+		completed:   bingoBoard.completed,
 	}
-	won, err := checkForBingoBoardAnswerLinesWin(bingoBoard.answerLines) 
+	won, err := checkForBingoBoardAnswerLinesWin(bingoBoard.answerLines)
 	if won && err != nil {
 		newBoard.completed = won
 		return newBoard, err
 	}
 
-	newLines := []BingoBoardLine{}
-	for i, _ := range bingoBoard.answerLines[0].values {
-		newLine := BingoBoardLine{}
+	newLines := []bbl.BingoBoardLine{}
+	for i := range bingoBoard.answerLines[0].Values() {
+		newLine := bbl.BingoBoardLine{}
 		for _, currentLine := range bingoBoard.answerLines {
-			newLine.values = append(newLine.values, currentLine.values[i])
+			newLine.SetValues(append(newLine.Values(), currentLine.Values()[i]))
 		}
 		newLines = append(newLines, newLine)
 	}
 
-	won, err = checkForBingoBoardAnswerLinesWin(newLines) 
+	won, err = checkForBingoBoardAnswerLinesWin(newLines)
 	newBoard.completed = won
 	return newBoard, err
 }
 
-func getBingoBoardPrintString(board BingoBoard, getAnswersInstead bool) (string) {
+func getBingoBoardPrintString(board BingoBoard, getAnswersInstead bool) string {
 	var boardValue strings.Builder
 	var bingoBoardLen int
 	if getAnswersInstead {
@@ -75,9 +77,9 @@ func getBingoBoardPrintString(board BingoBoard, getAnswersInstead bool) (string)
 
 	for i := 0; i < bingoBoardLen; i++ {
 		if getAnswersInstead {
-			boardValue.WriteString(getBingoBoardLinePrintString(board.answerLines[i]))
+			boardValue.WriteString(board.answerLines[i].GetBingoBoardLinePrintString())
 		} else {
-			boardValue.WriteString(getBingoBoardLinePrintString(board.boardLines[i]))
+			boardValue.WriteString(board.boardLines[i].GetBingoBoardLinePrintString())
 		}
 		if i < (bingoBoardLen - 1) {
 			boardValue.WriteString("\n")
@@ -88,18 +90,18 @@ func getBingoBoardPrintString(board BingoBoard, getAnswersInstead bool) (string)
 }
 
 func getBingoBoard(lineStrings []string) (BingoBoard, error) {
-	var boardLines []BingoBoardLine
+	var boardLines []bbl.BingoBoardLine
 	var err error
 
 	for _, value := range lineStrings {
 		currentString := strings.TrimSpace(value)
-		if currentString == ""{
+		if currentString == "" {
 			continue
 		}
 		valueStrings := strings.Split(currentString, " ")
-		currentBoardLine, newErr := getBingoBoardLine(valueStrings)
+		currentBoardLine, newErr := bbl.GetBingoBoardLine(valueStrings)
 		if newErr != nil {
-			if (err == nil){
+			if err == nil {
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -108,17 +110,17 @@ func getBingoBoard(lineStrings []string) (BingoBoard, error) {
 		boardLines = append(boardLines, currentBoardLine)
 	}
 
-	return BingoBoard{ boardLines: boardLines, id: uuid.New().String(), completed: false }, err
+	return BingoBoard{boardLines: boardLines, id: uuid.New().String(), completed: false}, err
 }
 
 func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard, error) {
 	var err error
 	newBoard := BingoBoard{
 		boardLines: bingoBoard.boardLines,
-		id: bingoBoard.id,
-		completed: bingoBoard.completed,
+		id:         bingoBoard.id,
+		completed:  bingoBoard.completed,
 	}
-	
+
 	if newBoard.completed {
 		return newBoard, nil
 	}
@@ -129,15 +131,15 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 	}
 
 	if len(bingoBoard.answerLines) == 0 {
-		bingoBoard.answerLines = make([]BingoBoardLine, bingoBoardLinesLen)
+		bingoBoard.answerLines = make([]bbl.BingoBoardLine, bingoBoardLinesLen)
 	}
 
-	newBoard.answerLines = []BingoBoardLine{}
+	newBoard.answerLines = []bbl.BingoBoardLine{}
 	for i, boardLine := range bingoBoard.boardLines {
-		newAnswer, newErr := getBingoBoardLineAnswer(boardLine, bingoBoard.answerLines[i], winningNumber)
+		newAnswer, newErr := boardLine.GetBingoBoardLineAnswer(bingoBoard.answerLines[i], winningNumber)
 		newBoard.answerLines = append(newBoard.answerLines, newAnswer)
 		if newErr != nil {
-			if (err == nil){
+			if err == nil {
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -160,7 +162,7 @@ func getBingoBoardsAnswers(bingoBoards []BingoBoard, winningNumber int) ([]Bingo
 		newBoard, newErr := getBingoBoardAnswers(bingoBoard, winningNumber)
 		newBoards = append(newBoards, newBoard)
 		if newErr != nil {
-			if (err == nil){
+			if err == nil {
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -187,9 +189,9 @@ func sumUnmarkedNumbersBoard(bingoBoard BingoBoard, getLoser bool) (int, error) 
 	}
 
 	for i, line := range bingoBoard.boardLines {
-		currentSum, newErr = sumUnmarkedNumbersBoardLine(line, bingoBoard.answerLines[i], getLoser)
+		currentSum, newErr = line.SumUnmarkedNumbersBoardLine(bingoBoard.answerLines[i], getLoser)
 		if newErr != nil {
-			if (err == nil){
+			if err == nil {
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
