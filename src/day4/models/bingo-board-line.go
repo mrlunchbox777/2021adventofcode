@@ -8,10 +8,31 @@ import (
 )
 
 type BingoBoardLine struct {
-	values []int
+	isAnswerLine bool
+	maxSize      int
+	values       []int
 }
 
-func checkForBingoBoardAnswerLineWin(answerLine BingoBoardLine) (bool, error) {
+func (boardLine BingoBoardLine) IsAnswerLine() bool {
+	return boardLine.isAnswerLine
+}
+
+func (boardLine BingoBoardLine) MaxSize() int {
+	return boardLine.maxSize
+}
+
+func (boardLine BingoBoardLine) Values() []int {
+	return boardLine.values
+}
+
+//////////////////////////////////////////////////
+// Original Extensions
+//////////////////////////////////////////////////
+
+func (answerLine BingoBoardLine) CheckForBingoBoardAnswerLineWin() (bool, error) {
+	if !answerLine.isAnswerLine {
+		return false, errors.New("This is not an answer line")
+	}
 	if len(answerLine.values) == 0 {
 		return false, errors.New("answerLine was empty")
 	}
@@ -26,7 +47,7 @@ func checkForBingoBoardAnswerLineWin(answerLine BingoBoardLine) (bool, error) {
 	return winningLine, nil
 }
 
-func getBingoBoardLinePrintString(boardLine BingoBoardLine) (string) {
+func (boardLine BingoBoardLine) GetBingoBoardLinePrintString() string {
 	var lineValue strings.Builder
 	bingoBoardLinesLen := len(boardLine.values)
 
@@ -47,7 +68,7 @@ func getBingoBoardLinePrintString(boardLine BingoBoardLine) (string) {
 	return lineValue.String()
 }
 
-func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
+func GetBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 	var boardLine []int
 	var err error
 
@@ -58,7 +79,7 @@ func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 		}
 		currentInt, newErr := strconv.Atoi(currentString)
 		if newErr != nil {
-			if (err == nil){
+			if err == nil {
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -67,22 +88,21 @@ func getBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 		boardLine = append(boardLine, currentInt)
 	}
 
-	return BingoBoardLine{ values: boardLine }, err
+	return BingoBoardLine{values: boardLine, maxSize: len(boardLine), isAnswerLine: false}, err
 }
 
-func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winningNumber int) (BingoBoardLine, error) {
+func (boardLine BingoBoardLine) GetBingoBoardLineAnswer(answers BingoBoardLine, winningNumber int) (BingoBoardLine, error) {
 	areExistingAnswers := len(answers.values) > 0
 	newLine := BingoBoardLine{}
 	newLine.values = []int{}
-	boardLength := len(values.values)
 
 	if areExistingAnswers {
-		if boardLength != len(values.values) {
+		if boardLine.MaxSize() != answers.MaxSize() {
 			return newLine, errors.New("boardline answers.values length != boardline values.values length")
 		}
 	}
 
-	for i := 0; i < boardLength; i++ {
+	for i := 0; i < boardLine.MaxSize(); i++ {
 		if areExistingAnswers {
 			if answers.values[i] == 1 {
 				newLine.values = append(newLine.values, 1)
@@ -90,7 +110,7 @@ func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winn
 			}
 		}
 
-		if values.values[i] == winningNumber {
+		if boardLine.values[i] == winningNumber {
 			newLine.values = append(newLine.values, 1)
 			continue
 		}
@@ -101,12 +121,11 @@ func getBingoBoardLineAnswer(values BingoBoardLine, answers BingoBoardLine, winn
 	return newLine, nil
 }
 
-func sumUnmarkedNumbersBoardLine(boardLine BingoBoardLine, answers BingoBoardLine, getLoser bool) (int, error) {
-	boardLineLen := len(boardLine.values)
-	if boardLineLen == 0 {
+func (boardLine BingoBoardLine) SumUnmarkedNumbersBoardLine(answers BingoBoardLine, getLoser bool) (int, error) {
+	if boardLine.MaxSize() == 0 {
 		return 0, errors.New("boardLine length was 0")
 	}
-	if boardLineLen != len(answers.values) {
+	if boardLine.MaxSize() != len(answers.values) {
 		return 0, errors.New("boardLine length didn't equal answers length")
 	}
 
