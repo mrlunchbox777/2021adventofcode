@@ -5,24 +5,26 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+
+	bb "github.com/mrlunchbox777/2021adventofcode/src/day4/models/bingo-board"
 )
 
 type BingoGame struct {
-	bingoBoards []BingoBoard
-	answers WinningNumbers
-	winningBoards []BingoBoard
-	losingBoards []BingoBoard
-	rounds int
+	bingoBoards   []bb.BingoBoard
+	answers       WinningNumbers
+	winningBoards []bb.BingoBoard
+	losingBoards  []bb.BingoBoard
+	rounds        int
 }
 
 func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	var err error
-	newGame := BingoGame {
-		bingoBoards: bingoGame.bingoBoards,
-		answers: bingoGame.answers,
+	newGame := BingoGame{
+		bingoBoards:   bingoGame.bingoBoards,
+		answers:       bingoGame.answers,
 		winningBoards: bingoGame.winningBoards,
-		losingBoards: bingoGame.losingBoards,
-		rounds: bingoGame.rounds,
+		losingBoards:  bingoGame.losingBoards,
+		rounds:        bingoGame.rounds,
 	}
 
 	if bingoGame.bingoBoards == nil {
@@ -42,7 +44,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	for i, winningNumber := range winningNumbers {
 		newGameTemp, newErr := calcGameRound(newGame, winningNumber)
 		if newErr != nil {
-			if (err == nil){
+			if err == nil {
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -54,7 +56,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 		if len(newGame.winningBoards) == 0 {
 			newGame.answers, newErr = setLatestNumber(newGame.answers, winningNumber, false)
 			if newErr != nil {
-				if (err == nil){
+				if err == nil {
 					err = newErr
 				} else {
 					err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -64,7 +66,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 
 		newGame.answers, newErr = setLatestNumber(newGame.answers, winningNumber, true)
 		if newErr != nil {
-			if (err == nil){
+			if err == nil {
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -78,17 +80,17 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
 	gotWinningNumbers := false
 	boardStrings := []string{}
-	bingoBoards := []BingoBoard{}
+	bingoBoards := []bb.BingoBoard{}
 	var winningNumbers WinningNumbers
 	var err error
 
 	for scanner.Scan() {
 		i := strings.TrimSpace(scanner.Text())
-		if (!gotWinningNumbers) {
+		if !gotWinningNumbers {
 			tempWinningNumbers, newErr := getWinningNumbers(i)
 			winningNumbers = tempWinningNumbers
 			if newErr != nil {
-				if (err == nil){
+				if err == nil {
 					err = newErr
 				} else {
 					err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -98,9 +100,9 @@ func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
 		} else {
 			if i == "" {
 				if len(boardStrings) > 0 {
-					newBoard, newErr := getBingoBoard(boardStrings)
+					newBoard, newErr := bb.GetBingoBoard(boardStrings)
 					if newErr != nil {
-						if (err == nil){
+						if err == nil {
 							err = newErr
 						} else {
 							err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -116,9 +118,9 @@ func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
 	}
 
 	if len(boardStrings) > 0 {
-		newBoard, newErr := getBingoBoard(boardStrings)
+		newBoard, newErr := bb.GetBingoBoard(boardStrings)
 		if newErr != nil {
-			if (err == nil){
+			if err == nil {
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -127,7 +129,7 @@ func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
 		bingoBoards = append(bingoBoards, newBoard)
 	}
 
-	return BingoGame{ bingoBoards: bingoBoards, answers: winningNumbers}, err
+	return BingoGame{bingoBoards: bingoBoards, answers: winningNumbers}, err
 }
 
 func PrintBingoBoards(bingoGame BingoGame, getAnswersInstead bool) {
@@ -135,7 +137,7 @@ func PrintBingoBoards(bingoGame BingoGame, getAnswersInstead bool) {
 	fmt.Println("number of Boards -", len(bingoGame.bingoBoards))
 }
 
-func PrintResults(bingoGame BingoGame, includeLoser bool) (error) {
+func PrintResults(bingoGame BingoGame, includeLoser bool) error {
 	if len(bingoGame.winningBoards) == 0 {
 		return errors.New("No Winning Boards")
 	}
@@ -170,33 +172,33 @@ func PrintResults(bingoGame BingoGame, includeLoser bool) (error) {
 
 func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 	var err error
-	newGame := BingoGame {
-		bingoBoards: bingoGame.bingoBoards,
-		answers: bingoGame.answers,
+	newGame := BingoGame{
+		bingoBoards:   bingoGame.bingoBoards,
+		answers:       bingoGame.answers,
 		winningBoards: bingoGame.winningBoards,
-		losingBoards: bingoGame.losingBoards,
-		rounds: bingoGame.rounds,
+		losingBoards:  bingoGame.losingBoards,
+		rounds:        bingoGame.rounds,
 	}
 
-	newBoards, newErr := getBingoBoardsAnswers(newGame.bingoBoards, winningNumber)
+	newBoards, newErr := bb.GetBingoBoardsAnswers(newGame.bingoBoards, winningNumber)
 	newGame.bingoBoards = newBoards
 	if newErr != nil {
-		if (err == nil){
+		if err == nil {
 			err = newErr
 		} else {
 			err = fmt.Errorf("Combined error: %v %v", err, newErr)
 		}
 	}
 
-	newBoards = []BingoBoard{}
+	newBoards = []bb.BingoBoard{}
 	for _, board := range newGame.bingoBoards {
-		potentialBoard, newErr := checkForBingoBoardWin(board)
+		potentialBoard, newErr := bb.CheckForBingoBoardWin(board)
 		newBoards = append(newBoards, potentialBoard)
-		if potentialBoard.completed {
+		if potentialBoard.Completed() {
 			newGame.winningBoards = append(bingoGame.winningBoards, potentialBoard)
 		}
 		if newErr != nil {
-			if (err == nil){
+			if err == nil {
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -228,7 +230,7 @@ func findWinningScore(bingoGame BingoGame, getLoser bool) (int, error) {
 	return winningScore, nil
 }
 
-func printBingoBoardsStruct(boards []BingoBoard, getAnswersInstead bool) (string) {
+func printBingoBoardsStruct(boards []bb.BingoBoard, getAnswersInstead bool) string {
 	var gameValue strings.Builder
 
 	for i, bingoBoard := range boards {
@@ -236,14 +238,14 @@ func printBingoBoardsStruct(boards []BingoBoard, getAnswersInstead bool) (string
 			gameValue.WriteString("\n")
 		}
 		gameValue.WriteString(fmt.Sprintf("Bingo Board - %v\n", i))
-		gameValue.WriteString(getBingoBoardPrintString(bingoBoard, getAnswersInstead))
+		gameValue.WriteString(bb.GetBingoBoardPrintString(bingoBoard, getAnswersInstead))
 		gameValue.WriteString("\n")
 	}
 
 	return gameValue.String()
 }
 
-func reverseBingoBoards(boards []BingoBoard) []BingoBoard {
+func reverseBingoBoards(boards []bb.BingoBoard) []bb.BingoBoard {
 	for i := 0; i < len(boards)/2; i++ {
 		j := len(boards) - i - 1
 		boards[i], boards[j] = boards[j], boards[i]
@@ -252,7 +254,7 @@ func reverseBingoBoards(boards []BingoBoard) []BingoBoard {
 }
 
 func sumUnmarkedNumbersGame(bingoGame BingoGame, getLoser bool) (int, error) {
-	var boardsToUse []BingoBoard
+	var boardsToUse []bb.BingoBoard
 	if getLoser {
 		boardsToUse = bingoGame.losingBoards
 	} else {
@@ -262,5 +264,5 @@ func sumUnmarkedNumbersGame(bingoGame BingoGame, getLoser bool) (int, error) {
 		return 0, fmt.Errorf("bad number of boardsToUse - %v", len(boardsToUse))
 	}
 
-	return sumUnmarkedNumbersBoard(boardsToUse[0], getLoser)
+	return bb.SumUnmarkedNumbersBoard(boardsToUse[0], getLoser)
 }

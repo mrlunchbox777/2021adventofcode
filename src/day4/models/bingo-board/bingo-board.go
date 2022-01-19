@@ -1,4 +1,4 @@
-package models
+package bingoboard
 
 import (
 	"errors"
@@ -15,6 +15,26 @@ type BingoBoard struct {
 	completed   bool
 	id          string
 }
+
+func (board BingoBoard) AnswerLines() []bbl.BingoBoardLine {
+	return board.answerLines
+}
+
+func (board BingoBoard) BoardLines() []bbl.BingoBoardLine {
+	return board.boardLines
+}
+
+func (board BingoBoard) Completed() bool {
+	return board.completed
+}
+
+func (board BingoBoard) Id() string {
+	return board.id
+}
+
+//////////////////////////////////////////////////
+// Original Extensions
+//////////////////////////////////////////////////
 
 func checkForBingoBoardAnswerLinesWin(lines []bbl.BingoBoardLine) (bool, error) {
 	var err error
@@ -35,7 +55,7 @@ func checkForBingoBoardAnswerLinesWin(lines []bbl.BingoBoardLine) (bool, error) 
 	return won, err
 }
 
-func checkForBingoBoardWin(bingoBoard BingoBoard) (BingoBoard, error) {
+func CheckForBingoBoardWin(bingoBoard BingoBoard) (BingoBoard, error) {
 	if bingoBoard.completed {
 		return bingoBoard, nil
 	}
@@ -66,7 +86,7 @@ func checkForBingoBoardWin(bingoBoard BingoBoard) (BingoBoard, error) {
 	return newBoard, err
 }
 
-func getBingoBoardPrintString(board BingoBoard, getAnswersInstead bool) string {
+func GetBingoBoardPrintString(board BingoBoard, getAnswersInstead bool) string {
 	var boardValue strings.Builder
 	var bingoBoardLen int
 	if getAnswersInstead {
@@ -89,7 +109,7 @@ func getBingoBoardPrintString(board BingoBoard, getAnswersInstead bool) string {
 	return boardValue.String()
 }
 
-func getBingoBoard(lineStrings []string) (BingoBoard, error) {
+func GetBingoBoard(lineStrings []string) (BingoBoard, error) {
 	var boardLines []bbl.BingoBoardLine
 	var err error
 
@@ -150,7 +170,7 @@ func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard,
 	return newBoard, err
 }
 
-func getBingoBoardsAnswers(bingoBoards []BingoBoard, winningNumber int) ([]BingoBoard, error) {
+func GetBingoBoardsAnswers(bingoBoards []BingoBoard, winningNumber int) ([]BingoBoard, error) {
 	var err error
 	newBoards := []BingoBoard{}
 
@@ -173,7 +193,7 @@ func getBingoBoardsAnswers(bingoBoards []BingoBoard, winningNumber int) ([]Bingo
 	return newBoards, err
 }
 
-func sumUnmarkedNumbersBoard(bingoBoard BingoBoard, getLoser bool) (int, error) {
+func SumUnmarkedNumbersBoard(bingoBoard BingoBoard, getLoser bool) (int, error) {
 	bingoBoardLinesLen := len(bingoBoard.boardLines)
 	bingoBoardAnswersLen := len(bingoBoard.answerLines)
 	var err error
