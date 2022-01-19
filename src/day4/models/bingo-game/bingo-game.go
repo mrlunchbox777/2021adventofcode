@@ -217,7 +217,7 @@ func calcGameRound(bingoGame BingoGame, winningNumber int) (BingoGame, error) {
 
 	newBoards = []bb.BingoBoard{}
 	for _, board := range newGame.bingoBoards {
-		potentialBoard, newErr := bb.CheckForBingoBoardWin(board)
+		potentialBoard, newErr := board.CheckForBingoBoardWin()
 		newBoards = append(newBoards, potentialBoard)
 		if potentialBoard.Completed() {
 			newGame.winningBoards = append(bingoGame.winningBoards, potentialBoard)
@@ -263,7 +263,7 @@ func printBingoBoardsStruct(boards []bb.BingoBoard, getAnswersInstead bool) stri
 			gameValue.WriteString("\n")
 		}
 		gameValue.WriteString(fmt.Sprintf("Bingo Board - %v\n", i))
-		gameValue.WriteString(bb.GetBingoBoardPrintString(bingoBoard, getAnswersInstead))
+		gameValue.WriteString(bingoBoard.GetBingoBoardPrintString(getAnswersInstead))
 		gameValue.WriteString("\n")
 	}
 
@@ -289,5 +289,5 @@ func sumUnmarkedNumbersGame(bingoGame BingoGame, getLoser bool) (int, error) {
 		return 0, fmt.Errorf("bad number of boardsToUse - %v", len(boardsToUse))
 	}
 
-	return bb.SumUnmarkedNumbersBoard(boardsToUse[0], getLoser)
+	return boardsToUse[0].SumUnmarkedNumbersBoard(getLoser)
 }

@@ -55,7 +55,7 @@ func checkForBingoBoardAnswerLinesWin(lines []bbl.BingoBoardLine) (bool, error) 
 	return won, err
 }
 
-func CheckForBingoBoardWin(bingoBoard BingoBoard) (BingoBoard, error) {
+func (bingoBoard BingoBoard) CheckForBingoBoardWin() (BingoBoard, error) {
 	if bingoBoard.completed {
 		return bingoBoard, nil
 	}
@@ -86,20 +86,20 @@ func CheckForBingoBoardWin(bingoBoard BingoBoard) (BingoBoard, error) {
 	return newBoard, err
 }
 
-func GetBingoBoardPrintString(board BingoBoard, getAnswersInstead bool) string {
+func (bingoBoard BingoBoard) GetBingoBoardPrintString(getAnswersInstead bool) string {
 	var boardValue strings.Builder
 	var bingoBoardLen int
 	if getAnswersInstead {
-		bingoBoardLen = len(board.answerLines)
+		bingoBoardLen = len(bingoBoard.answerLines)
 	} else {
-		bingoBoardLen = len(board.boardLines)
+		bingoBoardLen = len(bingoBoard.boardLines)
 	}
 
 	for i := 0; i < bingoBoardLen; i++ {
 		if getAnswersInstead {
-			boardValue.WriteString(board.answerLines[i].GetBingoBoardLinePrintString())
+			boardValue.WriteString(bingoBoard.answerLines[i].GetBingoBoardLinePrintString())
 		} else {
-			boardValue.WriteString(board.boardLines[i].GetBingoBoardLinePrintString())
+			boardValue.WriteString(bingoBoard.boardLines[i].GetBingoBoardLinePrintString())
 		}
 		if i < (bingoBoardLen - 1) {
 			boardValue.WriteString("\n")
@@ -133,7 +133,7 @@ func GetBingoBoard(lineStrings []string) (BingoBoard, error) {
 	return BingoBoard{boardLines: boardLines, id: uuid.New().String(), completed: false}, err
 }
 
-func getBingoBoardAnswers(bingoBoard BingoBoard, winningNumber int) (BingoBoard, error) {
+func (bingoBoard BingoBoard) getBingoBoardAnswers(winningNumber int) (BingoBoard, error) {
 	var err error
 	newBoard := BingoBoard{
 		boardLines: bingoBoard.boardLines,
@@ -179,7 +179,7 @@ func GetBingoBoardsAnswers(bingoBoards []BingoBoard, winningNumber int) ([]Bingo
 	}
 
 	for _, bingoBoard := range bingoBoards {
-		newBoard, newErr := getBingoBoardAnswers(bingoBoard, winningNumber)
+		newBoard, newErr := bingoBoard.getBingoBoardAnswers(winningNumber)
 		newBoards = append(newBoards, newBoard)
 		if newErr != nil {
 			if err == nil {
@@ -193,7 +193,7 @@ func GetBingoBoardsAnswers(bingoBoards []BingoBoard, winningNumber int) ([]Bingo
 	return newBoards, err
 }
 
-func SumUnmarkedNumbersBoard(bingoBoard BingoBoard, getLoser bool) (int, error) {
+func (bingoBoard BingoBoard) SumUnmarkedNumbersBoard(getLoser bool) (int, error) {
 	bingoBoardLinesLen := len(bingoBoard.boardLines)
 	bingoBoardAnswersLen := len(bingoBoard.answerLines)
 	var err error
