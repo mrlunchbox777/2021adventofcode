@@ -1,4 +1,4 @@
-package models
+package winningnumbers
 
 import (
 	"errors"
@@ -8,23 +8,35 @@ import (
 )
 
 type WinningNumbers struct {
-	values []int
+	values              []int
 	latestWinningNumber int
-	latestLosingNumber int
+	latestLosingNumber  int
 }
 
-func PrintWinningNumbers(bingoGame BingoGame) () {
-	printWinningNumbersStruct(bingoGame.answers)
+func (wNumbers WinningNumbers) Values() []int {
+	return wNumbers.values
 }
 
-func printWinningNumbersStruct(winningNumbers WinningNumbers) () {
+func (wNumbers WinningNumbers) LatestWinningNumber() int {
+	return wNumbers.latestWinningNumber
+}
+
+func (wNumbers WinningNumbers) LatestLosingNumber() int {
+	return wNumbers.latestLosingNumber
+}
+
+//////////////////////////////////////////////////
+// Original Extensions
+//////////////////////////////////////////////////
+
+func printWinningNumbersStruct(winningNumbers WinningNumbers) {
 	fmt.Println("winningNumbersLen - ", len(winningNumbers.values))
 	fmt.Println("winningNumbers - ", winningNumbers.values)
 	fmt.Println("latestWinningNumber - ", winningNumbers.latestWinningNumber)
 	fmt.Println("latestLosingNumber - ", winningNumbers.latestLosingNumber)
 }
 
-func getWinningNumbers(input string) (WinningNumbers, error) {
+func GetWinningNumbers(input string) (WinningNumbers, error) {
 	if len(input) == 0 {
 		var emptyWinners WinningNumbers
 		return emptyWinners, errors.New("input for getWinningNumbers was nil or empty")
@@ -37,7 +49,7 @@ func getWinningNumbers(input string) (WinningNumbers, error) {
 	for _, currentIntStr := range winningNumbersStringArr {
 		currentInt, newErr := strconv.Atoi(currentIntStr)
 		if newErr != nil {
-			if (err == nil){
+			if err == nil {
 				err = newErr
 			} else {
 				err = fmt.Errorf("Combined error: %v %v", err, newErr)
@@ -46,21 +58,21 @@ func getWinningNumbers(input string) (WinningNumbers, error) {
 		winningNumbers = append(winningNumbers, currentInt)
 	}
 
-	return WinningNumbers{ values: winningNumbers }, err
+	return WinningNumbers{values: winningNumbers}, err
 }
 
-func setLatestNumber(winningNumbers WinningNumbers, newLatest int, setLoser bool) (WinningNumbers, error) {
+func SetLatestNumber(winningNumbers WinningNumbers, newLatest int, setLoser bool) (WinningNumbers, error) {
 	if winningNumbers.values == nil || len(winningNumbers.values) == 0 {
 		return winningNumbers, errors.New("winningNumbers was nil, or len(winningNumbers.values) == 0")
 	}
 	if setLoser {
-		return WinningNumbers{ values: winningNumbers.values, latestWinningNumber: winningNumbers.latestWinningNumber, latestLosingNumber: newLatest}, nil
+		return WinningNumbers{values: winningNumbers.values, latestWinningNumber: winningNumbers.latestWinningNumber, latestLosingNumber: newLatest}, nil
 	} else {
-		return WinningNumbers{ values: winningNumbers.values, latestWinningNumber: newLatest, latestLosingNumber: winningNumbers.latestLosingNumber}, nil
+		return WinningNumbers{values: winningNumbers.values, latestWinningNumber: newLatest, latestLosingNumber: winningNumbers.latestLosingNumber}, nil
 	}
 }
 
-func getLatestNumber(winningNumbers WinningNumbers, getLoser bool) (int) {
+func GetLatestNumber(winningNumbers WinningNumbers, getLoser bool) int {
 	if getLoser {
 		return winningNumbers.latestLosingNumber
 	} else {

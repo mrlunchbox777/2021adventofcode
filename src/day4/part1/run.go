@@ -2,11 +2,12 @@ package day4part1
 
 import (
 	"bufio"
-	d4 "github.com/mrlunchbox777/2021adventofcode/src/day4/models"
 	"os"
+
+	d4 "github.com/mrlunchbox777/2021adventofcode/src/day4/models/bingo-game"
 )
 
-func Main() (error) {
+func Main() error {
 	file, err := os.Open("src/day4/data/input")
 	if err != nil {
 		return err

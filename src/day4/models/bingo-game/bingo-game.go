@@ -1,4 +1,4 @@
-package models
+package bingogame
 
 import (
 	"bufio"
@@ -7,15 +7,40 @@ import (
 	"strings"
 
 	bb "github.com/mrlunchbox777/2021adventofcode/src/day4/models/bingo-board"
+	wn "github.com/mrlunchbox777/2021adventofcode/src/day4/models/winning-numbers"
 )
 
 type BingoGame struct {
 	bingoBoards   []bb.BingoBoard
-	answers       WinningNumbers
+	answers       wn.WinningNumbers
 	winningBoards []bb.BingoBoard
 	losingBoards  []bb.BingoBoard
 	rounds        int
 }
+
+func (game BingoGame) BingoBoards() []bb.BingoBoard {
+	return game.bingoBoards
+}
+
+func (game BingoGame) Answers() wn.WinningNumbers {
+	return game.answers
+}
+
+func (game BingoGame) WinningBoards() []bb.BingoBoard {
+	return game.winningBoards
+}
+
+func (game BingoGame) LosingBoards() []bb.BingoBoard {
+	return game.losingBoards
+}
+
+func (game BingoGame) Rounds() int {
+	return game.rounds
+}
+
+//////////////////////////////////////////////////
+// Original Extensions
+//////////////////////////////////////////////////
 
 func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	var err error
@@ -33,10 +58,10 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 	if len(bingoGame.bingoBoards) == 0 {
 		return newGame, errors.New("bingoGame.bingoBoards was empty")
 	}
-	if bingoGame.answers.values == nil {
+	if bingoGame.answers.Values() == nil {
 		return newGame, errors.New("bingoGame.answers.values was nil")
 	}
-	winningNumbers := bingoGame.answers.values
+	winningNumbers := bingoGame.answers.Values()
 	if len(winningNumbers) == 0 {
 		return newGame, errors.New("winningNumbers was empty")
 	}
@@ -54,7 +79,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 		newGameTemp.rounds = i
 		newGame = newGameTemp
 		if len(newGame.winningBoards) == 0 {
-			newGame.answers, newErr = setLatestNumber(newGame.answers, winningNumber, false)
+			newGame.answers, newErr = wn.SetLatestNumber(newGame.answers, winningNumber, false)
 			if newErr != nil {
 				if err == nil {
 					err = newErr
@@ -64,7 +89,7 @@ func CalcGame(bingoGame BingoGame) (BingoGame, error) {
 			}
 		}
 
-		newGame.answers, newErr = setLatestNumber(newGame.answers, winningNumber, true)
+		newGame.answers, newErr = wn.SetLatestNumber(newGame.answers, winningNumber, true)
 		if newErr != nil {
 			if err == nil {
 				err = newErr
@@ -81,13 +106,13 @@ func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
 	gotWinningNumbers := false
 	boardStrings := []string{}
 	bingoBoards := []bb.BingoBoard{}
-	var winningNumbers WinningNumbers
+	var winningNumbers wn.WinningNumbers
 	var err error
 
 	for scanner.Scan() {
 		i := strings.TrimSpace(scanner.Text())
 		if !gotWinningNumbers {
-			tempWinningNumbers, newErr := getWinningNumbers(i)
+			tempWinningNumbers, newErr := wn.GetWinningNumbers(i)
 			winningNumbers = tempWinningNumbers
 			if newErr != nil {
 				if err == nil {
@@ -224,7 +249,7 @@ func findWinningScore(bingoGame BingoGame, getLoser bool) (int, error) {
 		return 0, err
 	}
 
-	winningNumber := getLatestNumber(bingoGame.answers, getLoser)
+	winningNumber := wn.GetLatestNumber(bingoGame.answers, getLoser)
 	winningScore := sumOfUnmarkedNumbers * winningNumber
 
 	return winningScore, nil
