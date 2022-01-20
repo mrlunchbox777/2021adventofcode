@@ -20,12 +20,12 @@ func Main() error {
 		return err
 	}
 
-	bingoGame, err = d4.CalcGame(bingoGame)
+	bingoGame, err = bingoGame.CalcGame()
 	if err != nil {
 		return err
 	}
 
-	err = d4.PrintResults(bingoGame, false)
+	err = bingoGame.PrintResults(false)
 	if err != nil {
 		return err
 	}
