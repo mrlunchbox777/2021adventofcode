@@ -79,7 +79,7 @@ func (bingoGame BingoGame) CalcGame() (BingoGame, error) {
 		newGameTemp.rounds = i
 		newGame = newGameTemp
 		if len(newGame.winningBoards) == 0 {
-			newGame.answers, newErr = wn.SetLatestNumber(newGame.answers, winningNumber, false)
+			newGame.answers, newErr = newGame.answers.SetLatestNumber(winningNumber, false)
 			if newErr != nil {
 				if err == nil {
 					err = newErr
@@ -89,7 +89,7 @@ func (bingoGame BingoGame) CalcGame() (BingoGame, error) {
 			}
 		}
 
-		newGame.answers, newErr = wn.SetLatestNumber(newGame.answers, winningNumber, true)
+		newGame.answers, newErr = newGame.answers.SetLatestNumber(winningNumber, true)
 		if newErr != nil {
 			if err == nil {
 				err = newErr
@@ -249,7 +249,7 @@ func (bingoGame BingoGame) findWinningScore(getLoser bool) (int, error) {
 		return 0, err
 	}
 
-	winningNumber := wn.GetLatestNumber(bingoGame.answers, getLoser)
+	winningNumber := bingoGame.answers.GetLatestNumber(getLoser)
 	winningScore := sumOfUnmarkedNumbers * winningNumber
 
 	return winningScore, nil

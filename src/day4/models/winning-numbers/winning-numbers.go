@@ -29,7 +29,7 @@ func (wNumbers WinningNumbers) LatestLosingNumber() int {
 // Original Extensions
 //////////////////////////////////////////////////
 
-func printWinningNumbersStruct(winningNumbers WinningNumbers) {
+func (winningNumbers WinningNumbers) printWinningNumbersStruct() {
 	fmt.Println("winningNumbersLen - ", len(winningNumbers.values))
 	fmt.Println("winningNumbers - ", winningNumbers.values)
 	fmt.Println("latestWinningNumber - ", winningNumbers.latestWinningNumber)
@@ -61,7 +61,7 @@ func GetWinningNumbers(input string) (WinningNumbers, error) {
 	return WinningNumbers{values: winningNumbers}, err
 }
 
-func SetLatestNumber(winningNumbers WinningNumbers, newLatest int, setLoser bool) (WinningNumbers, error) {
+func (winningNumbers WinningNumbers) SetLatestNumber(newLatest int, setLoser bool) (WinningNumbers, error) {
 	if winningNumbers.values == nil || len(winningNumbers.values) == 0 {
 		return winningNumbers, errors.New("winningNumbers was nil, or len(winningNumbers.values) == 0")
 	}
@@ -72,7 +72,7 @@ func SetLatestNumber(winningNumbers WinningNumbers, newLatest int, setLoser bool
 	}
 }
 
-func GetLatestNumber(winningNumbers WinningNumbers, getLoser bool) int {
+func (winningNumbers WinningNumbers) GetLatestNumber(getLoser bool) int {
 	if getLoser {
 		return winningNumbers.latestLosingNumber
 	} else {
