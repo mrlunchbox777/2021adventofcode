@@ -119,7 +119,7 @@ func GetBingoBoard(lineStrings []string) (BingoBoard, error) {
 			continue
 		}
 		valueStrings := strings.Split(currentString, " ")
-		currentBoardLine, newErr := bbl.GetBingoBoardLine(valueStrings)
+		currentBoardLine, newErr := bbl.CreateBingoBoardLine(valueStrings)
 		if newErr != nil {
 			if err == nil {
 				err = newErr

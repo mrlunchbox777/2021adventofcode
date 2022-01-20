@@ -28,11 +28,7 @@ func (boardLine BingoBoardLine) SetValues(values []int) {
 	boardLine.values = values
 }
 
-//////////////////////////////////////////////////
-// Original Extensions
-//////////////////////////////////////////////////
-
-func GetBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
+func CreateBingoBoardLine(valueStrings []string) (BingoBoardLine, error) {
 	var boardLine []int
 	var err error
 
