@@ -25,11 +25,7 @@ func (wNumbers WinningNumbers) LatestLosingNumber() int {
 	return wNumbers.latestLosingNumber
 }
 
-//////////////////////////////////////////////////
-// Original Extensions
-//////////////////////////////////////////////////
-
-func GetWinningNumbers(input string) (WinningNumbers, error) {
+func CreateWinningNumbers(input string) (WinningNumbers, error) {
 	if len(input) == 0 {
 		var emptyWinners WinningNumbers
 		return emptyWinners, errors.New("input for getWinningNumbers was nil or empty")

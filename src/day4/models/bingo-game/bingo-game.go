@@ -51,7 +51,7 @@ func PrepGame(scanner *bufio.Scanner) (BingoGame, error) {
 	for scanner.Scan() {
 		i := strings.TrimSpace(scanner.Text())
 		if !gotWinningNumbers {
-			tempWinningNumbers, newErr := wn.GetWinningNumbers(i)
+			tempWinningNumbers, newErr := wn.CreateWinningNumbers(i)
 			winningNumbers = tempWinningNumbers
 			if newErr != nil {
 				if err == nil {
