@@ -3,6 +3,7 @@ package bingogame
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	bb "github.com/mrlunchbox777/2021adventofcode/src/day4/models/bingo-board"
 )
@@ -177,4 +178,27 @@ func (bingoGame BingoGame) sumUnmarkedNumbersGame(getLoser bool) (int, error) {
 	}
 
 	return boardsToUse[0].SumUnmarkedNumbersBoard(getLoser)
+}
+
+func printBingoBoardsStruct(boards []bb.BingoBoard, getAnswersInstead bool) string {
+	var gameValue strings.Builder
+
+	for i, bingoBoard := range boards {
+		if i > 0 {
+			gameValue.WriteString("\n")
+		}
+		gameValue.WriteString(fmt.Sprintf("Bingo Board - %v\n", i))
+		gameValue.WriteString(bingoBoard.GetBingoBoardPrintString(getAnswersInstead))
+		gameValue.WriteString("\n")
+	}
+
+	return gameValue.String()
+}
+
+func reverseBingoBoards(boards []bb.BingoBoard) []bb.BingoBoard {
+	for i := 0; i < len(boards)/2; i++ {
+		j := len(boards) - i - 1
+		boards[i], boards[j] = boards[j], boards[i]
+	}
+	return boards
 }

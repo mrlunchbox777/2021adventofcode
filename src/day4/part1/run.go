@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"os"
 
-	d4 "github.com/mrlunchbox777/2021adventofcode/src/day4/models/bingo-game"
+	r "github.com/mrlunchbox777/2021adventofcode/src/day4/repos"
 )
 
 func Main() error {
@@ -15,7 +15,7 @@ func Main() error {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	bingoGame, err := d4.PrepGame(scanner)
+	bingoGame, err := r.PrepGame(scanner)
 	if err != nil {
 		return err
 	}
