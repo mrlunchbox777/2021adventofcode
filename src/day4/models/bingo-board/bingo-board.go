@@ -55,7 +55,7 @@ func checkForBingoBoardAnswerLinesWin(lines []bbl.BingoBoardLine) (bool, error) 
 	return won, err
 }
 
-func GetBingoBoard(lineStrings []string) (BingoBoard, error) {
+func CreateBingoBoard(lineStrings []string) (BingoBoard, error) {
 	var boardLines []bbl.BingoBoardLine
 	var err error
 

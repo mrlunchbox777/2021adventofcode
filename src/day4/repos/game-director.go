@@ -33,7 +33,7 @@ func PrepGame(scanner *bufio.Scanner) (bg.BingoGame, error) {
 		} else {
 			if i == "" {
 				if len(boardStrings) > 0 {
-					newBoard, newErr := bb.GetBingoBoard(boardStrings)
+					newBoard, newErr := bb.CreateBingoBoard(boardStrings)
 					if newErr != nil {
 						if err == nil {
 							err = newErr
@@ -51,7 +51,7 @@ func PrepGame(scanner *bufio.Scanner) (bg.BingoGame, error) {
 	}
 
 	if len(boardStrings) > 0 {
-		newBoard, newErr := bb.GetBingoBoard(boardStrings)
+		newBoard, newErr := bb.CreateBingoBoard(boardStrings)
 		if newErr != nil {
 			if err == nil {
 				err = newErr
