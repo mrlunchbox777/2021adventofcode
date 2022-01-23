@@ -39,6 +39,29 @@ func (bingoBoard BingoBoard) CheckForBingoBoardWin() (BingoBoard, error) {
 	return newBoard, err
 }
 
+func GetBingoBoardsAnswers(bingoBoards []BingoBoard, winningNumber int) ([]BingoBoard, error) {
+	var err error
+	newBoards := []BingoBoard{}
+
+	if len(bingoBoards) == 0 {
+		return newBoards, errors.New("bingoBoards count was 0")
+	}
+
+	for _, bingoBoard := range bingoBoards {
+		newBoard, newErr := bingoBoard.getBingoBoardAnswers(winningNumber)
+		newBoards = append(newBoards, newBoard)
+		if newErr != nil {
+			if err == nil {
+				err = newErr
+			} else {
+				err = fmt.Errorf("Combined error: %v %v", err, newErr)
+			}
+		}
+	}
+
+	return newBoards, err
+}
+
 func (bingoBoard BingoBoard) GetBingoBoardPrintString(getAnswersInstead bool) string {
 	var boardValue strings.Builder
 	var bingoBoardLen int
@@ -60,6 +83,55 @@ func (bingoBoard BingoBoard) GetBingoBoardPrintString(getAnswersInstead bool) st
 	}
 
 	return boardValue.String()
+}
+
+func (bingoBoard BingoBoard) SumUnmarkedNumbersBoard(getLoser bool) (int, error) {
+	bingoBoardLinesLen := len(bingoBoard.boardLines)
+	bingoBoardAnswersLen := len(bingoBoard.answerLines)
+	var err error
+	var newErr error
+	sum := 0
+	currentSum := 0
+
+	if bingoBoardLinesLen <= 0 {
+		return 0, fmt.Errorf("bingoBoard.boardLines length was less than or equal to 0 - %v", bingoBoardLinesLen)
+	}
+	if bingoBoardLinesLen != bingoBoardAnswersLen {
+		return 0, fmt.Errorf("bingoBoard.boardLines length (%v) didn't equal bingoBoard.answersLines length (%v)", bingoBoardLinesLen, bingoBoardAnswersLen)
+	}
+
+	for i, line := range bingoBoard.boardLines {
+		currentSum, newErr = line.SumUnmarkedNumbersBoardLine(bingoBoard.answerLines[i], getLoser)
+		if newErr != nil {
+			if err == nil {
+				err = newErr
+			} else {
+				err = fmt.Errorf("Combined error: %v %v", err, newErr)
+			}
+		}
+		sum += currentSum
+	}
+
+	return sum, err
+}
+
+func checkForBingoBoardAnswerLinesWin(lines []bbl.BingoBoardLine) (bool, error) {
+	var err error
+	won := false
+
+	for _, answerLine := range lines {
+		wonTemp, newErr := answerLine.CheckForBingoBoardAnswerLineWin()
+
+		if newErr != nil {
+			return won, newErr
+		}
+
+		if wonTemp {
+			return wonTemp, err
+		}
+	}
+
+	return won, err
 }
 
 func (bingoBoard BingoBoard) getBingoBoardAnswers(winningNumber int) (BingoBoard, error) {
@@ -97,34 +169,4 @@ func (bingoBoard BingoBoard) getBingoBoardAnswers(winningNumber int) (BingoBoard
 	}
 
 	return newBoard, err
-}
-
-func (bingoBoard BingoBoard) SumUnmarkedNumbersBoard(getLoser bool) (int, error) {
-	bingoBoardLinesLen := len(bingoBoard.boardLines)
-	bingoBoardAnswersLen := len(bingoBoard.answerLines)
-	var err error
-	var newErr error
-	sum := 0
-	currentSum := 0
-
-	if bingoBoardLinesLen <= 0 {
-		return 0, fmt.Errorf("bingoBoard.boardLines length was less than or equal to 0 - %v", bingoBoardLinesLen)
-	}
-	if bingoBoardLinesLen != bingoBoardAnswersLen {
-		return 0, fmt.Errorf("bingoBoard.boardLines length (%v) didn't equal bingoBoard.answersLines length (%v)", bingoBoardLinesLen, bingoBoardAnswersLen)
-	}
-
-	for i, line := range bingoBoard.boardLines {
-		currentSum, newErr = line.SumUnmarkedNumbersBoardLine(bingoBoard.answerLines[i], getLoser)
-		if newErr != nil {
-			if err == nil {
-				err = newErr
-			} else {
-				err = fmt.Errorf("Combined error: %v %v", err, newErr)
-			}
-		}
-		sum += currentSum
-	}
-
-	return sum, err
 }
